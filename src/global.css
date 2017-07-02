@@ -1,0 +1,8 @@
+
+body {
+    color: red;
+
+    & h2 {
+        color: green;
+    }
+}

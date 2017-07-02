@@ -1,0 +1,7 @@
+node_modules
+ios
+DS_Store
+android
+git
+dist
+__tests__
