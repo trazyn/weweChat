@@ -9,7 +9,7 @@ export default {
             {
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
-                exclude: /node_modules/
+                exclude: /node_modules/,
             },
             {
                 test: /\.css$/,
@@ -71,6 +71,10 @@ export default {
                 test: /\.svg(\?.*)?$/,
                 loader: 'url-loader?prefix=fonts/&name=[path][name].[ext]&limit=40000&mimetype=image/svg+xml',
             },
+            {
+                test: /\.(png|jpg|jpeg|gif)$/,
+                loader: 'url-loader?limit=40000&name=images/[name].[ext]',
+            },
         ]
     },
 
@@ -85,6 +89,8 @@ export default {
     resolve: {
         extensions: ['.js', '.jsx', '.json'],
         alias: {
+            components: path.join(config.client, 'js/components/'),
+            utils: path.join(config.client, 'js/utils/'),
             images: path.join(config.client, 'assets/images/'),
             fonts: path.join(config.client, 'assets/fonts/'),
         },

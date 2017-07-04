@@ -1,0 +1,38 @@
+
+:root {
+    --shadow-color: #eaedea;
+}
+
+:local
+.container {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: #fff;
+}
+
+:local
+.inner {
+    width: 30%;
+    margin: 0 auto;
+    margin-top: 44px;
+    padding: 24px;
+    padding-bottom: 10px;
+    background: #fff;
+    text-align: center;
+    box-shadow: 0 0 24px 0 var(--shadow-color);
+
+    & img {
+        width: 100%;
+    }
+
+    & p {
+        font-family: "Helvetica-Light";
+    }
+
+    & p:last-child {
+        margin-top: 20px;
+        color: #888;
+        font-size: 16px;
+    }
+}

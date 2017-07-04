@@ -2,12 +2,12 @@
 import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 
-import { Layout, Home } from './pages';
+import { Layout, Contacts } from './pages';
 
 export default () => {
     return (
         <Route path="/" component={Layout}>
-            <IndexRoute component={Home} />
+            <IndexRoute component={Contacts} />
         </Route>
     );
 };

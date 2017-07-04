@@ -1,0 +1,133 @@
+
+:root {
+    --column-width: 274px;
+}
+
+:local
+.container {
+    display: flex;
+    padding-bottom: 24px;
+    height: calc(100vh - 60px);
+    padding: 30px 17px 0;
+    justify-content: space-between;
+}
+
+:local
+.notfound {
+    justify-content: center;
+    align-items: center;
+
+    & h1 {
+        font-family: 'Roboto';
+        font-weight: 100;
+        color: rgba(0,0,0,.8);
+        letter-spacing: 2px;
+        word-spacing: 4px;
+    }
+}
+
+:local
+.inner {
+    text-align: center;
+
+    & img {
+        width: 220px;
+        margin-bottom: 70px;
+    }
+}
+
+:local
+.column {
+    width: var(--column-width);
+}
+
+:local
+.group {
+    width: var(--column-width);
+    padding: 8px 0;
+    margin-bottom: 24px;
+    box-shadow: 0 0 10px 0 rgba(119, 119, 119, 50%);
+}
+
+:local
+.header {
+    position: relative;
+    width: 140px;
+    height: 36px;
+
+    & label {
+        position: absolute;
+        left: 12px;
+        bottom: 8px;
+        font-family: 'Helvetica Neue';
+        font-size: 24px;
+        font-weight: 300;
+        color: #000;
+    }
+
+    & span {
+        position: absolute;
+        right: 0;
+        bottom: 8px;
+        display: block;
+        font-family: 'Georgia';
+        font-size: 12px;
+        color: #9B9B9B;
+    }
+}
+
+:local
+.item {
+    display: flex;
+    height: 40px;
+    margin: 10px 0;
+    padding: 0 10px;
+    align-items: center;
+    cursor: pointer;
+
+    & p {
+        transition: .2s;
+    }
+
+    &:hover p {
+        color: #405de6 !important;
+    }
+
+    & img {
+        height: 32px;
+        width: 32px;
+        margin-top: 3px;
+        margin-right: 19px;
+        border-radius: 32px;
+    }
+}
+
+:local .avatar,
+:local .info {
+    display: inline-block;
+}
+
+:local .username,
+:local .signature {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+:local
+.username {
+    font-family: 'Helvetica';
+    font-size: 14px;
+    color: #4a4a4a;
+    margin: 0;
+    margin-bottom: 4px;
+}
+
+:local
+.signature {
+    font-family: 'Helvetica';
+    font-size: 12px;
+    color: #777;
+    margin: 0;
+}
