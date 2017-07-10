@@ -1,5 +1,5 @@
 
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 
 let mainWindow;
@@ -7,21 +7,23 @@ let mainWindow;
 const createMainWindow = () => {
     var mainWindowState = windowStateKeeper({
         defaultWidth: 1024,
-        defaultHeight: 720
+        defaultHeight: 600
     });
 
     mainWindow = new BrowserWindow({
-        width: mainWindowState.width,
-        hieght: mainWindowState.height,
         x: mainWindowState.x,
         y: mainWindowState.y,
+        vibrancy: 'medium-light',
+        transparent: true,
+        titleBarStyle: 'hidden-inset',
+        backgroundColor: 'none',
+        resizable: false,
         webPreferences: {
             scrollBounce: true
         }
     });
 
-    mainWindowState.manage(mainWindow);
-
+    mainWindow.setSize(350, 460);
     mainWindow.loadURL(`file://${__dirname}/src/index.html`);
 
     mainWindow.webContents.on('did-finish-load', () => {
@@ -29,9 +31,21 @@ const createMainWindow = () => {
         mainWindow.focus();
     });
 
+    mainWindow.webContents.on('new-window', (event, url) => {
+        event.preventDefault();
+
+        console.log(url);
+    });
+
     mainWindow.on('closed', () => {
         mainWindow = null;
         app.quit();
+    });
+
+    ipcMain.once('logined', event => {
+        mainWindow.setResizable(true);
+        mainWindow.setSize(mainWindowState.width, mainWindowState.height);
+        mainWindowState.manage(mainWindow);
     });
 };
 

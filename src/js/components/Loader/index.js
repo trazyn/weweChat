@@ -7,7 +7,13 @@ import './style.css';
 
 export default class Button extends Component {
     static PropTypes = {
-        show: PropTypes.bool
+        show: PropTypes.bool,
+        fullscreen: PropTypes.bool,
+    };
+
+    static defaultProps = {
+        show: false,
+        fullscreen: false,
     };
 
     renderContent() {
@@ -16,7 +22,9 @@ export default class Button extends Component {
         }
 
         return (
-            <div className={clazz('Loader', this.props.className)}>
+            <div className={clazz('Loader', this.props.className, {
+                'Loader--fullscreen': this.props.fullscreen
+            })}>
                 <svg className="Loader-circular">
                     <circle className="Loader-path" cx="50" cy="50" r="20" fill="none" strokeWidth="5" strokeMiterlimit="10" />
                 </svg>
@@ -26,11 +34,9 @@ export default class Button extends Component {
 
     render() {
         return (
-            <div>
-                <Transition transitionName="Loader" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
-                    {this.renderContent()}
-                </Transition>
-            </div>
+            <Transition transitionName="Loader" transitionEnterTimeout={200} transitionLeaveTimeout={200}>
+                {this.renderContent()}
+            </Transition>
         );
     }
 }

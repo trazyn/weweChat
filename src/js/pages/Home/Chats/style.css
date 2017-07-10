@@ -1,0 +1,73 @@
+
+:local .container {
+    width: 100%;
+}
+
+:local .chats {
+    height: calc(100vh - 160px);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+:local .chat {
+    display: flex;
+    height: 48px;
+    padding: 11px 16px;
+    margin-bottom: 8px;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: .2s ease-in-out;
+
+    & img {
+        height: 48px;
+        width: 48px;
+    }
+
+    & > div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &.active,
+    &:hover {
+        background: #e8edf3;
+    }
+}
+
+:local .info {
+    display: flex;
+    margin-left: 16px;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+:local .username {
+    max-width: 170px;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 12px;
+    font-family: 'Helvetica';
+    font-size: 15px;
+    color: rgba(74, 74, 74, .9);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+:local .message {
+    max-width: 170px;
+    font-family: 'Lucida Grande';
+    font-size: 14px;
+    color: #9b9b9b;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+:local .times {
+    font-family: 'Georgia';
+    font-size: 12px;
+    color: #979797;
+}

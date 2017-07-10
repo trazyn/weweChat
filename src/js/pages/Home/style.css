@@ -1,4 +1,14 @@
 
-.title {
-    color: red;
+:local .inner {
+    display: flex;
+    justify-content: space-between;
+}
+
+:local .left {
+    width: 311px;
+    box-shadow: inset -1px 0 0 0 #eaedea;
+}
+
+:local .right {
+    width: calc(100vw - 311px);
 }

@@ -1,32 +1,31 @@
 
-:root {
-    --shadow-color: #eaedea;
-}
-
 :local
 .container {
     position: fixed;
+    display: flex;
     width: 100vw;
     height: 100vh;
+    justify-content: center;
+    align-items: center;
     background: #fff;
 }
 
 :local
 .inner {
-    width: 30%;
+    display: inline-block;
+    width: 300px;
     margin: 0 auto;
     margin-top: 44px;
-    padding: 24px;
-    padding-bottom: 10px;
-    background: #fff;
     text-align: center;
-    box-shadow: 0 0 24px 0 var(--shadow-color);
 
     & img {
-        width: 100%;
+        display: block;
+        width: 300px;
+        height: 300px;
     }
 
     & p {
+        color: #000;
         font-family: "Helvetica-Light";
     }
 

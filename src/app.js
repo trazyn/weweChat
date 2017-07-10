@@ -7,6 +7,7 @@ import ElectronCookies from '@exponent/electron-cookies';
 
 import './global.css';
 import './assets/fonts/icomoon/style.css';
+import 'utils/albumcolors';
 import getRoutes from './js/routes';
 import stores from './js/stores';
 
@@ -15,6 +16,7 @@ ElectronCookies.enable({
 });
 
 stores.session.hasLogin();
+stores.settings.init();
 
 render(
     <Provider {...stores}>

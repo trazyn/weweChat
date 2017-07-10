@@ -1,0 +1,128 @@
+
+:local
+.container {
+    position: relative;
+    padding: 0 !important;
+    width: 320px;
+    overflow: hidden;
+
+    & input {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 60px;
+        width: 100%;
+        text-align: center;
+        font-size: 16px;
+        outline: 0;
+    }
+}
+
+:local
+.edit {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    border-radius: 40px;
+    text-align: center;
+    background: #e1306c;
+    box-shadow: 0 0 24px 0 rgba(119,119,119,.6);
+    cursor: pointer;
+
+    & i {
+        color: #fff;
+        cursor: pointer;
+    }
+}
+
+:local
+.hero {
+    display: flex;
+    height: 400px;
+    font-family: 'Helvetica';
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: .2s ease-in-out;
+
+    & h3 {
+        letter-spacing: 1px;
+        color: #4a4a4a;
+    }
+
+    & p {
+        max-width: 280px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+        font-size: 12px;
+        opacity: .5;
+    }
+}
+
+:local(.hero):local(.showEdit) {
+    transform: translateY(-60px);
+}
+
+:local
+.address {
+    height: 32px;
+    margin: 0 auto;
+    padding: 0 12px;
+    line-height: 32px;
+    font-size: 14px;
+    font-family: 'Roboto';
+    text-align: center;
+    border-bottom: thin solid;
+    opacity: .8;
+
+    & i {
+        display: inline-block;
+        margin: 0 5px;
+    }
+}
+
+:local
+.inner {
+    position: relative;
+    display: inline-block;
+    & img {
+        width: 130px;
+        height: 130px;
+        border-radius: 0;
+    }
+}
+
+:local
+.mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 130px;
+    height: 130px;
+    z-index: 9;
+}
+
+:local
+.sendMessage {
+    position: relative;
+    display: inline-block;
+    margin-top: 44px;
+    padding: 8px 12px;
+    font-family: 'Roboto';
+    font-size: 24px;
+    font-weight: 200;
+    line-height: 1;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: .2s;
+
+    &:hover {
+        opacity: 1 !important;
+    }
+}

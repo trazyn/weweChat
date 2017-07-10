@@ -4,20 +4,24 @@
 }
 
 :local
-.container {
+.columns {
     display: flex;
     padding-bottom: 24px;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 60px - 30px);
     padding: 30px 17px 0;
     justify-content: space-between;
 }
 
 :local
 .notfound {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
     justify-content: center;
     align-items: center;
 
     & h1 {
+        margin-bottom: 25vh;
         font-family: 'Roboto';
         font-weight: 100;
         color: rgba(0,0,0,.8);
@@ -32,7 +36,7 @@
 
     & img {
         width: 220px;
-        margin-bottom: 70px;
+        margin-bottom: 30px;
     }
 }
 
@@ -94,11 +98,8 @@
     }
 
     & img {
-        height: 32px;
-        width: 32px;
         margin-top: 3px;
         margin-right: 19px;
-        border-radius: 32px;
     }
 }
 

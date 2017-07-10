@@ -1,14 +1,32 @@
 
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 
-import styles from './style.css';
+import classes from './style.css';
+import Loader from 'components/Loader';
+import SearchBar from './SearchBar';
+import Chats from './Chats';
+import ChatContent from './ChatContent';
 
+@inject(stores => ({
+    loading: stores.session.loading,
+}))
+@observer
 export default class Home extends Component {
     render() {
         return (
-            <div className={styles.title}>
-                Home
-                <i className="icon icon-translate" />
+            <div className={classes.container}>
+                <Loader show={this.props.loading} fullscreen={true} />
+                <div className={classes.inner}>
+                    <div className={classes.left}>
+                        <SearchBar />
+                        <Chats />
+                    </div>
+
+                    <div className={classes.right}>
+                        <ChatContent />
+                    </div>
+                </div>
             </div>
         );
     }

@@ -30,7 +30,7 @@ export default class Filter extends Component {
 
     render() {
         return (
-            <div className={classes.filter}>
+            <div className={classes.contacts}>
                 <input type="text" ref="filter" placeholder="Type someting to search..." onInput={e => this.doFilter(e.target.value)} />
 
                 <div className={classes.action}>

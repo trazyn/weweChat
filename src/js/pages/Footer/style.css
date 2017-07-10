@@ -69,8 +69,8 @@
     width: calc(100% - 311px);
 }
 
-:local .input,
-:local .filter {
+:local .home,
+:local .contacts {
     display: flex;
     height: 60px;
     align-items: center;
@@ -92,9 +92,15 @@
     & i {
         color: #000 !important;
     }
+
+    & label {
+        display: flex;
+        height: 23px;
+        line-height: 23px;
+    }
 }
 
-:local .input {
+:local .home {
 
     & .action {
         width: 105px;
@@ -108,7 +114,7 @@
     }
 }
 
-:local .filter {
+:local .contacts {
     & .action {
         margin-right: 17px;
         display: flex;
@@ -116,7 +122,7 @@
     }
 }
 
-:local .placeholder {
+:local .settings {
     display: flex;
     height: 60px;
     text-align: right;
@@ -126,7 +132,7 @@
     & button {
         position: relative;
         margin-right: 17px;
-        width: 166px;
+        width: 150px;
         color: rgba(0,0,0,.8);
         font-size: 14px;
         padding: 9px 8px;
@@ -152,6 +158,30 @@
         top: 50%;
         transform: translateY(-50%);
         font-size: 20px !important;
+    }
+}
+
+:local .button {
+    position: relative;
+    margin-right: 17px;
+    width: 166px;
+    color: rgba(0,0,0,.8);
+    font-size: 14px;
+    padding: 9px 8px;
+    font-family: 'Roboto';
+    border: 0;
+    border-radius: 2px;
+    background: 0;
+    outline: 0;
+    text-transform: uppercase;
+    text-align: left;
+    cursor: pointer;
+    text-decoration: none;
+    transform: translateY(4px);
+    transition: .2s;
+
+    &:hover {
+        background: color(var(--shadow-color) alpha(-50%));
     }
 }
 

@@ -24,7 +24,7 @@ class Contacts {
                 return;
             }
 
-            var prefix = (e.PYInitial.toString()[0] + '').replace('?', '#');
+            var prefix = ((e.RemarkPYInitial || e.PYInitial).toString()[0] + '').replace('?', '#');
             var group = mappings[prefix];
 
             if (!group) {
@@ -57,7 +57,7 @@ class Contacts {
         });
 
         // Remove all public account
-        self.memberList = response.data.MemberList.filter(e => e.VerifyFlag !== 24 && e.VerifyFlag !== 8);
+        self.memberList = response.data.MemberList.filter(e => e.VerifyFlag !== 24 && e.VerifyFlag !== 8 && e.UserName.startsWith('@'));
         self.memberList.map(e => {
             e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl}`.replace(/\/+/g, '/');
         });
@@ -69,7 +69,15 @@ class Contacts {
     }
 
     @action filter(text = '') {
-        var list = self.memberList.filter(e => (e.PYQuanPin + '').toLowerCase().indexOf(pinyin.letter(text.toLocaleLowerCase())) > -1);
+        var list = self.memberList.filter(e => {
+            var res = (e.PYQuanPin + '').toLowerCase().indexOf(pinyin.letter(text.toLocaleLowerCase())) > -1;
+
+            if (e.RemarkPYQuanPin) {
+                res = res || (e.RemarkPYQuanPin + '').toLowerCase().indexOf(pinyin.letter(text.toLocaleLowerCase())) > -1;
+            }
+
+            return res;
+        });
 
         if (!self.showGroup) {
             list = list.filter(e => {
@@ -85,6 +93,14 @@ class Contacts {
 
     @action toggleGroup(showGroup) {
         self.showGroup = showGroup;
+    }
+
+    @action updateUser(user) {
+        var result = self.memberList.find(e => e.UserName === user.UserName);
+
+        if (result) {
+            Object.assign(result, user);
+        }
     }
 }
 

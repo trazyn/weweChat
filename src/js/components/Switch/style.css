@@ -3,7 +3,6 @@
     display: inline-block;
     margin: 0;
     padding: 0;
-    transform: translateY(4px);
     cursor: pointer;
 
     & input {
@@ -38,7 +37,7 @@
         margin-top: 3px;
         background: rgba(0, 0, 0, .26);
         border-radius: 14px;
-        transition: .2s;
+        transition: .5s ease-in-out;
     }
 
     &:after {

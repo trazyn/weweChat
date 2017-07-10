@@ -29,7 +29,6 @@ export default {
                         options: {
                             plugins: (loader) => [
                                 require('postcss-import')(),
-                                require('postcss-autoreset')(),
                                 require('postcss-cssnext')({
                                     browsers: [
                                         'last 2 Chrome versions',

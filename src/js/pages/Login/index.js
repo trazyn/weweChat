@@ -17,7 +17,7 @@ export default class Login extends Component {
 
     renderUser() {
         return (
-            <div>
+            <div className={classes.inner}>
                 {
                     <img src={this.props.avatar} />
                 }
@@ -32,7 +32,7 @@ export default class Login extends Component {
         var { code } = this.props;
 
         return (
-            <div>
+            <div className={classes.inner}>
                 {
                     code && (<img src={`https://login.weixin.qq.com/qrcode/${code}`} />)
                 }
@@ -46,11 +46,9 @@ export default class Login extends Component {
     render() {
         return (
             <div className={classes.container}>
-                <div className={classes.inner}>
-                    {
-                        this.props.avatar ? this.renderUser() : this.renderCode()
-                    }
-                </div>
+                {
+                    this.props.avatar ? this.renderUser() : this.renderCode()
+                }
             </div>
         );
     }

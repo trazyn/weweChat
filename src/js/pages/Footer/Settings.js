@@ -6,16 +6,16 @@ import classes from './style.css';
 export default class Placeholder extends Component {
     render() {
         return (
-            <div className={classes.placeholder}>
-                <button>
+            <div className={classes.settings}>
+                <a className={classes.button} href="mailto:var.darling@gmail.com?Subject=WeWeChat%20Feedback" target="_blank">
                     Send feedback
                     <i className="icon-ion-ios-email-outline" />
-                </button>
+                </a>
 
-                <button>
+                <a className={classes.button} href="https://github.com/trazyn" target="_blank">
                     Fork on Github
                     <i className="icon-ion-social-github" />
-                </button>
+                </a>
             </div>
         );
     }
