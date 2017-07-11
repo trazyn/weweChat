@@ -30,13 +30,15 @@
         position: absolute;
         top: 50%;
         right: calc(32px + 17px);
+        display: block;
         font-size: 24px;
         color: #000;
+        cursor: pointer;
         transform: translateY(-50%);
+    }
 
-        &:hover {
-            color: #34b7f1;
-        }
+    & i:hover {
+        color: #34b7f1 !important;
     }
 }
 
@@ -54,7 +56,7 @@
     justify-content: center;
     align-items: center;
 
-    & img {
+    & .avatar {
         width: 200px;
         margin-bottom: 5vh;
     }
@@ -65,5 +67,94 @@
         color: rgba(0,0,0,.8);
         letter-spacing: 2px;
         word-spacing: 4px;
+    }
+}
+
+:local .messages {
+    width: 100%;
+    height: calc(100vh - 160px - 16px);
+    padding-top: 16px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+:local .message {
+    max-width: calc(100% - 34px - 48px);
+    padding: 0 34px;
+    margin-bottom: 20px;
+
+    & > div {
+        position: relative;
+        display: inline-block;
+        padding: 16px 0 0 16px;
+    }
+
+    & .avatar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 32px;
+        width: 32px;
+        border-radius: 0;
+        z-index: 9;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, .5);
+    }
+}
+
+:local .message:local(.isme) {
+
+    & > div {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    & .avatar {
+        left: auto;
+        right: -16px;
+    }
+
+    & .content {
+        background: #7ebef8;
+    }
+
+    & p {
+        padding: 10.82px 40px 8px 14.8px;
+    }
+
+    & .times {
+        margin-left: 14.8px;
+    }
+
+    & p,
+    & .times {
+        color: #fff !important;
+    }
+}
+
+:local .avatar {
+    cursor: pointer;
+}
+
+:local .content {
+    position: relative;
+    background: #fff;
+    box-shadow: 0 6px 28px 0 rgba(230, 230, 230, 100);
+
+    & p {
+        margin: 0;
+        padding: 10.82px 14.8px 8px 40px;
+        font-family: 'Helvetica';
+        font-size: 14px;
+        color: #777;
+        line-height: 22.65px;
+    }
+
+    & .times {
+        margin-left: 40px;
+        margin-bottom: 6px;
+        display: inline-block;
+        font-family: 'Georgia' !important;
+        font-size: 12px !important;
+        color: #f65431 !important;
     }
 }

@@ -12,8 +12,7 @@
 :local .chat {
     display: flex;
     height: 48px;
-    padding: 11px 16px;
-    margin-bottom: 8px;
+    padding: 13px 16px;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
@@ -70,4 +69,20 @@
     font-family: 'Georgia';
     font-size: 12px;
     color: #979797;
+}
+
+:local .reddot {
+    position: relative;
+
+    &:after {
+        content: '';
+        position: absolute;
+        bottom: 6px;
+        right: 0;
+        width: 6px;
+        height: 6px;
+        border-radius: 6px;
+        border: 2px solid #fff;
+        background: #1eb751;
+    }
 }

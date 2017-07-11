@@ -5,8 +5,24 @@
 }
 
 :local .left {
+    position: relative;
     width: 311px;
     box-shadow: inset -1px 0 0 0 #eaedea;
+
+    & .addChat {
+        position: absolute;
+        right: -20px;
+        top: 40px;
+        height: 40px;
+        width: 40px;
+        border-radius: 100%;
+        line-height: 40px;
+        text-align: center;
+        font-size: 20px;
+        background: #e1306c;
+        box-shadow: 0 0 24px 0 rgba(119, 119, 119, .5);
+        cursor: pointer;
+    }
 }
 
 :local .right {

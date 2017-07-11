@@ -1,5 +1,6 @@
 
 /* eslint-disable no-eval */
+
 import axios from 'axios';
 import { observable, action } from 'mobx';
 
@@ -12,6 +13,12 @@ class Session {
     @observable code;
     @observable avatar;
     @observable user;
+
+    syncKey;
+
+    genSyncKey(list) {
+        return (self.syncKey = list.map(e => `${e.Key}_${e.Val}`).join('|'));
+    }
 
     @action async getCode() {
         var response = await axios.get('https://login.wx.qq.com/jslogin?appid=wx782c26e4c19acffb&redirect_uri=https%3A%2F%2Fwx.qq.com%2Fcgi-bin%2Fmmwebwx-bin%2Fwebwxnewloginpage&fun=new&lang=en_US&_=1499075647264');
@@ -116,18 +123,46 @@ class Session {
         return self.user;
     }
 
-    async keepalive() {
+    async getNewMessage() {
         var auth = self.auth;
-        var response = await axios.post(`cgi-bin/mmwebwx-bin/webwxsync?sid=${auth.wxsid}&skey=${auth.skey}&lang=en_US&pass_ticket=${auth.passTicket}`, {
+        var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxsync?sid=${auth.wxsid}&skey=${auth.skey}&lang=en_US&pass_ticket=${auth.passTicket}`, {
             BaseRequest: {
                 Sid: auth.wxsid,
                 Uin: auth.wxuin,
                 Skey: auth.skey,
             },
             SyncKey: self.user.SyncKey,
-            rr: -new Date(),
+            rr: ~new Date(),
         });
-        var syncKey = response.data.SyncKey.List.map(e => `${e.Key}_${e.Val}`).join('|');
+
+        // Refresh the sync keys
+        self.user.SyncKey = response.data.SyncKey;
+        self.genSyncKey(response.data.SyncKey.List);
+
+        response.data.AddMsgList.map(e => {
+            if (e.FromUserName === self.user.User.UserName) {
+                return home.markedRead(e.ToUserName);
+            }
+
+            if (e.FromUserName.startsWith('@')) {
+                home.addMessage(e);
+            }
+        });
+
+        return response.data;
+    }
+
+    async keepalive() {
+        var auth = self.auth;
+        var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxsync?sid=${auth.wxsid}&skey=${auth.skey}&lang=en_US&pass_ticket=${auth.passTicket}`, {
+            BaseRequest: {
+                Sid: auth.wxsid,
+                Uin: auth.wxuin,
+                Skey: auth.skey,
+            },
+            SyncKey: self.user.SyncKey,
+            rr: ~new Date(),
+        });
         var host = axios.defaults.baseURL.replace('//', '//webpush.');
         var loop = async() => {
             var response = await axios.get(`${host}cgi-bin/mmwebwx-bin/synccheck`, {
@@ -136,13 +171,29 @@ class Session {
                     sid: auth.wxsid,
                     uin: auth.wxuin,
                     skey: auth.skey,
-                    synckey: syncKey,
+                    synckey: self.syncKey,
                 }
             });
 
             eval(response.data);
+
             if (+window.synccheck.retcode === 0) {
-                if ([0, 2].includes(+window.synccheck.selector)) {
+                if ([
+                    // Normal synccheck
+                    0,
+                    // Has new message need sync
+                    2
+                ].includes(+window.synccheck.selector)) {
+                    var selector = +window.synccheck.selector;
+
+                    switch (selector) {
+                        case 2:
+                            await self.getNewMessage();
+                            break;
+
+                        // Selector is 4 or 6 ?
+                    }
+
                     // Do next sync keep your wechat alive
                     loop();
                 }
@@ -155,6 +206,7 @@ class Session {
             await home.loadChats(e.StatusNotifyUserName);
         });
 
+        self.genSyncKey(response.data.SyncKey.List);
         loop();
     }
 

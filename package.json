@@ -22,6 +22,7 @@
     "han": "^0.0.7",
     "mobx": "^3.1.16",
     "mobx-react": "^4.2.1",
+    "moment": "^2.18.1",
     "randomcolor": "^0.5.3",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.0",

@@ -21,6 +21,10 @@ export default class Home extends Component {
                     <div className={classes.left}>
                         <SearchBar />
                         <Chats />
+
+                        <div className={classes.addChat}>
+                            <i className="icon-ion-android-add" />
+                        </div>
                     </div>
 
                     <div className={classes.right}>
