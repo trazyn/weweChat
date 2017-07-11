@@ -1,5 +1,4 @@
 
-:local
 .container {
     position: fixed;
     display: flex;
@@ -10,7 +9,6 @@
     background: #fff;
 }
 
-:local
 .inner {
     display: inline-block;
     width: 300px;

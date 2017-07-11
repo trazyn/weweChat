@@ -1,9 +1,5 @@
 
-::-webkit-scrollbar {
-    width: 0px;
-}
-
-:global * {
+* {
     user-select: none;
 }
 
@@ -12,7 +8,7 @@ body {
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
-	text-rendering: optimizeLegibility;
+    text-rendering: optimizeLegibility;
     background: none;
     overflow: hidden;
 }
@@ -3239,4 +3235,8 @@ label {
 
 .emoji_face .emoji176 {
     background-position: -350px -350px
+}
+
+::-webkit-scrollbar {
+    width: 0px;
 }

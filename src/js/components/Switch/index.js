@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 
 import blacklist from 'utils/blacklist';
-import './style.css';
+import './style.global.css';
 
 export default class Switch extends Component {
     render() {

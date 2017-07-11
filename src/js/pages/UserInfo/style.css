@@ -1,5 +1,4 @@
 
-:local
 .container {
     position: relative;
     padding: 0 !important;
@@ -18,7 +17,6 @@
     }
 }
 
-:local
 .edit {
     position: absolute;
     top: 10px;
@@ -38,7 +36,6 @@
     }
 }
 
-:local
 .hero {
     display: flex;
     height: 400px;
@@ -63,11 +60,10 @@
     }
 }
 
-:local(.hero):local(.showEdit) {
+.hero.showEdit {
     transform: translateY(-60px);
 }
 
-:local
 .address {
     height: 32px;
     margin: 0 auto;
@@ -85,7 +81,6 @@
     }
 }
 
-:local
 .inner {
     position: relative;
     display: inline-block;
@@ -96,7 +91,6 @@
     }
 }
 
-:local
 .mask {
     position: absolute;
     top: 0;
@@ -106,7 +100,6 @@
     z-index: 9;
 }
 
-:local
 .sendMessage {
     position: relative;
     display: inline-block;

@@ -5,7 +5,6 @@
     --shadow-color: #eaedea;
 }
 
-:local
 .footer {
     position: fixed;
     left: 0;
@@ -43,7 +42,6 @@
     }
 }
 
-:local
 .footer .active {
     position: relative;
     &:after {
@@ -61,7 +59,6 @@
     }
 }
 
-:local
 .right {
     position: fixed;
     bottom: 0;
@@ -69,8 +66,8 @@
     width: calc(100% - 311px);
 }
 
-:local .home,
-:local .contacts {
+.home,
+.contacts {
     display: flex;
     height: 60px;
     align-items: center;
@@ -100,7 +97,7 @@
     }
 }
 
-:local .home {
+.home {
 
     & .action {
         width: 105px;
@@ -114,7 +111,7 @@
     }
 }
 
-:local .contacts {
+.contacts {
     & .action {
         margin-right: 17px;
         display: flex;
@@ -122,7 +119,7 @@
     }
 }
 
-:local .settings {
+.settings {
     display: flex;
     height: 60px;
     text-align: right;
@@ -161,7 +158,7 @@
     }
 }
 
-:local .button {
+.button {
     position: relative;
     margin-right: 17px;
     width: 166px;
@@ -185,7 +182,7 @@
     }
 }
 
-:local .options {
+.options {
     display: inline-block;
     margin-right: 12px;
     font-family: 'Roboto';

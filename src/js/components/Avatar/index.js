@@ -2,7 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import clazz from 'classname';
 
-import './style.css';
+import './style.global.css';
 
 export default class Avatar extends Component {
     static propTypes = {

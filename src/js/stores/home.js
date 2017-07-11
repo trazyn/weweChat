@@ -40,8 +40,12 @@ async function resolveMessage(message) {
 
             images.src = `${axios.defaults.baseURL}/cgi-bin/mmwebwx-bin/webwxgetmsgimg?&MsgID=${message.MsgId}&skey=${auth.skey}`.replace(/\/+/g, '/');
             message.images = images;
-            return message;
+            break;
+
+        // TODO: Voice, Location etc
     }
+
+    return message;
 }
 
 class Home {
@@ -90,14 +94,27 @@ class Home {
     @action async addMessage(message) {
         var from = message.FromUserName;
         var messages = Object.assign({}, self.messages);
-        var list = messages[from];
+        var list = messages[from].slice();
 
         // Check new message has already in the chat set
-        if (list) {
+        if (Array.isArray(list)) {
+            // Swap the chatset order
+            let index = self.chats.findIndex(e => e.UserName === from);
+            let chats = [];
+
+            if (index > 0) {
+                chats = [
+                    self.chats.slice(index, index + 1),
+                    ...self.chats.slice(0, index),
+                    ...self.chats.slice(index + 1, self.chats.length)
+                ];
+
+                self.chats.replace(chats);
+            }
+
             // Drop the duplicate message
             if (!list.find(e => e.NewMsgId === message.NewMsgId)) {
-                message = await resolveMessage(message);
-                list.push(message);
+                list.push(await resolveMessage(message));
             }
         } else {
             let user = self.users[from];
@@ -108,11 +125,13 @@ class Home {
             }
         }
 
-        if (self.user.UserName === from) {
-            // Current chat to user
-            list.unread = list.length;
-        } else {
-            list.unread = 0;
+        if (list.length) {
+            if (self.user.UserName === from) {
+                // Current chat to user
+                list.unread = list.length;
+            }
+
+            messages[from] = list;
         }
 
         // Force refresh the messages list

@@ -13,6 +13,7 @@ export default {
             },
             {
                 test: /\.css$/,
+                exclude: [/icomoon\/style.css$/, /global.css$/],
                 use: [
                     'style-loader',
                     {
@@ -20,6 +21,7 @@ export default {
                         options: {
                             // Note that we’ve set importLoaders: 1 on css-loader.
                             // We’re setting this because we want PostCSS to git @import statements first
+                            modules: true,
                             importLoaders: 1,
                             localIdentName: '[path][name]__[local]--[hash:base64:5]'
                         },
@@ -40,6 +42,20 @@ export default {
                             ]
                         }
                     }
+                ],
+            },
+            {
+                test: /icomoon\/style.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                ],
+            },
+            {
+                test: /global.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
                 ],
             },
             {

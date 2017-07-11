@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import Transition from 'react-addons-css-transition-group';
 import clazz from 'classname';
 
-import './style.css';
+import './style.global.css';
 
 export default class Button extends Component {
     static PropTypes = {

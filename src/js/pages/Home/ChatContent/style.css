@@ -1,5 +1,5 @@
 
-:local .container {
+.container {
 
     & header {
         position: relative;
@@ -42,14 +42,14 @@
     }
 }
 
-:local .inner {
+.inner {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
 
-:local .notfound {
+.notfound {
     display: flex;
     height: 100%;
     width: 100%;
@@ -70,7 +70,7 @@
     }
 }
 
-:local .messages {
+.messages {
     width: 100%;
     height: calc(100vh - 160px - 16px);
     padding-top: 16px;
@@ -78,7 +78,7 @@
     overflow-y: auto;
 }
 
-:local .message {
+.message {
     max-width: calc(100% - 34px - 48px);
     padding: 0 34px;
     margin-bottom: 20px;
@@ -101,7 +101,7 @@
     }
 }
 
-:local .message:local(.isme) {
+.message.isme {
 
     & > div {
         display: flex;
@@ -131,11 +131,11 @@
     }
 }
 
-:local .avatar {
+.avatar {
     cursor: pointer;
 }
 
-:local .content {
+.content {
     position: relative;
     background: #fff;
     box-shadow: 0 6px 28px 0 rgba(230, 230, 230, 100);

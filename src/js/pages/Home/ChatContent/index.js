@@ -30,26 +30,14 @@ export default class ChatContent extends Component {
 
     renderMessages(list, from) {
         return list.map((e, index) => {
-            if (e.isme) {
-                return (
-                    <div className={clazz(classes.message, classes.isme)} key={index}>
-                        <div>
-                            <Avatar src={from.HeadImgUrl} className={classes.avatar} onClick={e => this.props.showUserinfo()} />
-
-                            <div className={classes.content}>
-                                <p dangerouslySetInnerHTML={{__html: this.getMessageContent(e)}} />
-
-                                <span className={classes.times}>{ moment(e.CreateTime * 1000).fromNow() }</span>
-                            </div>
-                        </div>
-                    </div>
-                );
-            }
-
             return (
-                <div className={classes.message} key={index}>
+                <div className={clazz(classes.message, {
+                    [classes.isme]: e.isme,
+                    [classes.isText]: e.MsgType === 1,
+                    [classes.isImage]: e.MsgType === 3,
+                })} key={index}>
                     <div>
-                        <Avatar src={from.HeadImgUrl} className={classes.avatar} onClick={e => this.props.showUserinfo()} />
+                        <Avatar src={e.isme ? e.HeadImgUrl : from.HeadImgUrl} className={classes.avatar} onClick={e => this.props.showUserinfo()} />
 
                         <div className={classes.content}>
                             <p dangerouslySetInnerHTML={{__html: this.getMessageContent(e)}} />

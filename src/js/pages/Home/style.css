@@ -1,10 +1,10 @@
 
-:local .inner {
+.inner {
     display: flex;
     justify-content: space-between;
 }
 
-:local .left {
+.left {
     position: relative;
     width: 311px;
     box-shadow: inset -1px 0 0 0 #eaedea;
@@ -25,6 +25,6 @@
     }
 }
 
-:local .right {
+.right {
     width: calc(100vw - 311px);
 }
