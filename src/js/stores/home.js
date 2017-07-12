@@ -23,26 +23,47 @@ function unique(arr) {
     return res;
 }
 
+function parseXml(text) {
+    var string = text.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+    var matchs = string.match(/(\w+)="([^\s]+)"/g);
+    let res = {};
+
+    matchs.map(e => {
+        var kv = e.replace(/"/g, '').split('=');
+
+        res[kv[0]] = kv[1];
+    });
+
+    return res;
+}
+
 async function resolveMessage(message) {
     var auth = await storage.get('auth');
 
     switch (message.MsgType) {
         case 3:
-            let string = message.Content.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-            let matchs = string.match(/(\w+)="([^\s]+)"/g);
-            let images = {};
-
-            matchs.map(e => {
-                var kv = e.replace(/"/g, '').split('=');
-
-                images[kv[0]] = kv[1];
-            });
-
-            images.src = `${axios.defaults.baseURL}/cgi-bin/mmwebwx-bin/webwxgetmsgimg?&MsgID=${message.MsgId}&skey=${auth.skey}`.replace(/\/+/g, '/');
+            // Image
+            let images = parseXml(message.Content);
+            images.src = `${axios.defaults.baseURL}/cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${message.MsgId}&skey=${auth.skey}`.replace(/\/+/g, '/');
             message.images = images;
             break;
 
-        // TODO: Voice, Location etc
+        case 34:
+            // Voice
+            let voice = parseXml(message.Content);
+            voice.src = `${axios.defaults.baseURL}/cgi-bin/mmwebwx-bin/webwxgetvoice?&msgid=${message.MsgId}&skey=${auth.skey}`.replace(/\/+/g, '/');
+            message.voice = voice;
+            break;
+
+        case 47:
+            // External emoji
+            if (!message.Content) break;
+
+            let emoji = parseXml(message.Content);
+            message.emoji = emoji;
+            break;
+
+            // TODO: Voice, Location etc
     }
 
     return message;

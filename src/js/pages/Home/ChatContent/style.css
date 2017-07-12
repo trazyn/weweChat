@@ -11,6 +11,21 @@
         align-items: center;
     }
 
+    & header i {
+        position: absolute;
+        top: 50%;
+        right: calc(32px + 17px);
+        display: block;
+        font-size: 24px;
+        color: #000;
+        cursor: pointer;
+        transform: translateY(-50%);
+    }
+
+    & i:hover {
+        color: #34b7f1 !important;
+    }
+
     & p {
         margin: 0;
         padding: 0;
@@ -24,21 +39,6 @@
         font-family: 'Lucida Grande';
         font-size: 12px;
         color: #9b9b9b;
-    }
-
-    & i {
-        position: absolute;
-        top: 50%;
-        right: calc(32px + 17px);
-        display: block;
-        font-size: 24px;
-        color: #000;
-        cursor: pointer;
-        transform: translateY(-50%);
-    }
-
-    & i:hover {
-        color: #34b7f1 !important;
     }
 }
 
@@ -98,10 +98,78 @@
         border-radius: 0;
         z-index: 9;
         box-shadow: 0 0 10px 0 rgba(0, 0, 0, .5);
+        cursor: pointer;
     }
 }
 
-.message.isme {
+.message.isText {
+    & .content {
+        position: relative;
+        background: #fff;
+        box-shadow: 0 6px 28px 0 rgba(230, 230, 230, 100);
+    }
+
+    & p {
+        margin: 0;
+        padding: 10.82px 14.8px 8px 40px;
+        font-family: 'Helvetica';
+        font-size: 14px;
+        color: #777;
+        line-height: 22.65px;
+    }
+
+    & .times {
+        margin-left: 40px;
+        margin-bottom: 6px;
+        display: inline-block;
+        font-family: 'Georgia' !important;
+        font-size: 12px !important;
+        color: #f65431 !important;
+    }
+}
+
+.message.isEmoji {
+    & > div {
+        padding: 16px 0 0 47px;
+    }
+}
+
+.message.isImage {
+    & img {
+        max-width: 60%;
+    }
+
+    & > div {
+        padding: 16px 0 0 47px;
+    }
+}
+
+.message.isVoice {
+    position: relative;
+
+    & p { margin: 0; }
+
+    & .content {
+        position: absolute;
+        left: 48px;
+        top: 0;
+        display: flex;
+        height: 32px;
+        padding-left: 24px;
+        padding-right: 14px;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 2px;
+        background: #fff;
+        box-shadow: 0 6px 28px 0 rgba(230, 230, 230, 100);
+    }
+
+    & .times {
+        white-space: nowrap;
+    }
+}
+
+.message.isme.isText {
 
     & > div {
         display: flex;
@@ -131,30 +199,22 @@
     }
 }
 
-.avatar {
-    cursor: pointer;
-}
-
-.content {
+.invalidEmoji {
     position: relative;
-    background: #fff;
-    box-shadow: 0 6px 28px 0 rgba(230, 230, 230, 100);
+    margin-top: -30px;
 
-    & p {
-        margin: 0;
-        padding: 10.82px 14.8px 8px 40px;
-        font-family: 'Helvetica';
-        font-size: 14px;
-        color: #777;
-        line-height: 22.65px;
+    & > div {
+        content: -webkit-image-set(
+        url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABIAQMAAABvIyEEAAAABlBMVEUAAABTU1OoaSf/AAAAAXRSTlMAQObYZgAAAENJREFUeF7tzbEJACEQRNGBLeAasBCza2lLEGx0CxFGG9hBMDDxRy/72O9FMnIFapGylsu1fgoBdkXfUHLrQgdfrlJN1BdYBjQQm3UAAAAASUVORK5CYII=) 1x,
+        url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJAAAACQAQMAAADdiHD7AAAABlBMVEUAAABTU1OoaSf/AAAAAXRSTlMAQObYZgAAAFJJREFUeF7t0cENgDAMQ9FwYgxG6WjpaIzCCAxQxVggFuDiCvlLOeRdHR9yzjncHVoq3npu+wQUrUuJHylSTmBaespJyJQoObUeyxDQb3bEm5Au81c0pSCD8HYAAAAASUVORK5CYII=) 2x);
     }
 
-    & .times {
-        margin-left: 40px;
-        margin-bottom: 6px;
-        display: inline-block;
-        font-family: 'Georgia' !important;
-        font-size: 12px !important;
-        color: #f65431 !important;
+    & > span {
+        position: absolute;
+        display: block;
+        left: 46px;
+        bottom: 0;
+        white-space: nowrap;
+        color: #535353;
     }
 }
