@@ -71,7 +71,7 @@ async function resolveMessage(message) {
 
 class Home {
     @observable chats = [];
-    @observable messages = {};
+    @observable messages = new Map();
     @observable user = false;
 
     users;
@@ -101,7 +101,10 @@ class Home {
         self.chats.replace(res);
 
         res.map(e => {
-            self.messages[e.UserName] = [];
+            self.messages.set(e.UserName, {
+                data: [],
+                unread: 0,
+            });
         });
 
         return res;
@@ -114,18 +117,17 @@ class Home {
 
     @action async addMessage(message) {
         var from = message.FromUserName;
-        var messages = Object.assign({}, self.messages);
-        var list = messages[from].slice();
+        var list = self.messages.get(from);
 
-        // Check new message has already in the chat set
-        if (Array.isArray(list)) {
+        // Check new message is already in the chat set
+        if (list) {
             // Swap the chatset order
             let index = self.chats.findIndex(e => e.UserName === from);
             let chats = [];
 
             if (index > 0) {
                 chats = [
-                    self.chats.slice(index, index + 1),
+                    ...self.chats.slice(index, index + 1),
                     ...self.chats.slice(0, index),
                     ...self.chats.slice(index + 1, self.chats.length)
                 ];
@@ -134,29 +136,27 @@ class Home {
             }
 
             // Drop the duplicate message
-            if (!list.find(e => e.NewMsgId === message.NewMsgId)) {
-                list.push(await resolveMessage(message));
+            if (!list.data.find(e => e.NewMsgId === message.NewMsgId)) {
+                list.data.push(await resolveMessage(message));
             }
         } else {
             let user = self.users[from];
 
             if (user) {
                 self.chats.shift(user);
-                list = messages[from] = [message];
+                list = {
+                    data: [message],
+                    unread: 0,
+                };
             }
         }
 
-        if (list.length) {
-            if (self.user.UserName === from) {
-                // Current chat to user
-                list.unread = list.length;
-            }
-
-            messages[from] = list;
+        if (self.user.UserName === from) {
+            // Current chat to user
+            list.unread = list.data.length;
         }
 
-        // Force refresh the messages list
-        self.messages = messages;
+        self.messages.set(from, list);
     }
 
     @action async sendMessage(content) {
@@ -183,9 +183,9 @@ class Home {
 
         if (+response.data.BaseResponse.Ret === 0) {
             // Sent success
-            let messages = Object.assign({}, self.messages);
+            let list = self.messages.get(to);
 
-            messages[to].push({
+            list.data.push({
                 isme: true,
                 Content: content,
                 MsgType: 1,
@@ -194,6 +194,7 @@ class Home {
             });
 
             self.markedRead(to);
+            self.messages.set(to, list);
         } else {
             console.error('Failed to send message: %o', response.data);
         }
@@ -202,16 +203,18 @@ class Home {
     }
 
     @action markedRead(userid) {
-        var messages = Object.assign({}, self.messages);
-        var list = messages[userid];
+        var list = self.messages.get(userid);
 
         if (list) {
-            list.unread = list.length;
-            self.messages = messages;
+            list.unread = list.data.length;
         } else {
-            // Init the message queue
-            self.messages[userid] = [];
+            list = {
+                data: [],
+                unread: 0,
+            };
         }
+
+        self.messages.set(userid, list);
     }
 }
 

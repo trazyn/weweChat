@@ -29,14 +29,17 @@ moment.updateLocale('en', {
 @observer
 export default class Chats extends Component {
     getTheLastestMessage(userid) {
-        var list = this.props.messages[userid] || [];
+        var list = this.props.messages.get(userid);
         var res;
 
-        list.map(e => {
-            if (e.FromUserName === userid) {
-                res = e;
-            }
-        });
+        if (list) {
+            // Make sure all chatset has be loaded
+            list.data.map(e => {
+                if (e.FromUserName === userid) {
+                    res = e;
+                }
+            });
+        }
 
         return res;
     }
@@ -62,8 +65,11 @@ export default class Chats extends Component {
     }
 
     hasUnreadMessage(userid) {
-        var list = this.props.messages[userid] || [];
-        return list.length !== (list.unread || 0);
+        var list = this.props.messages.get(userid);
+
+        if (list) {
+            return list.data.length !== (list.unread || 0);
+        }
     }
 
     render() {

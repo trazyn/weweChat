@@ -137,6 +137,7 @@
 .message.isImage {
     & img {
         max-width: 60%;
+        cursor: pointer;
     }
 
     & > div {
@@ -155,6 +156,7 @@
         top: 0;
         display: flex;
         height: 32px;
+        min-width: 120px;
         padding-left: 24px;
         padding-right: 14px;
         justify-content: space-between;
@@ -162,10 +164,20 @@
         border-radius: 2px;
         background: #fff;
         box-shadow: 0 6px 28px 0 rgba(230, 230, 230, 100);
+        cursor: pointer;
     }
 
     & .times {
         white-space: nowrap;
+    }
+
+    & i + span {
+        font-family: 'Georgia';
+        font-size: 12px;
+        color: #797979;
+        display: inline-block;
+        margin-left: 14px;
+        transform: translateY(-2px);
     }
 }
 

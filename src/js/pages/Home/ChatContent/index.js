@@ -27,11 +27,24 @@ export default class ChatContent extends Component {
                 let images = message.images;
                 return `<img src="${images.src}" />`;
             case 34:
+                /* eslint-disable */
                 // Voice
                 let voice = message.voice;
+                let times = message.VoiceLength;
+                let width = 40 + 7 * (times / 2000);
+                let seconds = 0;
+                /* eslint-enable */
+
+                if (times < 60 * 1000) {
+                    seconds = Math.ceil(times / 1000);
+                }
+
                 return `
-                    <div style="width: ${40 + 7 * message.VoiceLength / 1000}px" data-voice="${voice.src}">
+                    <div style="width: ${width}px" data-voice="${voice.src}">
                         <i class="icon-ion-android-volume-up"></i>
+                        <span>
+                            ${seconds || '60+'}"
+                        </span>
                     </div>
                 `;
             case 47:
@@ -51,7 +64,7 @@ export default class ChatContent extends Component {
     }
 
     renderMessages(list, from) {
-        return list.map((e, index) => {
+        return list.data.map((e, index) => {
             return (
                 <div className={clazz(classes.message, {
                     [classes.isme]: e.isme,
@@ -112,7 +125,7 @@ export default class ChatContent extends Component {
 
                 <div className={classes.messages} ref="viewport">
                     {
-                        this.renderMessages(messages[user.UserName], user)
+                        this.renderMessages(messages.get(user.UserName), user)
                     }
                 </div>
             </div>
