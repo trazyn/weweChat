@@ -47,6 +47,7 @@ export default class Chats extends Component {
     getMessageContent(message) {
         switch (message.MsgType) {
             case 1:
+                if (message.location) return '[Location]';
                 // Text message
                 return message.Content;
 

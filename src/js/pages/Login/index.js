@@ -11,7 +11,7 @@ import classes from './style.css';
 }))
 @observer
 export default class Login extends Component {
-    componentWillMount() {
+    componentDidMount() {
         this.props.getCode();
     }
 

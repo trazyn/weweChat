@@ -24,5 +24,17 @@ export default {
                 }
             });
         });
+    },
+
+    remove: (key) => {
+        return new Promise((resolve, reject) => {
+            storage.remove(key, err => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
     }
 };

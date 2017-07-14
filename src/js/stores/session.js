@@ -30,6 +30,9 @@ class Session {
     }
 
     @action async check() {
+        // Already logined
+        if (self.auth) return;
+
         var response = await axios.get('https://login.web.wechat.com/cgi-bin/mmwebwx-bin/login', {
             params: {
                 loginicon: true,
@@ -198,7 +201,7 @@ class Session {
                     loop();
                 }
             } else {
-                console.err(window.synccheck);
+                return false;
             }
         };
 
@@ -207,14 +210,30 @@ class Session {
         });
 
         self.genSyncKey(response.data.SyncKey.List);
-        loop();
+
+        if (await loop() === false) {
+            throw window.synccheck;
+        }
     }
 
     @action async hasLogin() {
         var auth = await storage.get('auth');
 
         axios.defaults.baseURL = auth.baseURL;
-        return (self.auth = !auth);
+
+        self.auth = auth && Object.keys(auth).length ? auth : void 0;
+
+        if (self.auth) {
+            await self.initUser().catch(ex => self.relogin());
+            await self.keepalive().catch(ex => self.relogin());
+        }
+
+        return auth;
+    }
+
+    async relogin() {
+        await storage.remove('auth');
+        window.location.reload();
     }
 }
 

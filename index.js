@@ -1,8 +1,18 @@
 
-import { app, BrowserWindow, ipcMain } from 'electron';
+import fs from 'fs';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 
 let mainWindow;
+let userData = app.getPath('userData');
+let imagesCacheDir = `${userData}/images`;
+let voicesCacheDir = `${userData}/voices`;
+
+[imagesCacheDir, voicesCacheDir].map(e => {
+    if (!fs.existsSync(e)) {
+        fs.mkdirSync(e);
+    }
+});
 
 const createMainWindow = () => {
     var mainWindowState = windowStateKeeper({
@@ -33,8 +43,7 @@ const createMainWindow = () => {
 
     mainWindow.webContents.on('new-window', (event, url) => {
         event.preventDefault();
-
-        console.log(url);
+        shell.openExternal(url);
     });
 
     mainWindow.on('closed', () => {
@@ -46,6 +55,18 @@ const createMainWindow = () => {
         mainWindow.setResizable(true);
         mainWindow.setSize(mainWindowState.width, mainWindowState.height);
         mainWindowState.manage(mainWindow);
+    });
+
+    ipcMain.on('open-image', async(event, dataset, data) => {
+        var filename = `${imagesCacheDir}/img_${dataset.id}`;
+
+        fs.writeFileSync(filename, data.replace(/^data:image\/png;base64,/, ''), 'base64');
+        shell.openItem(filename);
+    });
+
+    ipcMain.on('open-map', (event, map) => {
+        event.preventDefault();
+        shell.openExternal(map);
     });
 };
 

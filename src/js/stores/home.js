@@ -41,6 +41,19 @@ async function resolveMessage(message) {
     var auth = await storage.get('auth');
 
     switch (message.MsgType) {
+        case 1:
+            // Text message and Location
+            if (message.Url && message.OriContent) {
+                // This message is a location
+                let parts = message.Content.split(':<br/>');
+                let location = parseXml(message.OriContent);
+
+                location.image = `${axios.defaults.baseURL}${parts[1]}`.replace(/\/+/g, '/');
+                location.href = message.Url;
+
+                message.location = location;
+            };
+            break;
         case 3:
             // Image
             let images = parseXml(message.Content);

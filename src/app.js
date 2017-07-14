@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'mobx-react';
 import { Router, hashHistory } from 'react-router';
@@ -15,15 +15,24 @@ ElectronCookies.enable({
     origin: 'https://wx.qq.com',
 });
 
-stores.session.hasLogin();
-stores.settings.init();
+class App extends Component {
+    async componentWillMount() {
+        await stores.session.hasLogin();
+        await stores.settings.init();
+    }
+
+    render() {
+        return (
+            <Provider {...stores}>
+                <Router history={hashHistory}>
+                    {getRoutes()}
+                </Router>
+            </Provider>
+        );
+    }
+}
 
 render(
-    <Provider {...stores}>
-        <Router history={hashHistory}>
-            {getRoutes()}
-        </Router>
-    </Provider>,
-
+    <App />,
     document.getElementById('root')
 );

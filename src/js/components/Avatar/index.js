@@ -2,6 +2,7 @@
 import React, { Component, PropTypes } from 'react';
 import clazz from 'classname';
 
+import blacklist from 'utils/blacklist';
 import './style.global.css';
 
 export default class Avatar extends Component {
@@ -23,8 +24,7 @@ export default class Avatar extends Component {
 
         return (
             <img
-                src={this.props.src}
-                style={this.props.style}
+                {...blacklist(this.props, 'fallback', 'className', 'onLoad', 'onError')}
                 className={clazz('Avatar', 'fade fadein', this.props.className)}
                 onLoad={e => e.target.classList.remove('fadein')}
                 onError={e => this.handleError(e)} />

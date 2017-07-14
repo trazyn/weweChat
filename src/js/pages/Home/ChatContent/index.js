@@ -1,8 +1,10 @@
 
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import { ipcRenderer } from 'electron';
 import clazz from 'classname';
 import moment from 'moment';
+import axios from 'axios';
 
 import classes from './style.css';
 import Avatar from 'components/Avatar';
@@ -12,7 +14,7 @@ import Avatar from 'components/Avatar';
     messages: stores.home.messages,
     loading: stores.session.loading,
     showUserinfo: () => {
-        stores.userinfo.toggle(stores.home.user);
+        stores.userinfo.toggle(true, stores.home.user);
     },
 }))
 @observer
@@ -20,12 +22,18 @@ export default class ChatContent extends Component {
     getMessageContent(message) {
         switch (message.MsgType) {
             case 1:
+                if (message.location) {
+                    return `
+                        <img class="open-map" data-map="${message.location.href}" src="${message.location.image}" />
+                        <label>${message.location.label}</label>
+                    `;
+                }
                 // Text message
                 return message.Content;
             case 3:
                 // Image
                 let images = message.images;
-                return `<img src="${images.src}" />`;
+                return `<img class="open-image" data-id="${message.MsgId}" src="${images.src}" />`;
             case 34:
                 /* eslint-disable */
                 // Voice
@@ -40,11 +48,15 @@ export default class ChatContent extends Component {
                 }
 
                 return `
-                    <div style="width: ${width}px" data-voice="${voice.src}">
+                    <div class="play-voice" style="width: ${width}px" data-voice="${voice.src}">
                         <i class="icon-ion-android-volume-up"></i>
                         <span>
                             ${seconds || '60+'}"
                         </span>
+
+                        <audio controls="controls">
+                            <source src="${voice.src}" />
+                        </audio>
                     </div>
                 `;
             case 47:
@@ -68,7 +80,8 @@ export default class ChatContent extends Component {
             return (
                 <div className={clazz(classes.message, {
                     [classes.isme]: e.isme,
-                    [classes.isText]: e.MsgType === 1,
+                    [classes.isText]: e.MsgType === 1 && !e.location,
+                    [classes.isLocation]: e.MsgType === 1 && e.location,
                     [classes.isImage]: e.MsgType === 3,
                     [classes.isEmoji]: e.MsgType === 47,
                     [classes.isVoice]: e.MsgType === 34,
@@ -87,6 +100,37 @@ export default class ChatContent extends Component {
         });
     }
 
+    async handleClick(e) {
+        var target = e.target;
+
+        if (target.tagName === 'IMG'
+            && target.classList.contains('open-image')) {
+            // Get image from cache and convert to base64
+            var response = await axios.get(target.src, { responseType: 'arraybuffer' });
+            var base64 = new window.Buffer(response.data, 'binary').toString('base64');
+
+            ipcRenderer.send('open-image', target.dataset, base64);
+
+            return;
+        }
+
+        if (target.tagName === 'DIV'
+            && target.classList.contains('play-voice')) {
+            var audio = target.querySelector('audio');
+
+            audio.onplay = () => target.classList.add(classes.playing);
+            audio.onended = () => target.classList.remove(classes.playing);
+            audio.play();
+
+            return;
+        }
+
+        if (target.tagName === 'IMG'
+            && target.classList.contains('open-map')) {
+            ipcRenderer.send('open-map', target.dataset.map);
+        }
+    }
+
     componentDidUpdate() {
         var viewport = this.refs.viewport;
 
@@ -100,34 +144,34 @@ export default class ChatContent extends Component {
 
         if (loading) return false;
 
-        if (!user) {
-            return (
-                <div className={clazz(classes.container, classes.notfound)}>
-                    <div className={classes.inner}>
-                        <img src="assets/images/noselected.png" />
-                        <h1>No Chat selected.</h1>
-                    </div>
-                </div>
-            );
-        }
-
         return (
-            <div className={classes.container}>
-                <header>
-                    <div className={classes.info}>
-                        <p dangerouslySetInnerHTML={{__html: user.RemarkName || user.NickName}} />
+            <div className={clazz(classes.container, { [classes.notfound]: !user })} onClick={e => this.handleClick(e)}>
+                {
+                    user ? (
+                        <div>
+                            <header>
+                                <div className={classes.info}>
+                                    <p dangerouslySetInnerHTML={{__html: user.RemarkName || user.NickName}} />
 
-                        <span dangerouslySetInnerHTML={{__html: user.Signature || 'No Signature'}} />
-                    </div>
+                                    <span dangerouslySetInnerHTML={{__html: user.Signature || 'No Signature'}} />
+                                </div>
 
-                    <i className="icon-ion-android-more-vertical" />
-                </header>
+                                <i className="icon-ion-android-more-vertical" />
+                            </header>
 
-                <div className={classes.messages} ref="viewport">
-                    {
-                        this.renderMessages(messages.get(user.UserName), user)
-                    }
-                </div>
+                            <div className={classes.messages} ref="viewport">
+                                {
+                                    this.renderMessages(messages.get(user.UserName), user)
+                                }
+                            </div>
+                        </div>
+                    ) : (
+                        <div className={classes.inner}>
+                            <img src="assets/images/noselected.png" />
+                            <h1>No Chat selected.</h1>
+                        </div>
+                    )
+                }
             </div>
         );
     }
