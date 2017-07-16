@@ -22,8 +22,8 @@
         transform: translateY(-50%);
     }
 
-    & i:hover {
-        color: #34b7f1 !important;
+    & header i:hover {
+        color: #34b7f1;
     }
 
     & p {
@@ -146,6 +146,66 @@
 
     & :global(.open-image) {
         box-shadow: 0 6px 28px 0 rgba(230, 230, 230, 100);
+    }
+}
+
+.message.isContact {
+    & > div {
+        position: relative;
+        padding: 16px 0 0 47px;
+    }
+
+    & .contact {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 14px;
+        padding-right: 32px;
+        background: #fff;
+        box-shadow: 0 6px 28px 0 rgba(230, 230, 230, 100);
+    }
+
+    & .contact img {
+        height: 48px;
+        width: 48px;
+        margin-right: 24px;
+        pointer-events: none;
+    }
+
+    & .contact > div {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        pointer-events: none;
+    }
+
+    & .contact p {
+        margin: 0;
+    }
+
+    & .contact p:last-child {
+        font-size: 12px;
+        color: rgba(0,0,0,.5);
+    }
+
+    & i {
+        position: absolute;
+        top: 50%;
+        right: -16px;
+        height: 32px;
+        width: 32px;
+        border-radius: 100%;
+        line-height: 32px;
+        text-align: center;
+        font-size: 14px;
+        background: #e1306c;
+        box-shadow: 0 0 24px 0 rgba(119, 119, 119, .5);
+        cursor: pointer;
+        color: #fff;
+        transform: translateY(-50%);
+    }
+
+    & :global(.is-friend) {
+        cursor: pointer;
     }
 }
 

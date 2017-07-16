@@ -1,10 +1,13 @@
 
 import { observable, action } from 'mobx';
 import axios from 'axios';
+import { ipcRenderer } from 'electron';
 
 import storage from 'utils/storage';
+import getMessageContent from 'utils/getMessageContent';
 import contacts from './contacts';
 import session from './session';
+import settings from './settings';
 
 function unique(arr) {
     var mappings = {};
@@ -76,7 +79,18 @@ async function resolveMessage(message) {
             message.emoji = emoji;
             break;
 
-            // TODO: Voice, Location etc
+        case 42:
+            // Contact
+            let contact = message.RecommendInfo;
+
+            contact.image = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgeticon?seq=0&username=${contact.UserName}&skey=${auth.skey}&msgid=${message.MsgId}`;
+            contact.name = contact.NickName;
+            contact.address = `${contact.Province || 'UNKNOW'}, ${contact.City || 'UNKNOW'}`;
+            contact.isFriend = !!contacts.memberList.find(e => e.UserName === contact.UserName);
+            message.contact = contact;
+            break;
+
+            // TODO: Vodeo, Red Pack etc
     }
 
     return message;
@@ -131,6 +145,7 @@ class Home {
     @action async addMessage(message) {
         var from = message.FromUserName;
         var list = self.messages.get(from);
+        var user = self.users.find(e => e.UserName === from);
 
         // Check new message is already in the chat set
         if (list) {
@@ -150,11 +165,20 @@ class Home {
 
             // Drop the duplicate message
             if (!list.data.find(e => e.NewMsgId === message.NewMsgId)) {
+                if (settings.showNotification) {
+                    // Get the user avatar and use it as notifier icon
+                    let response = await axios.get(user.HeadImgUrl, { responseType: 'arraybuffer' });
+                    let base64 = new window.Buffer(response.data, 'binary').toString('base64');
+
+                    ipcRenderer.send('receive-message', {
+                        icon: base64,
+                        title: user.RemarkName || user.NickName,
+                        message: getMessageContent(message),
+                    });
+                }
                 list.data.push(await resolveMessage(message));
             }
         } else {
-            let user = self.users[from];
-
             if (user) {
                 self.chats.shift(user);
                 list = {

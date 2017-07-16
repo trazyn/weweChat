@@ -9,6 +9,10 @@ import Avatar from 'components/Avatar';
 import { Modal, ModalBody } from 'components/Modal';
 
 @inject(stores => ({
+    chatTo: (userid) => {
+        var user = stores.contacts.memberList.find(e => e.UserName === userid);
+        stores.home.chatTo(user);
+    },
     pallet: stores.userinfo.pallet,
     show: stores.userinfo.show,
     user: stores.userinfo.user,
@@ -57,8 +61,13 @@ export default class UserInfo extends Component {
         }
     }
 
+    handleChat(userid) {
+        this.props.toggle(false);
+        this.props.chatTo(userid);
+    }
+
     render() {
-        var { HeadImgUrl, NickName, RemarkName, Signature, City, Province } = this.props.user;
+        var { HeadImgUrl, UserName, NickName, RemarkName, Signature, City, Province } = this.props.user;
         var pallet = this.props.pallet;
         var background = pallet[0];
         var gradient = 'none';
@@ -122,10 +131,13 @@ export default class UserInfo extends Component {
                             {City || 'UNKNOW'}, {Province || 'UNKNOW'}
                         </div>
 
-                        <div className={classes.sendMessage} style={{
-                            color: buttonColor,
-                            opacity: .6,
-                        }}>
+                        <div
+                            className={classes.sendMessage}
+                            style={{
+                                color: buttonColor,
+                                opacity: .6,
+                            }}
+                            onClick={() => this.handleChat(UserName)}>
                             Send Message
                         </div>
                     </div>

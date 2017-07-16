@@ -16,6 +16,10 @@ import Avatar from 'components/Avatar';
     showUserinfo: () => {
         stores.userinfo.toggle(true, stores.home.user);
     },
+    showContact: (userid) => {
+        var user = stores.contacts.memberList.find(e => e.UserName === userid);
+        stores.userinfo.toggle(true, user);
+    }
 }))
 @observer
 export default class ChatContent extends Component {
@@ -72,6 +76,28 @@ export default class ChatContent extends Component {
                         <span>Send an emoji, view it on mobile</span>
                     </div>
                 `;
+
+            case 42:
+                // Contact Card
+                let contact = message.contact;
+                let html = `
+                    <div class="${clazz(classes.contact, { 'is-friend': contact.isFriend })}" data-userid="${contact.UserName}">
+                        <img src="${contact.image}" />
+
+                        <div>
+                            <p>${contact.name}</p>
+                            <p>${contact.address}</p>
+                        </div>
+                    </div>
+                `;
+
+                if (!contact.isFriend) {
+                    html += `
+                        <i class="icon-ion-android-add" />
+                    `;
+                }
+
+                return html;
         }
     }
 
@@ -85,6 +111,7 @@ export default class ChatContent extends Component {
                     [classes.isImage]: e.MsgType === 3,
                     [classes.isEmoji]: e.MsgType === 47,
                     [classes.isVoice]: e.MsgType === 34,
+                    [classes.isContact]: e.MsgType === 42,
                 })} key={index}>
                     <div>
                         <Avatar src={e.isme ? e.HeadImgUrl : from.HeadImgUrl} className={classes.avatar} onClick={e => this.props.showUserinfo()} />
@@ -128,6 +155,11 @@ export default class ChatContent extends Component {
         if (target.tagName === 'IMG'
             && target.classList.contains('open-map')) {
             ipcRenderer.send('open-map', target.dataset.map);
+        }
+
+        if (target.tagName === 'DIV'
+            && target.classList.contains('is-friend')) {
+            this.props.showContact(target.dataset.userid);
         }
     }
 

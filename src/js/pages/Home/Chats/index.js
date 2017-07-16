@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import classes from './style.css';
 import Avatar from 'components/Avatar';
+import getMessageContent from 'utils/getMessageContent';
 
 moment.updateLocale('en', {
     relativeTime: {
@@ -44,27 +45,6 @@ export default class Chats extends Component {
         return res;
     }
 
-    getMessageContent(message) {
-        switch (message.MsgType) {
-            case 1:
-                if (message.location) return '[Location]';
-                // Text message
-                return message.Content;
-
-            case 3:
-                // Image
-                return '[Image]';
-
-            case 34:
-                // Image
-                return '[Voice]';
-
-            case 47:
-                // Emoji
-                return '[Emoji]';
-        }
-    }
-
     hasUnreadMessage(userid) {
         var list = this.props.messages.get(userid);
 
@@ -95,7 +75,7 @@ export default class Chats extends Component {
                                         <div className={classes.info}>
                                             <p className={classes.username} dangerouslySetInnerHTML={{__html: e.RemarkName || e.NickName}} />
 
-                                            <span className={classes.message} dangerouslySetInnerHTML={{__html: this.getMessageContent(message) || 'No Message'}} />
+                                            <span className={classes.message} dangerouslySetInnerHTML={{__html: getMessageContent(message) || 'No Message'}} />
                                         </div>
                                     </div>
 

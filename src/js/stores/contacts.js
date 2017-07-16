@@ -59,7 +59,7 @@ class Contacts {
         // Remove all public account
         self.memberList = response.data.MemberList.filter(e => e.VerifyFlag !== 24 && e.VerifyFlag !== 8 && e.UserName.startsWith('@'));
         self.memberList.map(e => {
-            e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl}`.replace(/\/+/g, '/');
+            e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
         });
         self.loading = false;
         self.filtered.result = self.group(self.memberList);

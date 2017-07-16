@@ -2,6 +2,7 @@
 import fs from 'fs';
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import windowStateKeeper from 'electron-window-state';
+import notifier from 'node-notifier';
 
 let mainWindow;
 let userData = app.getPath('userData');
@@ -55,6 +56,20 @@ const createMainWindow = () => {
         mainWindow.setResizable(true);
         mainWindow.setSize(mainWindowState.width, mainWindowState.height);
         mainWindowState.manage(mainWindow);
+    });
+
+    ipcMain.on('receive-message', (event, data) => {
+        var { icon, title, message } = data;
+        var filename = `${imagesCacheDir}/notifier-icon.png`;
+
+        fs.writeFileSync(filename, icon.replace(/^data:image\/png;base64,/, ''), 'base64');
+
+        notifier.notify({
+            title,
+            sound: 'Blow',
+            contentImage: filename,
+            message,
+        });
     });
 
     ipcMain.on('open-image', async(event, dataset, data) => {
