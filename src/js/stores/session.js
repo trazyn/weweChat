@@ -198,7 +198,14 @@ class Session {
                     }
 
                     // Do next sync keep your wechat alive
-                    loop();
+                    return loop();
+                }
+
+                if (+window.synccheck.selector === 6) {
+                    // Your got a new friend, refresh contacts list
+                    await home.getUsers();
+                    await self.initUser();
+                    self.keepalive();
                 }
             } else {
                 return false;

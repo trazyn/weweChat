@@ -8,6 +8,7 @@ import axios from 'axios';
 
 import classes from './style.css';
 import Avatar from 'components/Avatar';
+import { Modal, ModalBody } from 'components/Modal';
 
 @inject(stores => ({
     user: stores.home.user,
@@ -19,10 +20,17 @@ import Avatar from 'components/Avatar';
     showContact: (userid) => {
         var user = stores.contacts.memberList.find(e => e.UserName === userid);
         stores.userinfo.toggle(true, user);
-    }
+    },
+    addFriend: stores.home.addFriend,
+    me: stores.session.user,
 }))
 @observer
 export default class ChatContent extends Component {
+    state = {
+        showFriendRequest: false,
+        userid: '',
+    };
+
     getMessageContent(message) {
         switch (message.MsgType) {
             case 1:
@@ -93,12 +101,17 @@ export default class ChatContent extends Component {
 
                 if (!contact.isFriend) {
                     html += `
-                        <i class="icon-ion-android-add" />
+                        <i class="icon-ion-android-add" data-userid="${contact.UserName}" />
                     `;
                 }
 
                 return html;
         }
+    }
+
+    addFriend() {
+        this.props.addFriend(this.state.userid, this.refs.input.value);
+        this.toggleFriendRequest(false);
     }
 
     renderMessages(list, from) {
@@ -124,6 +137,13 @@ export default class ChatContent extends Component {
                     </div>
                 </div>
             );
+        });
+    }
+
+    toggleFriendRequest(show = !this.state.showFriendRequest, userid) {
+        this.setState({
+            showFriendRequest: show,
+            userid,
         });
     }
 
@@ -161,6 +181,11 @@ export default class ChatContent extends Component {
             && target.classList.contains('is-friend')) {
             this.props.showContact(target.dataset.userid);
         }
+
+        if (target.tagName === 'I'
+            && target.classList.contains('icon-ion-android-add')) {
+            this.toggleFriendRequest(true, target.dataset.userid);
+        }
     }
 
     componentDidUpdate() {
@@ -172,7 +197,7 @@ export default class ChatContent extends Component {
     }
 
     render() {
-        var { loading, user, messages } = this.props;
+        var { loading, me, user, messages } = this.props;
 
         if (loading) return false;
 
@@ -204,6 +229,20 @@ export default class ChatContent extends Component {
                         </div>
                     )
                 }
+
+                <Modal show={this.state.showFriendRequest} fullscreen={true}>
+                    <ModalBody className={classes.friendRequest}>
+                        Send friend request first
+
+                        <input type="text" defaultValue={`Hallo, im ${me && me.User.NickName}`} autoFocus={true} ref="input" />
+
+                        <div>
+                            <button onClick={e => this.addFriend()}>Send</button>
+
+                            <button onClick={e => this.toggleFriendRequest(false)}>Cancel</button>
+                        </div>
+                    </ModalBody>
+                </Modal>
             </div>
         );
     }

@@ -253,6 +253,29 @@ class Home {
 
         self.messages.set(userid, list);
     }
+
+    @action async addFriend(userid, message) {
+        var auth = await storage.get('auth');
+        var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxverifyuser?r=${+new Date()}`, {
+            BaseRequest: {
+                Sid: auth.wxsid,
+                Uin: auth.wxuin,
+                Skey: auth.skey,
+            },
+            Opcode: 2,
+            SceneList: [33],
+            SceneListCount: 1,
+            VerifyContent: message,
+            VerifyUserList: [{
+                Value: userid,
+                VerifyUserTicket: '',
+            }],
+            VerifyUserListSize: 1,
+            skey: auth.skey,
+        });
+
+        return +response.data.BaseResponse.Ret === 0;
+    }
 }
 
 const self = new Home();
