@@ -118,7 +118,7 @@ class Session {
 
         self.user = response.data;
         self.user.ContactList.map(e => {
-            e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl}`.replace(/\/+/g, '/');
+            e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
         });
         await home.loadChats(self.user.ChatSet);
         self.loading = false;
@@ -141,6 +141,12 @@ class Session {
         // Refresh the sync keys
         self.user.SyncKey = response.data.SyncKey;
         self.genSyncKey(response.data.SyncKey.List);
+
+        // Get the new friend
+        response.data.ModContactList.map(e => {
+            e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
+            home.users.push(e);
+        });
 
         response.data.AddMsgList.map(e => {
             if (e.FromUserName === self.user.User.UserName) {
@@ -185,27 +191,22 @@ class Session {
                     // Normal synccheck
                     0,
                     // Has new message need sync
-                    2
+                    2,
+                    // You got a new friend
+                    6
                 ].includes(+window.synccheck.selector)) {
                     var selector = +window.synccheck.selector;
 
-                    switch (selector) {
-                        case 2:
-                            await self.getNewMessage();
-                            break;
-
-                        // Selector is 4 or 6 ?
+                    if ([2, 6].includes(selector)) {
+                        await self.getNewMessage();
                     }
 
                     // Do next sync keep your wechat alive
                     return loop();
                 }
 
-                if (+window.synccheck.selector === 6) {
-                    // Your got a new friend, refresh contacts list
-                    await home.getUsers();
-                    await self.initUser();
-                    self.keepalive();
+                if (+window.synccheck.selector === 4) {
+                    // Unknow
                 }
             } else {
                 return false;

@@ -146,21 +146,22 @@ class Home {
         var from = message.FromUserName;
         var list = self.messages.get(from);
         var user = self.users.find(e => e.UserName === from);
+        var chats = [];
 
         // Check new message is already in the chat set
         if (list) {
             // Swap the chatset order
             let index = self.chats.findIndex(e => e.UserName === from);
-            let chats = [];
 
-            if (index > 0) {
+            if (index !== -1) {
                 chats = [
                     ...self.chats.slice(index, index + 1),
                     ...self.chats.slice(0, index),
                     ...self.chats.slice(index + 1, self.chats.length)
                 ];
-
-                self.chats.replace(chats);
+            } else {
+                // User not in chatset
+                chats = [user, ...self.chats];
             }
 
             // Drop the duplicate message
@@ -180,7 +181,8 @@ class Home {
             }
         } else {
             if (user) {
-                self.chats.shift(user);
+                // New friend has accepted
+                chats = [user, ...self.chats];
                 list = {
                     data: [message],
                     unread: 0,
@@ -193,6 +195,7 @@ class Home {
             list.unread = list.data.length;
         }
 
+        self.chats.replace(chats);
         self.messages.set(from, list);
     }
 

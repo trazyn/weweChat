@@ -1,14 +1,14 @@
 
 * {
     user-select: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
 
 html,
 body {
     margin: 0;
     padding: 0;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
     background: none;
     overflow: hidden;
 }
