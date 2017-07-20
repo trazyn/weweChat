@@ -30,7 +30,8 @@
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.0",
     "react-dom": "^15.6.1",
-    "react-router": "2.8.1"
+    "react-router": "2.8.1",
+    "stylelint-config-standard": "^17.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",

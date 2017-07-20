@@ -1,0 +1,21 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "block-no-empty": null,
+    "color-no-invalid-hex": true,
+    "declaration-colon-space-after": "always",
+    "indentation": ["tab", {
+      "except": ["value"]
+    }],
+    "max-empty-lines": 2,
+    "rule-empty-line-before": [ "always", {
+      "except": ["first-nested"],
+      "ignore": ["after-comment"]
+    } ],
+    "selector-pseudo-class-no-unknown": [ true, {
+      ignorePseudoClasses: ["global"],
+    } ],
+    "number-leading-zero": "never",
+    "unit-whitelist": ["em", "rem", "%", "s", "vh", "vw", "px", "deg"]
+  }
+}

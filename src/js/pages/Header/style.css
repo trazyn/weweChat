@@ -1,17 +1,17 @@
 
 .container h1 {
-    height: 40px;
-    line-height: 40px;
-    margin: 0;
-    padding: 0;
-    font-size: 14px;
-    font-family: "system-ui";
-    font-weight: normal;
-    width: 100%;
-    color: #777;
-    text-align: center;
-    background: rgba(255,255,255,1);
-    -webkit-user-select: none;
-    -webkit-app-region: drag;
-    cursor: default;
+	height: 40px;
+	line-height: 40px;
+	margin: 0;
+	padding: 0;
+	font-size: 14px;
+	font-family: "system-ui";
+	font-weight: normal;
+	width: 100%;
+	color: #777;
+	text-align: center;
+	background: rgba(255, 255, 255, 1);
+	-webkit-user-select: none;
+	-webkit-app-region: drag;
+	cursor: default;
 }

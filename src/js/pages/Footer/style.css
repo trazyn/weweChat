@@ -1,192 +1,192 @@
 
 :root {
-    --icon-color: #777;
-    --active: #34b7f1;
-    --shadow-color: #eaedea;
+	--icon-color: #777;
+	--active: #34b7f1;
+	--shadow-color: #eaedea;
 }
 
 .footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 60px;
-    background: #fff;
-    box-shadow: inset 0 1px 0 0 var(--shadow-color);
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+	background: #fff;
+	box-shadow: inset 0 1px 0 0 var(--shadow-color);
 
-    & nav {
-        display: flex;
-        width: calc(311px - 34px);
-        height: 60px;
-        padding: 17px 17px 0;
-        justify-content: space-between;
-        box-shadow: inset -1px 0 0 0 var(--shadow-color);
-    }
+	& nav {
+		display: flex;
+		width: calc(311px - 34px);
+		height: 60px;
+		padding: 17px 17px 0;
+		justify-content: space-between;
+		box-shadow: inset -1px 0 0 0 var(--shadow-color);
+	}
 
-    & nav span {
-        display: block;
-        width: 24px;
-        height: 27px;
-        text-align: center;
-        cursor: pointer;
-    }
+	& nav span {
+		display: block;
+		width: 24px;
+		height: 27px;
+		text-align: center;
+		cursor: pointer;
+	}
 
-    & nav span:hover i {
-        color: var(--active) !important;
-    }
+	& nav span:hover i {
+		color: var(--active) !important;
+	}
 
-    & i {
-        color: var(--icon-color);
-        font-size: 24px;
-        cursor: pointer;
-    }
+	& i {
+		color: var(--icon-color);
+		font-size: 24px;
+		cursor: pointer;
+	}
 }
 
 .footer .active {
-    position: relative;
-    &:after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        height: 1px;
-        width: 100%;
-        background: var(--active);
-    }
+	position: relative;
 
-    & i {
-        color: var(--active) !important;
-    }
+	&::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		height: 1px;
+		width: 100%;
+		background: var(--active);
+	}
+
+	& i {
+		color: var(--active) !important;
+	}
 }
 
 .right {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    width: calc(100% - 311px);
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	width: calc(100% - 311px);
 }
 
 .home,
 .contacts {
-    display: flex;
-    height: 60px;
-    align-items: center;
-    justify-content: space-between;
+	display: flex;
+	height: 60px;
+	align-items: center;
+	justify-content: space-between;
 
-    & input {
-        height: 60px;
-        width: calc(100% - 200px);
-        margin-left: 32px;
-        line-height: 60px;
-        border: 0;
-        background: 0;
-        font-family: 'Georgia';
-        color: #979797;
-        font-size: 14px;
-        outline: 0;
-    }
+	& input {
+		height: 60px;
+		width: calc(100% - 200px);
+		margin-left: 32px;
+		line-height: 60px;
+		border: 0;
+		background: 0;
+		font-family: 'Georgia';
+		color: #979797;
+		font-size: 14px;
+		outline: 0;
+	}
 
-    & i {
-        color: #000 !important;
-    }
+	& i {
+		color: #000 !important;
+	}
 
-    & label {
-        display: flex;
-        height: 23px;
-        line-height: 23px;
-    }
+	& label {
+		display: flex;
+		height: 23px;
+		line-height: 23px;
+	}
 }
 
 .home {
+	& .action {
+		width: 105px;
+		margin-right: 17px;
+		display: flex;
+		justify-content: space-between;
+	}
 
-    & .action {
-        width: 105px;
-        margin-right: 17px;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    & i:last-child {
-        color: #ff1405 !important;
-    }
+	& i:last-child {
+		color: #ff1405 !important;
+	}
 }
 
 .contacts {
-    & .action {
-        margin-right: 17px;
-        display: flex;
-        justify-content: space-between;
-    }
+	& .action {
+		margin-right: 17px;
+		display: flex;
+		justify-content: space-between;
+	}
 }
 
 .settings {
-    display: flex;
-    height: 60px;
-    text-align: right;
-    justify-content: flex-end;
-    align-items: center;
+	display: flex;
+	height: 60px;
+	text-align: right;
+	justify-content: flex-end;
+	align-items: center;
 
-    & button {
-        position: relative;
-        margin-right: 17px;
-        width: 150px;
-        color: rgba(0,0,0,.8);
-        font-size: 14px;
-        padding: 9px 8px;
-        font-family: 'Roboto';
-        border: 0;
-        border-radius: 2px;
-        background: 0;
-        outline: 0;
-        text-transform: uppercase;
-        text-align: left;
-        cursor: pointer;
-        transform: translateY(4px);
-        transition: .2s;
-    }
+	& button {
+		position: relative;
+		margin-right: 17px;
+		width: 150px;
+		color: rgba(0, 0, 0, .8);
+		font-size: 14px;
+		padding: 9px 8px;
+		font-family: 'Roboto';
+		border: 0;
+		border-radius: 2px;
+		background: 0;
+		outline: 0;
+		text-transform: uppercase;
+		text-align: left;
+		cursor: pointer;
+		transform: translateY(4px);
+		transition: .2s;
+	}
 
-    & button:hover {
-        background: color(var(--shadow-color) alpha(-50%));
-    }
+	& button:hover {
+		background: color(var(--shadow-color) alpha(-50%));
+	}
 
-    & i {
-        position: absolute;
-        right: 14px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 20px !important;
-    }
+	& i {
+		position: absolute;
+		right: 14px;
+		top: 50%;
+		transform: translateY(-50%);
+		font-size: 20px !important;
+	}
 }
 
 .button {
-    position: relative;
-    margin-right: 17px;
-    width: 166px;
-    color: rgba(0,0,0,.8);
-    font-size: 14px;
-    padding: 9px 8px;
-    font-family: 'Roboto';
-    border: 0;
-    border-radius: 2px;
-    background: 0;
-    outline: 0;
-    text-transform: uppercase;
-    text-align: left;
-    cursor: pointer;
-    text-decoration: none;
-    transform: translateY(4px);
-    transition: .2s;
+	position: relative;
+	margin-right: 17px;
+	width: 166px;
+	color: rgba(0, 0, 0, .8);
+	font-size: 14px;
+	padding: 9px 8px;
+	font-family: 'Roboto';
+	border: 0;
+	border-radius: 2px;
+	background: 0;
+	outline: 0;
+	text-transform: uppercase;
+	text-align: left;
+	cursor: pointer;
+	text-decoration: none;
+	transform: translateY(4px);
+	transition: .2s;
 
-    &:hover {
-        background: color(var(--shadow-color) alpha(-50%));
-    }
+	&:hover {
+		background: color(var(--shadow-color) alpha(-50%));
+	}
 }
 
 .options {
-    display: inline-block;
-    margin-right: 12px;
-    font-family: 'Roboto';
-    font-size: 14px;
-    color: rgba(0,0,0,.8);
-    text-transform: uppercase;
+	display: inline-block;
+	margin-right: 12px;
+	font-family: 'Roboto';
+	font-size: 14px;
+	color: rgba(0, 0, 0, .8);
+	text-transform: uppercase;
 }
