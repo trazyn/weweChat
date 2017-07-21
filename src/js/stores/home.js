@@ -4,44 +4,16 @@ import axios from 'axios';
 import { ipcRenderer } from 'electron';
 
 import storage from 'utils/storage';
+import helper from 'utils/helper';
 import getMessageContent from 'utils/getMessageContent';
 import contacts from './contacts';
 import session from './session';
 import settings from './settings';
 
-function unique(arr) {
-    var mappings = {};
-    var res = [];
-
-    arr.map(e => {
-        mappings[e] = true;
-    });
-
-    for (var key in mappings) {
-        if (mappings[key] === true) {
-            res.push(key);
-        }
-    }
-
-    return res;
-}
-
-function parseXml(text) {
-    var string = text.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-    var matchs = string.match(/(\w+)="([^\s]+)"/g);
-    let res = {};
-
-    matchs.map(e => {
-        var kv = e.replace(/"/g, '').split('=');
-
-        res[kv[0]] = kv[1];
-    });
-
-    return res;
-}
-
 async function resolveMessage(message) {
     var auth = await storage.get('auth');
+    var isChatRoom = helper.isChatRoom(message.FromUserName);
+    var content = isChatRoom ? message.Content.split(':<br/>')[1] : message.Content;
 
     switch (message.MsgType) {
         case 1:
@@ -49,9 +21,9 @@ async function resolveMessage(message) {
             if (message.Url && message.OriContent) {
                 // This message is a location
                 let parts = message.Content.split(':<br/>');
-                let location = parseXml(message.OriContent);
+                let location = helper.parseXml(message.OriContent);
 
-                location.image = `${axios.defaults.baseURL}${parts[1]}`.replace(/\/+/g, '/');
+                location.image = `${axios.defaults.baseURL}${parts[isChatRoom ? 2 : 1]}`.replace(/\/+/g, '/');
                 location.href = message.Url;
 
                 message.location = location;
@@ -59,23 +31,25 @@ async function resolveMessage(message) {
             break;
         case 3:
             // Image
-            let images = parseXml(message.Content);
+            let images = helper.parseXml(content);
             images.src = `${axios.defaults.baseURL}/cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${message.MsgId}&skey=${auth.skey}`.replace(/\/+/g, '/');
             message.images = images;
             break;
 
         case 34:
             // Voice
-            let voice = parseXml(message.Content);
+            let voice = helper.parseXml(content);
             voice.src = `${axios.defaults.baseURL}/cgi-bin/mmwebwx-bin/webwxgetvoice?&msgid=${message.MsgId}&skey=${auth.skey}`.replace(/\/+/g, '/');
             message.voice = voice;
             break;
 
         case 47:
             // External emoji
-            if (!message.Content) break;
+            if (!content) break;
 
-            let emoji = parseXml(message.Content);
+            let emoji = helper.parseXml(content);
+
+            emoji.src = emoji.cdnurl || `${axios.defaults.baseURL}/cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${message.MsgId}&skey=${auth.skey}`.replace(/\/+/g, '/');
             message.emoji = emoji;
             break;
 
@@ -117,7 +91,7 @@ class Home {
         var list = await self.getUsers();
         var res = [];
 
-        unique(chatSet.split(',')).map(e => {
+        helper.unique(chatSet.split(',')).map(e => {
             var user = list.find(user => user.UserName === e);
 
             if (user) {
@@ -230,7 +204,7 @@ class Home {
                 Content: content,
                 MsgType: 1,
                 CreateTime: +new Date() / 1000,
-                HeadImgUrl: `${axios.defaults.baseURL}${session.user.User.HeadImgUrl}`.replace(/\/+/g, '/')
+                HeadImgUrl: session.user.User.HeadImgUrl,
             });
 
             self.markedRead(to);

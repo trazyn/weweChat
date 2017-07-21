@@ -1,6 +1,5 @@
 
 /* eslint-disable no-eval */
-
 import axios from 'axios';
 import { observable, action } from 'mobx';
 
@@ -120,6 +119,7 @@ class Session {
         self.user.ContactList.map(e => {
             e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
         });
+        self.user.User.HeadImgUrl = `${axios.defaults.baseURL}${self.user.User.HeadImgUrl.substr(1)}`;
         await home.loadChats(self.user.ChatSet);
         self.loading = false;
 

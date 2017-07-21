@@ -1,35 +1,35 @@
 
 .container {
-	position: fixed;
-	display: flex;
-	width: 100vw;
-	height: 100vh;
-	justify-content: center;
-	align-items: center;
-	background: #fff;
+    position: fixed;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
 }
 
 .inner {
-	display: inline-block;
-	width: 300px;
-	margin: 0 auto;
-	margin-top: 44px;
-	text-align: center;
+    display: inline-block;
+    width: 300px;
+    margin: 0 auto;
+    margin-top: 44px;
+    text-align: center;
 
-	& img {
-		display: block;
-		width: 300px;
-		height: 300px;
-	}
+    & img {
+        display: block;
+        width: 300px;
+        height: 300px;
+    }
 
-	& p {
-		color: #000;
-		font-family: "Helvetica-Light";
-	}
+    & p {
+        color: #000;
+        font-family: "Helvetica-Light";
+    }
 
-	& p:last-child {
-		margin-top: 20px;
-		color: #888;
-		font-size: 16px;
-	}
+    & p:last-child {
+        margin-top: 20px;
+        color: #888;
+        font-size: 16px;
+    }
 }

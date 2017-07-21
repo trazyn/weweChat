@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { inject } from 'mobx-react';
 
 import classes from './style.css';
+import Emoji from './Emoji';
 
 @inject(stores => ({
     sendMessage: stores.home.sendMessage
@@ -15,6 +16,20 @@ export default class Input extends Component {
         this.refs.input.value = '';
     }
 
+    state = {
+        showEmoji: false
+    };
+
+    toggleEmoji(show = !this.state.showEmoji) {
+        this.setState({
+            showEmoji: show,
+        });
+    }
+
+    writeEmoji(emoji) {
+        this.refs.input.value += `[${emoji}]`;
+    }
+
     render() {
         return (
             <div className={classes.home}>
@@ -23,7 +38,12 @@ export default class Input extends Component {
                 <div className={classes.action}>
                     <i className="icon-ion-ios-mic" />
                     <i className="icon-ion-android-attach" />
-                    <i className="icon-ion-ios-heart" />
+                    <i className="icon-ion-ios-heart" onClick={e => this.toggleEmoji(true)} />
+
+                    <Emoji
+                        output={emoji => this.writeEmoji(emoji)}
+                        close={e => setTimeout(() => this.toggleEmoji(false), 100)}
+                        show={this.state.showEmoji} />
                 </div>
             </div>
         );

@@ -4,7 +4,7 @@
     "block-no-empty": null,
     "color-no-invalid-hex": true,
     "declaration-colon-space-after": "always",
-    "indentation": ["tab", {
+    "indentation": [4, {
       "except": ["value"]
     }],
     "max-empty-lines": 2,

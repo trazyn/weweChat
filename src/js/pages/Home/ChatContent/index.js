@@ -8,18 +8,34 @@ import axios from 'axios';
 
 import classes from './style.css';
 import Avatar from 'components/Avatar';
+import helper from 'utils/helper';
 import { Modal, ModalBody } from 'components/Modal';
 
 @inject(stores => ({
     user: stores.home.user,
     messages: stores.home.messages,
     loading: stores.session.loading,
-    showUserinfo: () => {
-        stores.userinfo.toggle(true, stores.home.user);
+    showUserinfo: (isme) => {
+        stores.userinfo.toggle(true, isme ? stores.session.user.User : stores.home.user);
     },
     showContact: (userid) => {
         var user = stores.contacts.memberList.find(e => e.UserName === userid);
         stores.userinfo.toggle(true, user);
+    },
+    parseMessage: (message, from) => {
+        var isChatRoom = message.isme ? false : helper.isChatRoom(message.FromUserName);
+        var user = from;
+
+        message = Object.assign({}, message);
+
+        if (isChatRoom) {
+            let matchs = message.Content.split(':<br/>');
+
+            user = from.MemberList.find(e => e.UserName === matchs[0]);
+            message.Content = matchs[1];
+        }
+
+        return { message, user };
     },
     addFriend: stores.home.addFriend,
     me: stores.session.user,
@@ -76,7 +92,7 @@ export default class ChatContent extends Component {
                 let emoji = message.emoji;
 
                 if (emoji) {
-                    return `<img src="${emoji.cdnurl}" />`;
+                    return `<img src="${emoji.src}" />`;
                 }
                 return `
                     <div class="${classes.invalidEmoji}">
@@ -116,23 +132,25 @@ export default class ChatContent extends Component {
 
     renderMessages(list, from) {
         return list.data.map((e, index) => {
+            var { message, user } = this.props.parseMessage(e, from);
+
             return (
                 <div className={clazz(classes.message, {
-                    [classes.isme]: e.isme,
-                    [classes.isText]: e.MsgType === 1 && !e.location,
-                    [classes.isLocation]: e.MsgType === 1 && e.location,
-                    [classes.isImage]: e.MsgType === 3,
-                    [classes.isEmoji]: e.MsgType === 47,
-                    [classes.isVoice]: e.MsgType === 34,
-                    [classes.isContact]: e.MsgType === 42,
+                    [classes.isme]: message.isme,
+                    [classes.isText]: message.MsgType === 1 && !message.location,
+                    [classes.isLocation]: message.MsgType === 1 && message.location,
+                    [classes.isImage]: message.MsgType === 3,
+                    [classes.isEmoji]: message.MsgType === 47,
+                    [classes.isVoice]: message.MsgType === 34,
+                    [classes.isContact]: message.MsgType === 42,
                 })} key={index}>
                     <div>
-                        <Avatar src={e.isme ? e.HeadImgUrl : from.HeadImgUrl} className={classes.avatar} onClick={e => this.props.showUserinfo()} />
+                        <Avatar src={message.isme ? message.HeadImgUrl : user.HeadImgUrl} className={classes.avatar} onClick={ev => this.props.showUserinfo(message.isme)} />
 
                         <div className={classes.content}>
-                            <p dangerouslySetInnerHTML={{__html: this.getMessageContent(e)}} />
+                            <p dangerouslySetInnerHTML={{__html: this.getMessageContent(message)}} />
 
-                            <span className={classes.times}>{ moment(e.CreateTime * 1000).fromNow() }</span>
+                            <span className={classes.times}>{ moment(message.CreateTime * 1000).fromNow() }</span>
                         </div>
                     </div>
                 </div>

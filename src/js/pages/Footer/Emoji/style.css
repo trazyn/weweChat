@@ -1,0 +1,32 @@
+
+.container {
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    padding: 8px 12px;
+    background: #fff;
+    box-shadow: 0 6px 28px 0 rgba(230, 230, 230, 1);
+    z-index: 9;
+    outline: 0;
+    opacity: 0;
+    visibility: hidden;
+
+    & a {
+        transition: .2s;
+
+        &:hover {
+            transform: scale(1.2);
+        }
+    }
+
+    &.show {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

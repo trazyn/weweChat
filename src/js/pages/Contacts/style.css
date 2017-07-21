@@ -1,124 +1,124 @@
 
 :root {
-	--column-width: 274px;
+    --column-width: 274px;
 }
 
 .columns {
-	display: flex;
-	height: calc(100vh - 60px - 30px);
-	padding: 30px 17px 0;
-	justify-content: space-between;
+    display: flex;
+    height: calc(100vh - 60px - 30px);
+    padding: 30px 17px 0;
+    justify-content: space-between;
 }
 
 .notfound {
-	display: flex;
-	height: 100vh;
-	width: 100vw;
-	justify-content: center;
-	align-items: center;
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
 
-	& h1 {
-		margin-bottom: 25vh;
-		font-family: 'Roboto';
-		font-weight: 100;
-		color: rgba(0, 0, 0, .8);
-		letter-spacing: 2px;
-		word-spacing: 4px;
-	}
+    & h1 {
+        margin-bottom: 25vh;
+        font-family: 'Roboto';
+        font-weight: 100;
+        color: rgba(0, 0, 0, .8);
+        letter-spacing: 2px;
+        word-spacing: 4px;
+    }
 }
 
 .inner {
-	text-align: center;
+    text-align: center;
 
-	& img {
-		width: 220px;
-		margin-bottom: 30px;
-	}
+    & img {
+        width: 220px;
+        margin-bottom: 30px;
+    }
 }
 
 .column {
-	width: var(--column-width);
+    width: var(--column-width);
 }
 
 .group {
-	width: var(--column-width);
-	padding: 8px 0;
-	margin-bottom: 24px;
-	box-shadow: 0 0 10px 0 rgba(119, 119, 119, 50%);
+    width: var(--column-width);
+    padding: 8px 0;
+    margin-bottom: 24px;
+    box-shadow: 0 0 10px 0 rgba(119, 119, 119, 50%);
 }
 
 .header {
-	position: relative;
-	width: 140px;
-	height: 36px;
+    position: relative;
+    width: 140px;
+    height: 36px;
 
-	& label {
-		position: absolute;
-		left: 12px;
-		bottom: 8px;
-		font-family: 'Helvetica Neue';
-		font-size: 24px;
-		font-weight: 300;
-		color: #000;
-	}
+    & label {
+        position: absolute;
+        left: 12px;
+        bottom: 8px;
+        font-family: 'Helvetica Neue';
+        font-size: 24px;
+        font-weight: 300;
+        color: #000;
+    }
 
-	& span {
-		position: absolute;
-		right: 0;
-		bottom: 8px;
-		display: block;
-		font-family: 'Georgia';
-		font-size: 12px;
-		color: #9b9b9b;
-	}
+    & span {
+        position: absolute;
+        right: 0;
+        bottom: 8px;
+        display: block;
+        font-family: 'Georgia';
+        font-size: 12px;
+        color: #9b9b9b;
+    }
 }
 
 .item {
-	display: flex;
-	height: 40px;
-	margin: 10px 0;
-	padding: 0 10px;
-	align-items: center;
-	cursor: pointer;
+    display: flex;
+    height: 40px;
+    margin: 10px 0;
+    padding: 0 10px;
+    align-items: center;
+    cursor: pointer;
 
-	& p {
-		transition: .2s;
-	}
+    & p {
+        transition: .2s;
+    }
 
-	&:hover p {
-		color: #405de6 !important;
-	}
+    &:hover p {
+        color: #405de6 !important;
+    }
 
-	& img {
-		margin-top: 3px;
-		margin-right: 19px;
-	}
+    & img {
+        margin-top: 3px;
+        margin-right: 19px;
+    }
 }
 
 .avatar,
 .info {
-	display: inline-block;
+    display: inline-block;
 }
 
 .username,
 .signature {
-	max-width: 200px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .username {
-	font-family: 'Helvetica';
-	font-size: 14px;
-	color: #4a4a4a;
-	margin: 0;
-	margin-bottom: 4px;
+    font-family: 'Helvetica';
+    font-size: 14px;
+    color: #4a4a4a;
+    margin: 0;
+    margin-bottom: 4px;
 }
 
 .signature {
-	font-family: 'Helvetica';
-	font-size: 12px;
-	color: #777;
-	margin: 0;
+    font-family: 'Helvetica';
+    font-size: 12px;
+    color: #777;
+    margin: 0;
 }

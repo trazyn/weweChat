@@ -4,6 +4,7 @@ import axios from 'axios';
 import pinyin from 'han';
 
 import storage from 'utils/storage';
+import helper from 'utils/helper';
 
 class Contacts {
     @observable loading = false;
@@ -55,17 +56,61 @@ class Contacts {
                 skey: auth.skey
             }
         });
+        var chatRooms = [];
 
         // Remove all public account
         self.memberList = response.data.MemberList.filter(e => e.VerifyFlag !== 24 && e.VerifyFlag !== 8 && e.UserName.startsWith('@'));
         self.memberList.map(e => {
             e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
+
+            if (helper.isChatRoom(e.UserName)) {
+                // This is a chat room contact
+                chatRooms.push(e.UserName);
+            }
         });
+
+        if (chatRooms.length) {
+            await self.getChatRoomMembers(chatRooms);
+        }
+
         self.loading = false;
         self.filtered.result = self.group(self.memberList);
 
-        window.list = self.memberList;
+        window.LIST = self.memberList;
+
         return self.memberList;
+    }
+
+    async getChatRoomMembers(chatRooms) {
+        var auth = await storage.get('auth');
+        var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxbatchgetcontact?type=ex&r=${+new Date()}`, {
+            BaseRequest: {
+                Sid: auth.wxsid,
+                Uin: auth.wxuin,
+                Skey: auth.skey,
+            },
+            Count: chatRooms.length,
+            List: chatRooms.map(e => ({
+                UserName: e,
+                ChatRoomId: ''
+            })),
+        });
+
+        if (response.data.BaseResponse.Ret === 0) {
+            response.data.ContactList.map(e => {
+                var index = self.memberList.findIndex(user => user.UserName === e.UserName);
+
+                e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
+                e.MemberList.map(e => {
+                    e.HeadImgUrl = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgeticon?username=${e.UserName}&skey=${auth.skey}&seq=${~new Date()}`;
+                });
+                self.memberList[index] = e;
+            });
+        } else {
+            throw new Error('Failed to get chat room member');
+        }
+
+        return response.data;
     }
 
     @action filter(text = '') {

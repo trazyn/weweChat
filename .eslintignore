@@ -1,4 +1,5 @@
 
 dist/*
 __tests__/*
+src/assets/*
 
