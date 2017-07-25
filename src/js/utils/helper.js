@@ -1,7 +1,7 @@
 
 export default {
     isChatRoom: (userid) => {
-        return userid.startsWith('@@');
+        return userid && userid.startsWith('@@');
     },
 
     parseXml: (text) => {

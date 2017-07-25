@@ -1,10 +1,19 @@
 
+import helper from './helper';
+
 export default message => {
+    var isChatRoom = helper.isChatRoom(message.FromUserName);
+    var content = message.Content;
+
+    if (isChatRoom) {
+        content = message.Content.split(':<br/>')[1];
+    }
+
     switch (message.MsgType) {
         case 1:
             if (message.location) return '[Location]';
             // Text message
-            return message.Content;
+            return content;
 
         case 3:
             // Image
