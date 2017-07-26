@@ -45,6 +45,18 @@ class Contacts {
         return sorted;
     }
 
+    @action async getUser(userid) {
+        var user = self.memberList.find(e => e.UserName === userid);
+
+        if (user) {
+            return user;
+        }
+
+        await self.batch([userid]);
+        user = await self.getUser(userid);
+        return user;
+    }
+
     @action async getContats() {
         self.loading = true;
 
@@ -69,6 +81,8 @@ class Contacts {
         self.loading = false;
         self.filtered.result = self.group(self.memberList);
 
+        // FOR DEBUGGING
+        window.list = self.memberList;
         return self.memberList;
     }
 
@@ -99,7 +113,6 @@ class Contacts {
 
                 if (helper.isChatRoomRemoved(e)) {
                     // Chat room has removed
-                    console.log(e);
                     return;
                 }
 

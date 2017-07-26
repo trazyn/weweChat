@@ -211,10 +211,7 @@ class Session {
                     return loop();
                 }
 
-                if (+window.synccheck.selector === 4) {
-                    // Unknow selector
-                    console.error('Unknow selector: ' + selector);
-                }
+                return loop();
             } else {
                 return false;
             }

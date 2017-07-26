@@ -1,7 +1,6 @@
 
 const CHATROOM_NOTIFY_CLOSE = 0;
 const CONTACTFLAG_NOTIFYCLOSECONTACT = 512;
-const CONTACTFLAG_CHATROOMCONTACT = 4;
 
 const helper = {
     isChatRoom(userid) {
@@ -9,7 +8,7 @@ const helper = {
     },
 
     isChatRoomRemoved(user) {
-        return helper.isChatRoom(user.UserName) && !(user.ContactFlag & CONTACTFLAG_CHATROOMCONTACT);
+        return helper.isChatRoom(user.UserName) && user.ContactFlag === 0;
     },
 
     isMuted(user) {

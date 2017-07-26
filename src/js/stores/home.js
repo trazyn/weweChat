@@ -128,7 +128,7 @@ class Home {
 
     @action async addMessage(message) {
         var from = message.FromUserName;
-        var user = contacts.memberList.find(e => e.UserName === from);
+        var user = await contacts.getUser(from);
         var list = self.messages.get(from);
         var chats = self.chats;
 
@@ -150,7 +150,7 @@ class Home {
 
             // Drop the duplicate message
             if (!list.data.find(e => e.NewMsgId === message.NewMsgId)) {
-                if (settings.showNotification) {
+                if (settings.showNotification && !helper.isMuted(user)) {
                     // Get the user avatar and use it as notifier icon
                     let response = await axios.get(user.HeadImgUrl, { responseType: 'arraybuffer' });
                     let base64 = new window.Buffer(response.data, 'binary').toString('base64');
@@ -164,14 +164,12 @@ class Home {
                 list.data.push(await resolveMessage(message));
             }
         } else {
-            if (user) {
-                // New friend has accepted
-                chats = [user, ...self.chats];
-                list = {
-                    data: [message],
-                    unread: 0,
-                };
-            }
+            // New friend has accepted
+            chats = [user, ...self.chats];
+            list = {
+                data: [message],
+                unread: 0,
+            };
         }
 
         if (self.user.UserName === from) {
@@ -180,8 +178,10 @@ class Home {
         }
 
         chats = chats.map(e => {
-            // Catch the contact update, eg: Chat room change name
-            return contacts.memberList.find(user => user.UserName === e.UserName);
+            // Catch the contact update, eg: MsgType = 10000, chat room name has changed
+            var user = contacts.memberList.find(user => user.UserName === e.UserName);
+            user.muted = helper.isMuted(user);
+            return user;
         });
 
         self.chats.replace(chats);

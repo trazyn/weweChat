@@ -68,7 +68,10 @@ export default class Chats extends Component {
                             return (
                                 <div className={clazz(classes.chat, selected && selected.UserName === e.UserName && classes.active)} key={index} onClick={ev => chatTo(e)}>
                                     <div className={classes.inner}>
-                                        <div className={this.hasUnreadMessage(e.UserName) && classes.reddot}>
+                                        <div className={clazz(classes.dot, {
+                                            [classes.green]: !e.muted && this.hasUnreadMessage(e.UserName),
+                                            [classes.red]: e.muted && this.hasUnreadMessage(e.UserName)
+                                        })}>
                                             <Avatar src={e.HeadImgUrl} />
                                         </div>
 
