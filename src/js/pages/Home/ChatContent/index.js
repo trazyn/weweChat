@@ -243,6 +243,7 @@ export default class ChatContent extends Component {
 
     render() {
         var { loading, me, user, messages } = this.props;
+        var title = user.RemarkName || user.NickName;
 
         if (loading) return false;
 
@@ -253,7 +254,7 @@ export default class ChatContent extends Component {
                         <div>
                             <header>
                                 <div className={classes.info}>
-                                    <p dangerouslySetInnerHTML={{__html: user.RemarkName || user.NickName}} />
+                                    <p title={title} dangerouslySetInnerHTML={{__html: title}} />
 
                                     <span dangerouslySetInnerHTML={{__html: user.Signature || 'No Signature'}} />
                                 </div>

@@ -1,10 +1,22 @@
 
-export default {
-    isChatRoom: (userid) => {
+const CHATROOM_NOTIFY_CLOSE = 0;
+const CONTACTFLAG_NOTIFYCLOSECONTACT = 512;
+const CONTACTFLAG_CHATROOMCONTACT = 4;
+
+const helper = {
+    isChatRoom(userid) {
         return userid && userid.startsWith('@@');
     },
 
-    isOfficial: (user) => {
+    isChatRoomRemoved(user) {
+        return helper.isChatRoom(user.UserName) && !(user.ContactFlag & CONTACTFLAG_CHATROOMCONTACT);
+    },
+
+    isMuted(user) {
+        return helper.isChatRoom(user.UserName) ? user.Statues === CHATROOM_NOTIFY_CLOSE : user.ContactFlag & CONTACTFLAG_NOTIFYCLOSECONTACT;
+    },
+
+    isOfficial(user) {
         return !(user.VerifyFlag !== 24 && user.VerifyFlag !== 8 && user.UserName.startsWith('@'));
     },
 
@@ -39,3 +51,5 @@ export default {
         return res;
     }
 };
+
+export default helper;

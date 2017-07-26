@@ -27,7 +27,8 @@ import { Modal, ModalBody } from 'components/Modal';
     },
 
     isme: () => {
-        return stores.userinfo.user.UserName === stores.session.user.User.UserName;
+        return stores.session.user
+            && stores.userinfo.user.UserName === stores.session.user.User.UserName;
     },
 }))
 @observer

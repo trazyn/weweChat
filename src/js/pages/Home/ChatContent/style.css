@@ -25,17 +25,20 @@
         color: #34b7f1;
     }
 
-    & p {
+    & header p {
         max-width: calc(100vw - 311px - 100px);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    & p {
         margin: 0;
         padding: 0;
         margin-bottom: 6px;
         font-family: 'Helvetica';
         font-size: 15px;
         color: rgba(74, 74, 74, .9);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
     }
 
     & span {

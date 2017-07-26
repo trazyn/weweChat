@@ -97,6 +97,12 @@ class Contacts {
                     return;
                 }
 
+                if (helper.isChatRoomRemoved(e)) {
+                    // Chat room has removed
+                    console.log(e);
+                    return;
+                }
+
                 if (helper.isChatRoom(e.UserName) && !e.NickName) {
                     e.NickName = e.MemberList.map(e => e.NickName).join(',');
                 }
