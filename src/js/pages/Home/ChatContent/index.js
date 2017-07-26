@@ -15,8 +15,16 @@ import { Modal, ModalBody } from 'components/Modal';
     user: stores.home.user,
     messages: stores.home.messages,
     loading: stores.session.loading,
-    showUserinfo: (isme) => {
-        stores.userinfo.toggle(true, isme ? stores.session.user.User : stores.home.user);
+    showUserinfo: (isme, userid) => {
+        var user;
+
+        if (isme) {
+            user = stores.session.user.User;
+        } else {
+            user = stores.contacts.memberList.find(e => e.UserName === userid);
+        }
+
+        stores.userinfo.toggle(true, user);
     },
     showContact: (userid) => {
         var user = stores.contacts.memberList.find(e => e.UserName === userid);
@@ -31,6 +39,8 @@ import { Modal, ModalBody } from 'components/Modal';
         if (isChatRoom) {
             let matchs = message.Content.split(':<br/>');
 
+            // Get the newest chat room infomation
+            from = stores.contacts.memberList.find(e => from.UserName === e.UserName);
             user = from.MemberList.find(e => e.UserName === matchs[0]);
             message.Content = matchs[1];
         }
@@ -133,19 +143,31 @@ export default class ChatContent extends Component {
     renderMessages(list, from) {
         return list.data.map((e, index) => {
             var { message, user } = this.props.parseMessage(e, from);
+            var type = message.MsgType;
+
+            if (type === 10000) {
+                return (
+                    <div key={index} className={clazz(classes.message, classes.system)}>
+                        {e.Content}
+                    </div>
+                );
+            }
 
             return (
                 <div className={clazz(classes.message, {
                     [classes.isme]: message.isme,
-                    [classes.isText]: message.MsgType === 1 && !message.location,
-                    [classes.isLocation]: message.MsgType === 1 && message.location,
-                    [classes.isImage]: message.MsgType === 3,
-                    [classes.isEmoji]: message.MsgType === 47,
-                    [classes.isVoice]: message.MsgType === 34,
-                    [classes.isContact]: message.MsgType === 42,
+                    [classes.isText]: type === 1 && !message.location,
+                    [classes.isLocation]: type === 1 && message.location,
+                    [classes.isImage]: type === 3,
+                    [classes.isEmoji]: type === 47,
+                    [classes.isVoice]: type === 34,
+                    [classes.isContact]: type === 42,
                 })} key={index}>
                     <div>
-                        <Avatar src={message.isme ? message.HeadImgUrl : user.HeadImgUrl} className={classes.avatar} onClick={ev => this.props.showUserinfo(message.isme)} />
+                        <Avatar
+                            src={message.isme ? message.HeadImgUrl : user.HeadImgUrl}
+                            className={classes.avatar}
+                            onClick={ev => this.props.showUserinfo(message.isme, user.UserName)} />
 
                         <div className={classes.content}>
                             <p dangerouslySetInnerHTML={{__html: this.getMessageContent(message)}} />
@@ -168,6 +190,7 @@ export default class ChatContent extends Component {
     async handleClick(e) {
         var target = e.target;
 
+        // Open the image
         if (target.tagName === 'IMG'
             && target.classList.contains('open-image')) {
             // Get image from cache and convert to base64
@@ -179,6 +202,7 @@ export default class ChatContent extends Component {
             return;
         }
 
+        // Play the voice message
         if (target.tagName === 'DIV'
             && target.classList.contains('play-voice')) {
             var audio = target.querySelector('audio');
@@ -190,16 +214,19 @@ export default class ChatContent extends Component {
             return;
         }
 
+        // Open the location
         if (target.tagName === 'IMG'
             && target.classList.contains('open-map')) {
             ipcRenderer.send('open-map', target.dataset.map);
         }
 
+        // Show contact card
         if (target.tagName === 'DIV'
             && target.classList.contains('is-friend')) {
             this.props.showContact(target.dataset.userid);
         }
 
+        // Add new friend
         if (target.tagName === 'I'
             && target.classList.contains('icon-ion-android-add')) {
             this.toggleFriendRequest(true, target.dataset.userid);

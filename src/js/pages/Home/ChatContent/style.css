@@ -26,12 +26,16 @@
     }
 
     & p {
+        max-width: calc(100vw - 311px - 100px);
         margin: 0;
         padding: 0;
         margin-bottom: 6px;
         font-family: 'Helvetica';
         font-size: 15px;
         color: rgba(74, 74, 74, .9);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     & span {
@@ -101,6 +105,12 @@
     }
 }
 
+.message.system {
+    color: #777;
+    font-size: 12px;
+    text-align: center;
+}
+
 .message.isText {
     & .content {
         position: relative;
@@ -109,6 +119,7 @@
     }
 
     & p {
+        min-width: 47px;
         margin: 0;
         padding: 10.82px 14.8px 8px 40px;
         font-family: 'Helvetica';

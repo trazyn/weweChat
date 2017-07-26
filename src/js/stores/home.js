@@ -64,6 +64,11 @@ async function resolveMessage(message) {
             message.contact = contact;
             break;
 
+        case 10000:
+            // Chat room has been changed
+            await contacts.batch([message.FromUserName]);
+            break;
+
             // TODO: Vodeo, Red Pack etc
     }
 
@@ -75,29 +80,34 @@ class Home {
     @observable messages = new Map();
     @observable user = false;
 
-    users;
-
-    async getUsers() {
-        if (self.users) {
-            return self.users;
-        }
-
-        self.users = await contacts.getList();
-
-        return self.users;
-    }
-
     @action async loadChats(chatSet) {
-        var list = await self.getUsers();
+        var list = contacts.memberList;
         var res = [];
+        var temps = [];
 
         helper.unique(chatSet.split(',')).map(e => {
-            var user = list.find(user => user.UserName === e);
+            var user = list.find(user => user.UserName === e && !helper.isChatRoom(e));
 
             if (user) {
                 res.push(user);
+            } else {
+                // User not in your contact
+                temps.push(e);
             }
         });
+
+        if (temps.length) {
+            await contacts.batch(temps);
+
+            temps.map(e => {
+                var user = list.find(user => user.UserName === e);
+
+                // Remove all the invalid accounts, eg: Official account
+                if (user) {
+                    res.push(user);
+                }
+            });
+        }
 
         self.chats.replace(res);
 
@@ -118,9 +128,9 @@ class Home {
 
     @action async addMessage(message) {
         var from = message.FromUserName;
+        var user = contacts.memberList.find(e => e.UserName === from);
         var list = self.messages.get(from);
-        var user = self.users.find(e => e.UserName === from);
-        var chats = [];
+        var chats = self.chats;
 
         // Check new message is already in the chat set
         if (list) {
@@ -168,6 +178,11 @@ class Home {
             // Current chat to user
             list.unread = list.data.length;
         }
+
+        chats = chats.map(e => {
+            // Catch the contact update, eg: Chat room change name
+            return contacts.memberList.find(user => user.UserName === e.UserName);
+        });
 
         self.chats.replace(chats);
         self.messages.set(from, list);

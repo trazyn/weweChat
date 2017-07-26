@@ -24,7 +24,11 @@ import { Modal, ModalBody } from 'components/Modal';
         stores.userinfo.updateUser(user);
         updateUser(user);
         filter(filtered.query);
-    }
+    },
+
+    isme: () => {
+        return stores.userinfo.user.UserName === stores.session.user.User.UserName;
+    },
 }))
 @observer
 export default class UserInfo extends Component {
@@ -69,6 +73,7 @@ export default class UserInfo extends Component {
     render() {
         var { HeadImgUrl, UserName, NickName, RemarkName, Signature, City, Province } = this.props.user;
         var pallet = this.props.pallet;
+        var isme = this.props.isme();
         var background = pallet[0];
         var gradient = 'none';
         var fontColor = '#777';
@@ -111,9 +116,15 @@ export default class UserInfo extends Component {
                             background,
                             color: fontColor,
                         }}>
-                        <div className={classes.edit} onClick={() => this.toggleEdit()}>
-                            <i className="icon-ion-edit" />
-                        </div>
+
+                        {
+                            !isme && (
+                                <div className={classes.edit} onClick={() => this.toggleEdit()}>
+                                    <i className="icon-ion-edit" />
+                                </div>
+                            )
+                        }
+
                         <div className={classes.inner}>
                             <div className={classes.mask} style={{
                                 background: gradient

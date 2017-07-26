@@ -5,6 +5,7 @@ import { observable, action } from 'mobx';
 
 import storage from 'utils/storage';
 import home from './home';
+import contacts from './contacts';
 
 class Session {
     @observable loading = false;
@@ -120,6 +121,7 @@ class Session {
             e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
         });
         self.user.User.HeadImgUrl = `${axios.defaults.baseURL}${self.user.User.HeadImgUrl.substr(1)}`;
+        await contacts.getContats();
         await home.loadChats(self.user.ChatSet);
         self.loading = false;
 
@@ -137,6 +139,7 @@ class Session {
             SyncKey: self.user.SyncKey,
             rr: ~new Date(),
         });
+        var mods = [];
 
         // Refresh the sync keys
         self.user.SyncKey = response.data.SyncKey;
@@ -144,9 +147,12 @@ class Session {
 
         // Get the new friend
         response.data.ModContactList.map(e => {
-            e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
-            home.users.push(e);
+            mods.push(e.UserName);
         });
+
+        if (mods.length) {
+            await contacts.batch(mods);
+        }
 
         response.data.AddMsgList.map(e => {
             if (e.FromUserName === self.user.User.UserName) {

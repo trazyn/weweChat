@@ -4,6 +4,10 @@ export default {
         return userid && userid.startsWith('@@');
     },
 
+    isOfficial: (user) => {
+        return !(user.VerifyFlag !== 24 && user.VerifyFlag !== 8 && user.UserName.startsWith('@'));
+    },
+
     parseXml: (text) => {
         var string = text.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
         var matchs = string.match(/(\w+)="([^\s]+)"/g);

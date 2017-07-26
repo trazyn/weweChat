@@ -11,13 +11,13 @@ import Avatar from 'components/Avatar';
 @inject(stores => ({
     loading: stores.contacts.loading,
     filtered: stores.contacts.filtered,
-    getList: stores.contacts.getList,
+    getContats: stores.contacts.getContats,
     showUserinfo: stores.userinfo.toggle,
 }))
 @observer
 export default class Contacts extends Component {
     componentWillMount() {
-        this.props.getList();
+        this.props.getContats();
     }
 
     renderColumns(data, index) {
