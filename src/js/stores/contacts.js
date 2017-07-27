@@ -70,7 +70,7 @@ class Contacts {
         });
 
         // Remove all official account
-        self.memberList = response.data.MemberList.filter(e => !helper.isOfficial(e));
+        self.memberList = response.data.MemberList.filter(e => !helper.isOfficial(e) && !helper.isBrand(e));
         self.memberList.map(e => {
             if (helper.isChatRoom(e.UserName) && !e.NickName) {
                 e.NickName = e.MemberList.map(e => e.NickName).join(',');
@@ -108,6 +108,11 @@ class Contacts {
 
                 if (helper.isOfficial(e)) {
                     // Skip the official account
+                    return;
+                }
+
+                if (helper.isBrand(e)) {
+                    // Skip the brand account, eg: JD.COM
                     return;
                 }
 

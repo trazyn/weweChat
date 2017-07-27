@@ -1,6 +1,8 @@
 
 const CHATROOM_NOTIFY_CLOSE = 0;
 const CONTACTFLAG_NOTIFYCLOSECONTACT = 512;
+const MM_USERATTRVERIFYFALG_BIZ_BRAND = 8;
+const CONTACTFLAG_TOPCONTACT = 2048;
 
 const helper = {
     isChatRoom(userid) {
@@ -17,6 +19,14 @@ const helper = {
 
     isOfficial(user) {
         return !(user.VerifyFlag !== 24 && user.VerifyFlag !== 8 && user.UserName.startsWith('@'));
+    },
+
+    isTop(user) {
+        return user.ContactFlag & CONTACTFLAG_TOPCONTACT;
+    },
+
+    isBrand(user) {
+        return user.VerifyFlag & MM_USERATTRVERIFYFALG_BIZ_BRAND;
     },
 
     parseXml: (text) => {

@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import { remote } from 'electron';
 import clazz from 'classname';
 import moment from 'moment';
 
@@ -29,6 +30,35 @@ moment.updateLocale('en', {
 }))
 @observer
 export default class Chats extends Component {
+    menus = [
+        {
+            label: 'Send Message',
+            click: () => {
+            }
+        },
+        {
+            type: 'separator'
+        },
+        {
+            label: 'Stick on Top',
+            click: () => {
+
+            }
+        },
+        {
+            label: 'Delete',
+            click: () => {
+
+            }
+        },
+        {
+            label: 'Mark as Read',
+            click: () => {
+
+            }
+        },
+    ];
+
     getTheLastestMessage(userid) {
         var list = this.props.messages.get(userid);
         var res;
@@ -53,6 +83,12 @@ export default class Chats extends Component {
         }
     }
 
+    showContextMenu() {
+        var menu = new remote.Menu.buildFromTemplate(this.menus);
+
+        menu.popup(remote.getCurrentWindow());
+    }
+
     render() {
         var { loading, chats, selected, chatTo } = this.props;
 
@@ -66,7 +102,13 @@ export default class Chats extends Component {
                             var message = this.getTheLastestMessage(e.UserName) || {};
 
                             return (
-                                <div className={clazz(classes.chat, selected && selected.UserName === e.UserName && classes.active)} key={index} onClick={ev => chatTo(e)}>
+                                <div
+                                    className={clazz(classes.chat, {
+                                        [classes.active]: selected && selected.UserName === e.UserName
+                                    })}
+                                    key={index}
+                                    onContextMenu={ev => this.showContextMenu(ev)}
+                                    onClick={ev => chatTo(e)}>
                                     <div className={classes.inner}>
                                         <div className={clazz(classes.dot, {
                                             [classes.green]: !e.muted && this.hasUnreadMessage(e.UserName),
