@@ -10,6 +10,7 @@
 }
 
 .chat {
+    position: relative;
     display: flex;
     height: 48px;
     padding: 13px 16px;
@@ -32,6 +33,16 @@
     &.active,
     &:hover {
         background: #e8edf3;
+    }
+
+    &.sticky::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: red;
     }
 }
 

@@ -1,10 +1,10 @@
 
 ### TODO
 - [x] Right click on chat session
-  - [ ] Stick on top
+  - [x] Sticky on top
   - [ ] Delete chat session
-  - [ ] Mark as Read 
-  - [ ] Send Message
+  - [x] Mark as Read
+  - [x] Send Message
 - [ ] Chat Room
   - [ ] Show correct contact
   - [ ] Show members

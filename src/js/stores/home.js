@@ -84,6 +84,9 @@ class Home {
         var list = contacts.memberList;
         var res = [];
         var temps = [];
+        var sorted = [];
+
+        if (!chatSet) return;
 
         helper.unique(chatSet.split(',')).map(e => {
             var user = list.find(user => user.UserName === e && !helper.isChatRoom(e));
@@ -109,14 +112,24 @@ class Home {
             });
         }
 
-        self.chats.replace(res);
-
-        res.map(e => {
+        res.map((e, index) => {
             self.messages.set(e.UserName, {
                 data: [],
                 unread: 0,
             });
+
+            // Save the original index to support sticky feature
+            e.index = index;
+            e.isTop = helper.isTop(e);
+
+            if (e.isTop) {
+                sorted.unshift(e);
+            } else {
+                sorted.push(e);
+            }
         });
+
+        self.chats.replace(sorted);
 
         return res;
     }
@@ -244,6 +257,39 @@ class Home {
         }
 
         self.messages.set(userid, list);
+    }
+
+    @action async sticky(user) {
+        var auth = await storage.get('auth');
+        var sticky = +!user.isTop;
+        var response = await axios.post('/cgi-bin/mmwebwx-bin/webwxoplog', {
+            BaseRequest: {
+                Sid: auth.wxsid,
+                Uin: auth.wxuin,
+                Skey: auth.skey,
+            },
+            CmdId: 3,
+            OP: sticky,
+            RemarkName: '',
+            UserName: user.UserName
+        });
+        var sorted = [];
+
+        if (+response.data.BaseResponse.Ret === 0) {
+            self.chats.find(e => e.UserName === user.UserName).isTop = !user.isTop;
+            self.chats.sort((a, b) => a.index - b.index).map(e => {
+                if (e.isTop) {
+                    sorted.unshift(e);
+                } else {
+                    sorted.push(e);
+                }
+            });
+            self.chats.replace(sorted);
+
+            return true;
+        }
+
+        return false;
     }
 
     @action async addFriend(userid, message) {

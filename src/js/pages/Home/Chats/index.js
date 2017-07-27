@@ -12,9 +12,9 @@ import getMessageContent from 'utils/getMessageContent';
 moment.updateLocale('en', {
     relativeTime: {
         past: '%s',
-        m: 'a min',
+        m: '1 min',
         mm: '%d mins',
-        h: 'an h',
+        h: 'an hour',
         hh: '%d h',
         s: 'now',
         ss: '%d s',
@@ -26,39 +26,12 @@ moment.updateLocale('en', {
     chatTo: stores.home.chatTo,
     selected: stores.home.user,
     messages: stores.home.messages,
+    markedRead: stores.home.markedRead,
+    sticky: stores.home.sticky,
     loading: stores.session.loading,
 }))
 @observer
 export default class Chats extends Component {
-    menus = [
-        {
-            label: 'Send Message',
-            click: () => {
-            }
-        },
-        {
-            type: 'separator'
-        },
-        {
-            label: 'Stick on Top',
-            click: () => {
-
-            }
-        },
-        {
-            label: 'Delete',
-            click: () => {
-
-            }
-        },
-        {
-            label: 'Mark as Read',
-            click: () => {
-
-            }
-        },
-    ];
-
     getTheLastestMessage(userid) {
         var list = this.props.messages.get(userid);
         var res;
@@ -83,8 +56,36 @@ export default class Chats extends Component {
         }
     }
 
-    showContextMenu() {
-        var menu = new remote.Menu.buildFromTemplate(this.menus);
+    showContextMenu(user) {
+        var menu = new remote.Menu.buildFromTemplate([
+            {
+                label: 'Send Message',
+                click: () => {
+                    this.props.chatTo(user);
+                }
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: user.isTop ? 'Unsticky' : 'Sticky on Top',
+                click: () => {
+                    this.props.sticky(user);
+                }
+            },
+            {
+                label: 'Delete',
+                click: () => {
+
+                }
+            },
+            {
+                label: 'Mark as Read',
+                click: () => {
+                    this.props.markedRead(user.UserName);
+                }
+            },
+        ]);
 
         menu.popup(remote.getCurrentWindow());
     }
@@ -104,10 +105,11 @@ export default class Chats extends Component {
                             return (
                                 <div
                                     className={clazz(classes.chat, {
+                                        [classes.sticky]: e.isTop,
                                         [classes.active]: selected && selected.UserName === e.UserName
                                     })}
                                     key={index}
-                                    onContextMenu={ev => this.showContextMenu(ev)}
+                                    onContextMenu={ev => this.showContextMenu(e)}
                                     onClick={ev => chatTo(e)}>
                                     <div className={classes.inner}>
                                         <div className={clazz(classes.dot, {
