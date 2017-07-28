@@ -9,7 +9,6 @@ import axios from 'axios';
 import classes from './style.css';
 import Avatar from 'components/Avatar';
 import helper from 'utils/helper';
-import { Modal, ModalBody } from 'components/Modal';
 
 @inject(stores => ({
     user: stores.home.user,
@@ -18,6 +17,13 @@ import { Modal, ModalBody } from 'components/Modal';
     showUserinfo: async(isme, user) => {
         if (isme) {
             user = stores.session.user.User;
+        } else {
+            stores.contacts.memberList.find(e => {
+                // Try to find contact in your contacts
+                if (e.UserName === user.UserName) {
+                    return (user = e);
+                }
+            });
         }
 
         stores.userinfo.toggle(true, user);
@@ -43,16 +49,10 @@ import { Modal, ModalBody } from 'components/Modal';
 
         return { message, user };
     },
-    addFriend: stores.home.addFriend,
-    me: stores.session.user,
+    showAddFriend: (user) => stores.adduser.toggle(true, user),
 }))
 @observer
 export default class ChatContent extends Component {
-    state = {
-        showFriendRequest: false,
-        userid: '',
-    };
-
     getMessageContent(message) {
         switch (message.MsgType) {
             case 1:
@@ -131,17 +131,17 @@ export default class ChatContent extends Component {
         }
     }
 
-    addFriend() {
-        this.props.addFriend(this.state.userid, this.refs.input.value);
-        this.toggleFriendRequest(false);
-    }
-
     renderMessages(list, from) {
         return list.data.map((e, index) => {
             var { message, user } = this.props.parseMessage(e, from);
             var type = message.MsgType;
 
-            if (type === 10000) {
+            if ([
+                // WeChat system message
+                10000,
+                // Custome message
+                19999
+            ].includes(type)) {
                 return (
                     <div
                         key={index}
@@ -174,13 +174,6 @@ export default class ChatContent extends Component {
                     </div>
                 </div>
             );
-        });
-    }
-
-    toggleFriendRequest(show = !this.state.showFriendRequest, userid) {
-        this.setState({
-            showFriendRequest: show,
-            userid,
         });
     }
 
@@ -226,7 +219,17 @@ export default class ChatContent extends Component {
         // Add new friend
         if (target.tagName === 'I'
             && target.classList.contains('icon-ion-android-add')) {
-            this.toggleFriendRequest(true, target.dataset.userid);
+            this.props.showAddFriend({
+                UserName: target.dataset.userid
+            });
+        }
+
+        // Add new friend
+        if (target.tagName === 'A'
+            && target.classList.contains('addFriend')) {
+            this.props.showAddFriend({
+                UserName: target.dataset.userid
+            });
         }
     }
 
@@ -239,7 +242,7 @@ export default class ChatContent extends Component {
     }
 
     render() {
-        var { loading, me, user, messages } = this.props;
+        var { loading, user, messages } = this.props;
         var title = user.RemarkName || user.NickName;
 
         if (loading) return false;
@@ -272,20 +275,6 @@ export default class ChatContent extends Component {
                         </div>
                     )
                 }
-
-                <Modal show={this.state.showFriendRequest} fullscreen={true}>
-                    <ModalBody className={classes.friendRequest}>
-                        Send friend request first
-
-                        <input type="text" defaultValue={`Hallo, im ${me && me.User.NickName}`} autoFocus={true} ref="input" />
-
-                        <div>
-                            <button onClick={e => this.addFriend()}>Send</button>
-
-                            <button onClick={e => this.toggleFriendRequest(false)}>Cancel</button>
-                        </div>
-                    </ModalBody>
-                </Modal>
             </div>
         );
     }

@@ -246,6 +246,15 @@ class Home {
                 HeadImgUrl: session.user.User.HeadImgUrl,
             });
 
+            if (!helper.isChatRoom(user.userName)
+                && !user.isFriend) {
+                // The target is not your friend
+                list.data.push({
+                    Content: `${user.sex ? 'She' : 'He'} is not your friend, <a class="addFriend" data-userid="${user.UserName}">Send friend request</a>`,
+                    MsgType: 19999,
+                });
+            }
+
             self.markedRead(to);
             self.messages.set(to, list);
         } else {
@@ -306,29 +315,6 @@ class Home {
     @action removeChat(user) {
         var chats = self.chats.filter(e => e.UserName !== user.UserName);
         self.chats.replace(chats);
-    }
-
-    @action async addFriend(userid, message) {
-        var auth = await storage.get('auth');
-        var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxverifyuser?r=${+new Date()}`, {
-            BaseRequest: {
-                Sid: auth.wxsid,
-                Uin: auth.wxuin,
-                Skey: auth.skey,
-            },
-            Opcode: 2,
-            SceneList: [33],
-            SceneListCount: 1,
-            VerifyContent: message,
-            VerifyUserList: [{
-                Value: userid,
-                VerifyUserTicket: '',
-            }],
-            VerifyUserListSize: 1,
-            skey: auth.skey,
-        });
-
-        return +response.data.BaseResponse.Ret === 0;
     }
 }
 

@@ -7,6 +7,7 @@ import Header from './Header';
 import Footer from './Footer';
 import Login from './Login';
 import UserInfo from './UserInfo';
+import AddUser from './AddUser';
 
 @inject(stores => ({
     isLogin: () => !!stores.session.auth,
@@ -33,6 +34,7 @@ export default class Layout extends Component {
                 </div>
                 <Footer location={this.props.location} />
                 <UserInfo />
+                <AddUser />
             </div>
         );
     }

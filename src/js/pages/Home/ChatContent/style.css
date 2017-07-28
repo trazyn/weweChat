@@ -112,6 +112,16 @@
     color: #777;
     font-size: 12px;
     text-align: center;
+
+    & a {
+        border-bottom: 1px solid #ddd;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+    & a:hover {
+        border-bottom-color: #777;
+    }
 }
 
 .message.isText {
@@ -365,61 +375,6 @@
         bottom: 0;
         white-space: nowrap;
         color: #535353;
-    }
-}
-
-.friendRequest {
-    background: rgba(0, 0, 0, .9);
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    font-family: 'Roboto';
-    font-size: 36px;
-    color: #fff;
-    font-weight: 100;
-    letter-spacing: 2px;
-    word-spacing: 4px;
-
-    & input {
-        height: 64px;
-        line-height: 64px;
-        margin-top: 5%;
-        width: 80%;
-        text-align: center;
-        border: none;
-        background: none;
-        outline: 0;
-        font-size: 32px;
-        font-weight: 100;
-        color: #fff;
-    }
-
-    & button {
-        display: inline-block;
-        height: 36px;
-        background-color: rgba(99, 99, 99, 0);
-        font-family: 'Roboto', sans-serif;
-        font-weight: 500;
-        color: rgba(33, 150, 243, .9);
-        line-height: 36px;
-        text-align: center;
-        letter-spacing: .4px;
-        padding: 0 16px;
-        border: 0;
-        text-transform: uppercase;
-        margin: 24px 12px;
-        font-size: 16px;
-        outline: 0;
-        cursor: pointer;
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-        transition: .2s;
-    }
-
-    & button:hover {
-        background: rgba(99, 99, 99, .2);
     }
 }
 

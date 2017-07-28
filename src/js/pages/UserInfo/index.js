@@ -25,7 +25,7 @@ import { Modal, ModalBody } from 'components/Modal';
         updateUser(user);
         filter(filtered.query);
     },
-
+    showAddFriend: (user) => stores.adduser.toggle(true, user),
     isme: () => {
         return stores.session.user
             && stores.userinfo.user.UserName === stores.session.user.User.UserName;
@@ -66,17 +66,17 @@ export default class UserInfo extends Component {
         }
     }
 
-    handleAction(userid) {
-        if (this.props.user.isFriend) {
+    handleAction(user) {
+        if (user.isFriend) {
             this.props.toggle(false);
-            this.props.chatTo(userid);
+            this.props.chatTo(user.UserName);
         } else {
-
+            this.props.showAddFriend(user);
         }
     }
 
     render() {
-        var { HeadImgUrl, UserName, NickName, RemarkName, Signature, City, Province, isFriend } = this.props.user;
+        var { HeadImgUrl, NickName, RemarkName, Signature, City, Province, isFriend } = this.props.user;
         var pallet = this.props.pallet;
         var isme = this.props.isme();
         var background = pallet[0];
@@ -153,7 +153,7 @@ export default class UserInfo extends Component {
                                 color: buttonColor,
                                 opacity: .6,
                             }}
-                            onClick={() => this.handleAction(UserName)}>
+                            onClick={() => this.handleAction(this.props.user)}>
                             {isFriend ? 'Send Message' : 'Add Friend'}
                         </div>
                     </div>
