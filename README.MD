@@ -2,7 +2,7 @@
 ### TODO
 - [x] Right click on chat session
   - [x] Sticky on top
-  - [ ] Delete chat session
+  - [x] Delete chat session
   - [x] Mark as Read
   - [x] Send Message
 - [ ] Chat Room
@@ -11,6 +11,7 @@
   - [ ] Add / Remove member
   - [ ] Create chat room
 - [ ] Various message
-- [ ] Video Message
+  - [ ] Video Message
+  - [ ] Red Packet
 - [ ] Show QQ emoji
-- [ ] Keep online
+- [ ] Keep online(bug)

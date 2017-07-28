@@ -140,10 +140,14 @@ class Home {
     }
 
     @action async addMessage(message) {
+        /* eslint-disable */
         var from = message.FromUserName;
         var user = await contacts.getUser(from);
         var list = self.messages.get(from);
         var chats = self.chats;
+        var stickyed = [];
+        var normaled = [];
+        /* eslint-enable */
 
         // Check new message is already in the chat set
         if (list) {
@@ -193,11 +197,18 @@ class Home {
         chats = chats.map(e => {
             // Catch the contact update, eg: MsgType = 10000, chat room name has changed
             var user = contacts.memberList.find(user => user.UserName === e.UserName);
-            user.muted = helper.isMuted(user);
-            return user;
+            user.muted = e.muted;
+            user.isTop = e.isTop;
+
+            // Fix sticky bug
+            if (user.isTop) {
+                stickyed.push(user);
+            } else {
+                normaled.push(user);
+            }
         });
 
-        self.chats.replace(chats);
+        self.chats.replace([...stickyed, ...normaled]);
         self.messages.set(from, list);
     }
 

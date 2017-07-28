@@ -54,6 +54,8 @@ class Contacts {
 
         await self.batch([userid]);
         user = await self.getUser(userid);
+        user.isTop = helper.isTop(user);
+        user.muted = helper.isMuted(user);
         return user;
     }
 
