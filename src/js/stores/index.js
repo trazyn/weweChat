@@ -1,7 +1,7 @@
 
 import session from './session';
 import home from './home';
-import adduser from './adduser';
+import addfriend from './addfriend';
 import userinfo from './userinfo';
 import contacts from './contacts';
 import settings from './settings';
@@ -9,7 +9,7 @@ import settings from './settings';
 export default {
     session,
     home,
-    adduser,
+    addfriend,
     userinfo,
     contacts,
     settings,

@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import storage from 'utils/storage';
 
-class AddUser {
+class AddFriend {
     @observable show = false;
     user;
 
@@ -37,5 +37,5 @@ class AddUser {
     }
 }
 
-const self = new AddUser();
+const self = new AddFriend();
 export default self;

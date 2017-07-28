@@ -49,7 +49,7 @@ import helper from 'utils/helper';
 
         return { message, user };
     },
-    showAddFriend: (user) => stores.adduser.toggle(true, user),
+    showAddFriend: (user) => stores.addfriend.toggle(true, user),
 }))
 @observer
 export default class ChatContent extends Component {

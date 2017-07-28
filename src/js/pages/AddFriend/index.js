@@ -7,13 +7,13 @@ import classes from './style.css';
 
 @inject(stores => ({
     me: stores.session.user,
-    show: stores.adduser.show,
-    close: () => stores.adduser.toggle(false),
-    sendRequest: stores.adduser.sendRequest,
+    show: stores.addfriend.show,
+    close: () => stores.addfriend.toggle(false),
+    sendRequest: stores.addfriend.sendRequest,
 }))
 @observer
-export default class AddUser extends Component {
-    sendRequest() {
+export default class AddFriend extends Component {
+    addFriend() {
         this.props.sendRequest(this.refs.input.value);
         this.props.close();
     }
@@ -29,7 +29,7 @@ export default class AddUser extends Component {
                     <input type="text" defaultValue={`Hallo, im ${me && me.User.NickName}`} autoFocus={true} ref="input" />
 
                     <div>
-                        <button onClick={e => this.sendRequest()}>Send</button>
+                        <button onClick={e => this.addFriend()}>Send</button>
 
                         <button onClick={e => close()}>Cancel</button>
                     </div>

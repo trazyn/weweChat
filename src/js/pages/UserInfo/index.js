@@ -25,7 +25,7 @@ import { Modal, ModalBody } from 'components/Modal';
         updateUser(user);
         filter(filtered.query);
     },
-    showAddFriend: (user) => stores.adduser.toggle(true, user),
+    showAddFriend: (user) => stores.addfriend.toggle(true, user),
     isme: () => {
         return stores.session.user
             && stores.userinfo.user.UserName === stores.session.user.User.UserName;
