@@ -267,7 +267,7 @@ export default class ChatContent extends Component {
                         </div>
                     ) : (
                         <div className={classes.inner}>
-                            <img src="assets/images/noselected.png" />
+                            <img src="assets/images/noselected.png" className={clazz(classes.tada, classes.animated)} />
                             <h1>No Chat selected.</h1>
                         </div>
                     )

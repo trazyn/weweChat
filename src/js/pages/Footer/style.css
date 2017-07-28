@@ -69,6 +69,7 @@
 
 .home,
 .contacts {
+    position: relative;
     display: flex;
     height: 60px;
     align-items: center;
@@ -194,4 +195,25 @@
     font-size: 14px;
     color: rgba(0, 0, 0, .8);
     text-transform: uppercase;
+}
+
+.tips {
+    position: absolute;
+    height: 32px;
+    left: 14px;
+    top: -32px;
+    padding: 0 16px;
+    line-height: 32px;
+    font-size: 14px;
+    background: color(#616161 -alpha(10%));
+    border-radius: 1px;
+    opacity: 0;
+    transform-origin: center bottom;
+    transition: .15s cubic-bezier(0, 0, .2, 1);
+    pointer-events: none;
+}
+
+.shouldSelectUser:hover .tips {
+    opacity: 1;
+    top: calc(-32px - 24px);
 }

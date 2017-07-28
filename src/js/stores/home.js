@@ -212,11 +212,11 @@ class Home {
         self.messages.set(from, list);
     }
 
-    @action async sendMessage(content) {
+    @action async sendMessage(user, content) {
         var id = (+new Date() * 1000) + Math.random().toString().substr(2, 4);
         var auth = await storage.get('auth');
         var from = session.user.User.UserName;
-        var to = self.user.UserName;
+        var to = user.UserName;
         var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxsendmsg`, {
             BaseRequest: {
                 Sid: auth.wxsid,
