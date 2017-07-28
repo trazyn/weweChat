@@ -292,6 +292,11 @@ class Home {
         return false;
     }
 
+    @action removeChat(user) {
+        var chats = self.chats.filter(e => e.UserName !== user.UserName);
+        self.chats.replace(chats);
+    }
+
     @action async addFriend(userid, message) {
         var auth = await storage.get('auth');
         var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxverifyuser?r=${+new Date()}`, {

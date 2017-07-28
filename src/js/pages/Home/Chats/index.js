@@ -28,6 +28,7 @@ moment.updateLocale('en', {
     messages: stores.home.messages,
     markedRead: stores.home.markedRead,
     sticky: stores.home.sticky,
+    removeChat: stores.home.removeChat,
     loading: stores.session.loading,
 }))
 @observer
@@ -76,7 +77,7 @@ export default class Chats extends Component {
             {
                 label: 'Delete',
                 click: () => {
-
+                    this.props.removeChat(user);
                 }
             },
             {
