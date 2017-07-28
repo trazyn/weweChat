@@ -66,13 +66,17 @@ export default class UserInfo extends Component {
         }
     }
 
-    handleChat(userid) {
-        this.props.toggle(false);
-        this.props.chatTo(userid);
+    handleAction(userid) {
+        if (this.props.user.isFriend) {
+            this.props.toggle(false);
+            this.props.chatTo(userid);
+        } else {
+
+        }
     }
 
     render() {
-        var { HeadImgUrl, UserName, NickName, RemarkName, Signature, City, Province } = this.props.user;
+        var { HeadImgUrl, UserName, NickName, RemarkName, Signature, City, Province, isFriend } = this.props.user;
         var pallet = this.props.pallet;
         var isme = this.props.isme();
         var background = pallet[0];
@@ -119,7 +123,7 @@ export default class UserInfo extends Component {
                         }}>
 
                         {
-                            !isme && (
+                            (!isme && isFriend) && (
                                 <div className={classes.edit} onClick={() => this.toggleEdit()}>
                                     <i className="icon-ion-edit" />
                                 </div>
@@ -144,13 +148,13 @@ export default class UserInfo extends Component {
                         </div>
 
                         <div
-                            className={classes.sendMessage}
+                            className={classes.action}
                             style={{
                                 color: buttonColor,
                                 opacity: .6,
                             }}
-                            onClick={() => this.handleChat(UserName)}>
-                            Send Message
+                            onClick={() => this.handleAction(UserName)}>
+                            {isFriend ? 'Send Message' : 'Add Friend'}
                         </div>
                     </div>
 

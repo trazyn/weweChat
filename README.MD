@@ -5,8 +5,8 @@
   - [x] Delete chat session
   - [x] Mark as Read
   - [x] Send Message
-- [ ] Chat Room
-  - [ ] Show correct contact
+- [x] Chat Room
+  - [x] Show correct contact
   - [ ] Show members
   - [ ] Add / Remove member
   - [ ] Create chat room

@@ -101,7 +101,7 @@
     z-index: 9;
 }
 
-.sendMessage {
+.action {
     position: relative;
     display: inline-block;
     margin-top: 44px;

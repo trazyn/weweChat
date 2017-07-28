@@ -78,6 +78,7 @@ class Contacts {
                 e.NickName = e.MemberList.map(e => e.NickName).join(',');
             }
             e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
+            e.isFriend = true;
         });
 
         self.loading = false;
@@ -89,7 +90,7 @@ class Contacts {
     }
 
     // Batch get the contacts
-    async batch(list) {
+    async batch(list, isFriend = false) {
         var auth = await storage.get('auth');
         var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxbatchgetcontact?type=ex&r=${+new Date()}`, {
             BaseRequest: {
@@ -127,9 +128,10 @@ class Contacts {
                     e.NickName = e.MemberList.map(e => e.NickName).join(',');
                 }
 
+                e.isFriend = isFriend;
                 e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
-                e.MemberList.map(e => {
-                    e.HeadImgUrl = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgeticon?username=${e.UserName}&skey=${auth.skey}&seq=${~new Date()}`;
+                e.MemberList.map(user => {
+                    user.HeadImgUrl = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgeticon?username=${user.UserName}&chatroomid=${e.EncryChatRoomId}&skey=${auth.skey}&seq=0`;
                 });
 
                 if (index !== -1) {

@@ -15,13 +15,9 @@ import { Modal, ModalBody } from 'components/Modal';
     user: stores.home.user,
     messages: stores.home.messages,
     loading: stores.session.loading,
-    showUserinfo: (isme, userid) => {
-        var user;
-
+    showUserinfo: async(isme, user) => {
         if (isme) {
             user = stores.session.user.User;
-        } else {
-            user = stores.contacts.memberList.find(e => e.UserName === userid);
         }
 
         stores.userinfo.toggle(true, user);
@@ -147,9 +143,10 @@ export default class ChatContent extends Component {
 
             if (type === 10000) {
                 return (
-                    <div key={index} className={clazz(classes.message, classes.system)}>
-                        {e.Content}
-                    </div>
+                    <div
+                        key={index}
+                        className={clazz(classes.message, classes.system)}
+                        dangerouslySetInnerHTML={{__html: e.Content}} />
                 );
             }
 
@@ -167,7 +164,7 @@ export default class ChatContent extends Component {
                         <Avatar
                             src={message.isme ? message.HeadImgUrl : user.HeadImgUrl}
                             className={classes.avatar}
-                            onClick={ev => this.props.showUserinfo(message.isme, user.UserName)} />
+                            onClick={ev => this.props.showUserinfo(message.isme, user)} />
 
                         <div className={classes.content}>
                             <p dangerouslySetInnerHTML={{__html: this.getMessageContent(message)}} />

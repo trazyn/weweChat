@@ -151,7 +151,7 @@ class Session {
         });
 
         if (mods.length) {
-            await contacts.batch(mods);
+            await contacts.batch(mods, true);
         }
 
         response.data.AddMsgList.map(e => {
