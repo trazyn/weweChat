@@ -74,13 +74,29 @@ async function resolveMessage(message) {
             break;
 
         case 49:
-            // Transfer
-            var { value } = helper.parseXml(message.Content, 'des');
+            switch (message.AppMsgType) {
+                case 2000:
+                    // Transfer
+                    let { value } = helper.parseXml(message.Content, 'des');
 
-            message.transfer = {
-                desc: value,
-                money: +value.match(/[\d.]+元/)[0].slice(0, -1),
-            };
+                    message.MsgType += 2000;
+                    message.transfer = {
+                        desc: value,
+                        money: +value.match(/[\d.]+元/)[0].slice(0, -1),
+                    };
+                    break;
+
+                case 17:
+                    // Location sharing...
+                    message.MsgType += 17;
+                    break;
+
+                default:
+                    console.error('Unknow app message: %o', message);
+                    message.Content = '收到一条暂不支持的消息类型，请在手机上查看。';
+                    message.MsgType = 19999;
+                    break;
+            }
             break;
 
         case 10000:

@@ -11,7 +11,13 @@
   - [ ] Add / Remove member
   - [ ] Create chat room
 - [ ] Various message
-  - [ ] Video Message
-  - [ ] Red Packet
+  - [x] Text
+  - [x] Image
+  - [x] Voice
+  - [x] Location
+  - [x] Sticker 
+  - [x] Contact Card
+  - [x] Video
+  - [x] Money Transger
 - [ ] Show QQ emoji
 - [ ] Keep online(bug)

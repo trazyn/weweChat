@@ -106,7 +106,10 @@ const helper = {
                 // Emoji
                 return '[Emoji]';
 
-            case 49:
+            case 49 + 17:
+                return '🚀 Location sharing, Please check your phone.';
+
+            case 49 + 2000:
                 // Transfer
                 return `Money +${message.transfer.money} 💰💰💰`;
         }

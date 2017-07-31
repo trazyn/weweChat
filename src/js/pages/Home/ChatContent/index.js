@@ -137,7 +137,7 @@ export default class ChatContent extends Component {
                     <video preload="metadata" controls src="${video.src}" />
                 `;
 
-            case 49:
+            case 49 + 2000:
                 // Money transfer
                 let transfer = message.transfer;
 
@@ -146,6 +146,15 @@ export default class ChatContent extends Component {
                         <h4>Money Transfer</h4>
                         <span>💰 ${transfer.money}</span>
                         <p>如需收钱，请打开手机微信确认收款。</p>
+                    </div>
+                `;
+
+            case 49 + 17:
+                // Location sharing...
+                return `
+                    <div class="${classes.locationSharing}">
+                        <i class="icon-ion-ios-location"></i>
+                        Location sharing, Please check your phone.
                     </div>
                 `;
         }
@@ -180,7 +189,11 @@ export default class ChatContent extends Component {
                     [classes.isVoice]: type === 34,
                     [classes.isContact]: type === 42,
                     [classes.isVideo]: type === 43,
-                    [classes.isTransfer]: type === 49,
+
+                    // App messages
+                    [classes.appMessage]: [49 + 2000, 49 + 17].includes(type),
+                    [classes.isTransfer]: type === 49 + 2000,
+                    [classes.isLocationSharing]: type === 49 + 17,
                 })} key={index}>
                     <div>
                         <Avatar
@@ -278,7 +291,7 @@ export default class ChatContent extends Component {
                                 <div className={classes.info}>
                                     <p title={title} dangerouslySetInnerHTML={{__html: title}} />
 
-                                    <span dangerouslySetInnerHTML={{__html: user.Signature || 'No Signature'}} />
+                                    <span className={classes.signature} dangerouslySetInnerHTML={{__html: user.Signature || 'No Signature'}} />
                                 </div>
 
                                 <i className="icon-ion-android-more-vertical" />
