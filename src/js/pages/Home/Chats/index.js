@@ -7,7 +7,7 @@ import moment from 'moment';
 
 import classes from './style.css';
 import Avatar from 'components/Avatar';
-import getMessageContent from 'utils/getMessageContent';
+import helper from 'utils/helper';
 
 moment.updateLocale('en', {
     relativeTime: {
@@ -123,7 +123,7 @@ export default class Chats extends Component {
                                         <div className={classes.info}>
                                             <p className={classes.username} dangerouslySetInnerHTML={{__html: e.RemarkName || e.NickName}} />
 
-                                            <span className={classes.message} dangerouslySetInnerHTML={{__html: getMessageContent(message) || 'No Message'}} />
+                                            <span className={classes.message} dangerouslySetInnerHTML={{__html: helper.getMessageContent(message) || 'No Message'}} />
                                         </div>
                                     </div>
 

@@ -5,7 +5,6 @@ import { ipcRenderer } from 'electron';
 
 import storage from 'utils/storage';
 import helper from 'utils/helper';
-import getMessageContent from 'utils/getMessageContent';
 import contacts from './contacts';
 import session from './session';
 import settings from './settings';
@@ -21,7 +20,7 @@ async function resolveMessage(message) {
             if (message.Url && message.OriContent) {
                 // This message is a location
                 let parts = message.Content.split(':<br/>');
-                let location = helper.parseXml(message.OriContent);
+                let location = helper.parseKV(message.OriContent);
 
                 location.image = `${axios.defaults.baseURL}${parts[isChatRoom ? 2 : 1]}`.replace(/\/+/g, '/');
                 location.href = message.Url;
@@ -31,15 +30,15 @@ async function resolveMessage(message) {
             break;
         case 3:
             // Image
-            let images = helper.parseXml(content);
-            images.src = `${axios.defaults.baseURL}/cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${message.MsgId}&skey=${auth.skey}`.replace(/\/+/g, '/');
+            let images = helper.parseKV(content);
+            images.src = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${message.MsgId}&skey=${auth.skey}`;
             message.images = images;
             break;
 
         case 34:
             // Voice
-            let voice = helper.parseXml(content);
-            voice.src = `${axios.defaults.baseURL}/cgi-bin/mmwebwx-bin/webwxgetvoice?&msgid=${message.MsgId}&skey=${auth.skey}`.replace(/\/+/g, '/');
+            let voice = helper.parseKV(content);
+            voice.src = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetvoice?&msgid=${message.MsgId}&skey=${auth.skey}`;
             message.voice = voice;
             break;
 
@@ -47,9 +46,9 @@ async function resolveMessage(message) {
             // External emoji
             if (!content) break;
 
-            let emoji = helper.parseXml(content);
+            let emoji = helper.parseKV(content);
 
-            emoji.src = emoji.cdnurl || `${axios.defaults.baseURL}/cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${message.MsgId}&skey=${auth.skey}`.replace(/\/+/g, '/');
+            emoji.src = emoji.cdnurl || `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${message.MsgId}&skey=${auth.skey}`;
             message.emoji = emoji;
             break;
 
@@ -64,12 +63,37 @@ async function resolveMessage(message) {
             message.contact = contact;
             break;
 
+        case 43:
+            // Video
+            let video = {
+                cover: `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetmsgimg?&MsgId=${message.MsgId}&skey=${auth.skey}&type=slave`,
+                src: `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetvideo?msgid=${message.MsgId}&skey=${auth.skey}`,
+            };
+
+            message.video = video;
+            break;
+
+        case 49:
+            // Transfer
+            var { value } = helper.parseXml(message.Content, 'des');
+
+            message.transfer = {
+                desc: value,
+                money: +value.match(/[\d.]+元/)[0].slice(0, -1),
+            };
+            break;
+
         case 10000:
             // Chat room has been changed
             await contacts.batch([message.FromUserName]);
             break;
 
-            // TODO: Vodeo, Red Pack etc
+        // TODO: Vodeo, Red Pack etc
+
+        default:
+            // Unhandle message
+            message.Content = 'Unknow message type: ' + message.MsgType;
+            message.MsgType = 19999;
     }
 
     return message;
@@ -167,6 +191,8 @@ class Home {
 
             // Drop the duplicate message
             if (!list.data.find(e => e.NewMsgId === message.NewMsgId)) {
+                message = await resolveMessage(message);
+
                 if (settings.showNotification && !helper.isMuted(user)) {
                     // Get the user avatar and use it as notifier icon
                     let response = await axios.get(user.HeadImgUrl, { responseType: 'arraybuffer' });
@@ -175,10 +201,10 @@ class Home {
                     ipcRenderer.send('receive-message', {
                         icon: base64,
                         title: user.RemarkName || user.NickName,
-                        message: getMessageContent(message),
+                        message: helper.getMessageContent(message),
                     });
                 }
-                list.data.push(await resolveMessage(message));
+                list.data.push(message);
             }
         } else {
             // New friend has accepted
@@ -190,7 +216,7 @@ class Home {
         }
 
         if (self.user.UserName === from) {
-            // Current chat to user
+            // Message has readed
             list.unread = list.data.length;
         }
 
@@ -246,7 +272,7 @@ class Home {
                 HeadImgUrl: session.user.User.HeadImgUrl,
             });
 
-            if (!helper.isChatRoom(user.userName)
+            if (!helper.isChatRoom(user.UserName)
                 && !user.isFriend) {
                 // The target is not your friend
                 list.data.push({

@@ -128,6 +128,26 @@ export default class ChatContent extends Component {
                 }
 
                 return html;
+
+            case 43:
+                // Video message
+                let video = message.video;
+
+                return `
+                    <video preload="metadata" controls src="${video.src}" />
+                `;
+
+            case 49:
+                // Money transfer
+                let transfer = message.transfer;
+
+                return `
+                    <div class="${classes.transfer}">
+                        <h4>Money Transfer</h4>
+                        <span>💰 ${transfer.money}</span>
+                        <p>如需收钱，请打开手机微信确认收款。</p>
+                    </div>
+                `;
         }
     }
 
@@ -159,6 +179,8 @@ export default class ChatContent extends Component {
                     [classes.isEmoji]: type === 47,
                     [classes.isVoice]: type === 34,
                     [classes.isContact]: type === 42,
+                    [classes.isVideo]: type === 43,
+                    [classes.isTransfer]: type === 49,
                 })} key={index}>
                     <div>
                         <Avatar

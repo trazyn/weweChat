@@ -327,6 +327,53 @@
     /* stylelint-enable */
 }
 
+.message.isVideo {
+    & video {
+        max-width: 90%;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, .5);
+    }
+}
+
+.message.isTransfer {
+    position: relative;
+
+    & > div {
+        position: relative;
+        padding: 16px 0 0 47px;
+    }
+
+    & .transfer {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 14px;
+        background: #00d995;
+        box-shadow: 0 6px 28px 0 rgba(230, 230, 230, 100);
+    }
+
+    & .transfer span {
+        display: block;
+        padding: 8px 14px;
+        font-family: 'Roboto';
+        font-size: 24px;
+        color: #fff;
+        border-bottom: 2px solid color(#00d995 blackness(40%));
+    }
+
+    & .transfer p {
+        color: #fff;
+        font-size: 12px;
+        margin: 20px 20px 12px;
+    }
+
+    & h4 {
+        font-size: 16px;
+        text-transform: uppercase;
+        color: #fff;
+    }
+}
+
 .message.isme.isText {
     & > div {
         display: flex;
