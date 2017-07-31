@@ -156,6 +156,10 @@
     & > div {
         padding: 16px 0 0 47px;
     }
+
+    & .content img {
+        max-width: 80%;
+    }
 }
 
 .message.isImage {

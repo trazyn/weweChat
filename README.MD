@@ -15,9 +15,10 @@
   - [x] Image
   - [x] Voice
   - [x] Location
-  - [x] Sticker 
+  - [x] Sticker
   - [x] Contact Card
   - [x] Video
   - [x] Money Transger
+  - [x] Location sharing
 - [ ] Show QQ emoji
 - [ ] Keep online(bug)
