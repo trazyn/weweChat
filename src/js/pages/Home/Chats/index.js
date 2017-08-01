@@ -22,13 +22,13 @@ moment.updateLocale('en', {
 });
 
 @inject(stores => ({
-    chats: stores.home.chats,
-    chatTo: stores.home.chatTo,
-    selected: stores.home.user,
-    messages: stores.home.messages,
-    markedRead: stores.home.markedRead,
-    sticky: stores.home.sticky,
-    removeChat: stores.home.removeChat,
+    chats: stores.chat.sessions,
+    chatTo: stores.chat.chatTo,
+    selected: stores.chat.user,
+    messages: stores.chat.messages,
+    markedRead: stores.chat.markedRead,
+    sticky: stores.chat.sticky,
+    removeChat: stores.chat.removeChat,
     loading: stores.session.loading,
 }))
 @observer

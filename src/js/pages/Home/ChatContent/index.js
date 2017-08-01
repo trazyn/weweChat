@@ -11,8 +11,8 @@ import Avatar from 'components/Avatar';
 import helper from 'utils/helper';
 
 @inject(stores => ({
-    user: stores.home.user,
-    messages: stores.home.messages,
+    user: stores.chat.user,
+    messages: stores.chat.messages,
     loading: stores.session.loading,
     showUserinfo: async(isme, user) => {
         if (isme) {
@@ -292,6 +292,10 @@ export default class ChatContent extends Component {
         }
     }
 
+    showMenu() {
+
+    }
+
     componentDidUpdate() {
         var viewport = this.refs.viewport;
 
@@ -318,7 +322,7 @@ export default class ChatContent extends Component {
                                     <span className={classes.signature} dangerouslySetInnerHTML={{__html: user.Signature || 'No Signature'}} />
                                 </div>
 
-                                <i className="icon-ion-android-more-vertical" />
+                                <i className="icon-ion-android-more-vertical" onClick={() => this.showMenu()} />
                             </header>
 
                             <div className={classes.messages} ref="viewport">

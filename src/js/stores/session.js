@@ -4,7 +4,7 @@ import axios from 'axios';
 import { observable, action } from 'mobx';
 
 import storage from 'utils/storage';
-import home from './home';
+import chat from './chat';
 import contacts from './contacts';
 
 class Session {
@@ -122,7 +122,7 @@ class Session {
         });
         self.user.User.HeadImgUrl = `${axios.defaults.baseURL}${self.user.User.HeadImgUrl.substr(1)}`;
         await contacts.getContats();
-        await home.loadChats(self.user.ChatSet);
+        await chat.loadChats(self.user.ChatSet);
         self.loading = false;
 
         return self.user;
@@ -156,11 +156,11 @@ class Session {
 
         response.data.AddMsgList.map(e => {
             if (e.FromUserName === self.user.User.UserName) {
-                return home.markedRead(e.ToUserName);
+                return chat.markedRead(e.ToUserName);
             }
 
             if (e.FromUserName.startsWith('@')) {
-                home.addMessage(e);
+                chat.addMessage(e);
             }
         });
 
@@ -218,7 +218,7 @@ class Session {
         };
 
         response.data.AddMsgList.map(async e => {
-            await home.loadChats(e.StatusNotifyUserName);
+            await chat.loadChats(e.StatusNotifyUserName);
         });
 
         self.genSyncKey(response.data.SyncKey.List);

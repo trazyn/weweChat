@@ -1,6 +1,6 @@
 
 import session from './session';
-import home from './home';
+import chat from './chat';
 import addfriend from './addfriend';
 import userinfo from './userinfo';
 import contacts from './contacts';
@@ -8,7 +8,7 @@ import settings from './settings';
 
 const stores = {
     session,
-    home,
+    chat,
     addfriend,
     userinfo,
     contacts,

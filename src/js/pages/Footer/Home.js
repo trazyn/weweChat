@@ -7,8 +7,8 @@ import classes from './style.css';
 import Emoji from './Emoji';
 
 @inject(stores => ({
-    sendMessage: stores.home.sendMessage,
-    user: stores.home.user,
+    sendMessage: stores.chat.sendMessage,
+    user: stores.chat.user,
 }))
 export default class Input extends Component {
     handleEnter(e) {

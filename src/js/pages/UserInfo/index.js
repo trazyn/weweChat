@@ -11,7 +11,7 @@ import { Modal, ModalBody } from 'components/Modal';
 @inject(stores => ({
     chatTo: (userid) => {
         var user = stores.contacts.memberList.find(e => e.UserName === userid);
-        stores.home.chatTo(user);
+        stores.chat.chatTo(user);
     },
     pallet: stores.userinfo.pallet,
     show: stores.userinfo.show,

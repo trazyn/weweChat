@@ -130,8 +130,8 @@ async function resolveMessage(message) {
     return message;
 }
 
-class Home {
-    @observable chats = [];
+class Chat {
+    @observable sessions = [];
     @observable messages = new Map();
     @observable user = false;
 
@@ -184,7 +184,7 @@ class Home {
             }
         });
 
-        self.chats.replace(sorted);
+        self.sessions.replace(sorted);
 
         return res;
     }
@@ -199,7 +199,7 @@ class Home {
         var from = message.FromUserName;
         var user = await contacts.getUser(from);
         var list = self.messages.get(from);
-        var chats = self.chats;
+        var sessions = self.sessions;
         var stickyed = [];
         var normaled = [];
         /* eslint-enable */
@@ -207,17 +207,17 @@ class Home {
         // Check new message is already in the chat set
         if (list) {
             // Swap the chatset order
-            let index = self.chats.findIndex(e => e.UserName === from);
+            let index = self.sessions.findIndex(e => e.UserName === from);
 
             if (index !== -1) {
-                chats = [
-                    ...self.chats.slice(index, index + 1),
-                    ...self.chats.slice(0, index),
-                    ...self.chats.slice(index + 1, self.chats.length)
+                sessions = [
+                    ...self.sessions.slice(index, index + 1),
+                    ...self.sessions.slice(0, index),
+                    ...self.sessions.slice(index + 1, self.sessions.length)
                 ];
             } else {
                 // User not in chatset
-                chats = [user, ...self.chats];
+                sessions = [user, ...self.sessions];
             }
 
             // Drop the duplicate message
@@ -239,7 +239,7 @@ class Home {
             }
         } else {
             // New friend has accepted
-            chats = [user, ...self.chats];
+            sessions = [user, ...self.sessions];
             list = {
                 data: [message],
                 unread: 0,
@@ -251,7 +251,7 @@ class Home {
             list.unread = list.data.length;
         }
 
-        chats = chats.map(e => {
+        sessions = sessions.map(e => {
             // Catch the contact update, eg: MsgType = 10000, chat room name has changed
             var user = contacts.memberList.find(user => user.UserName === e.UserName);
             user.muted = e.muted;
@@ -265,7 +265,7 @@ class Home {
             }
         });
 
-        self.chats.replace([...stickyed, ...normaled]);
+        self.sessions.replace([...stickyed, ...normaled]);
         self.messages.set(from, list);
     }
 
@@ -353,15 +353,15 @@ class Home {
         var sorted = [];
 
         if (+response.data.BaseResponse.Ret === 0) {
-            self.chats.find(e => e.UserName === user.UserName).isTop = !user.isTop;
-            self.chats.sort((a, b) => a.index - b.index).map(e => {
+            self.sessions.find(e => e.UserName === user.UserName).isTop = !user.isTop;
+            self.sessions.sort((a, b) => a.index - b.index).map(e => {
                 if (e.isTop) {
                     sorted.unshift(e);
                 } else {
                     sorted.push(e);
                 }
             });
-            self.chats.replace(sorted);
+            self.sessions.replace(sorted);
 
             return true;
         }
@@ -370,10 +370,10 @@ class Home {
     }
 
     @action removeChat(user) {
-        var chats = self.chats.filter(e => e.UserName !== user.UserName);
-        self.chats.replace(chats);
+        var sessions = self.sessions.filter(e => e.UserName !== user.UserName);
+        self.sessions.replace(sessions);
     }
 }
 
-const self = new Home();
+const self = new Chat();
 export default self;
