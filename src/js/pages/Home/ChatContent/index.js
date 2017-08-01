@@ -136,7 +136,7 @@ export default class ChatContent extends Component {
                 let video = message.video;
 
                 return `
-                    <video preload="metadata" controls src="${video.src}" />
+                    <video preload="metadata" poster="${video.cover}" controls src="${video.src}" />
                 `;
 
             case 49 + 2000:
