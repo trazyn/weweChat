@@ -186,6 +186,7 @@
     }
 
     & .contact {
+        position: relative;
         display: flex;
         justify-content: space-between;
         padding: 8px 14px;
@@ -350,6 +351,10 @@
         background: #00d995;
         box-shadow: 0 6px 28px 0 rgba(230, 230, 230, 100);
     }
+
+    & p {
+        color: #fff;
+    }
 }
 
 .message.isTransfer {
@@ -418,6 +423,63 @@
     }
 }
 
+.message.isFile {
+    & > div {
+        position: relative;
+        padding: 16px 0 0 47px;
+    }
+
+    & .file {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 14px;
+        padding-right: 32px;
+        background: #fff;
+        box-shadow: 0 6px 28px 0 rgba(230, 230, 230, 100);
+    }
+
+    & .file img {
+        height: 32px;
+        width: 32px;
+        margin: 8px 0;
+        margin-right: 24px;
+        pointer-events: none;
+    }
+
+    & .file > div {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        pointer-events: none;
+    }
+
+    & .file p {
+        margin: 0;
+    }
+
+    & .file p:last-child {
+        font-size: 12px;
+    }
+
+    & i {
+        position: absolute;
+        top: 50%;
+        right: -16px;
+        height: 32px;
+        width: 32px;
+        border-radius: 100%;
+        line-height: 32px;
+        text-align: center;
+        font-size: 14px;
+        background: #e1306c;
+        box-shadow: 0 0 24px 0 rgba(119, 119, 119, .5);
+        cursor: pointer;
+        color: #fff;
+        transform: translateY(-50%);
+    }
+}
+
 .message.isme.isText {
     & > div {
         display: flex;
@@ -469,39 +531,3 @@
     }
 }
 
-@keyframes tada {
-    from {
-        transform: scale3d(1, 1, 1);
-    }
-
-    10%,
-    20% {
-        transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
-    }
-
-    30%,
-    50%,
-    70%,
-    90% {
-        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
-    }
-
-    40%,
-    60%,
-    80% {
-        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
-    }
-
-    to {
-        transform: scale3d(1, 1, 1);
-    }
-}
-
-.tada {
-    animation-name: tada;
-}
-
-.animated {
-    animation-duration: 1s;
-    animation-fill-mode: both;
-}

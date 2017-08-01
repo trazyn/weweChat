@@ -5,21 +5,15 @@ import clazz from 'classname';
 import randomColor from 'randomcolor';
 
 import classes from './style.css';
-import Loader from 'components/Loader';
 import Avatar from 'components/Avatar';
 
 @inject(stores => ({
-    loading: stores.contacts.loading,
     filtered: stores.contacts.filtered,
     getContats: stores.contacts.getContats,
     showUserinfo: stores.userinfo.toggle,
 }))
 @observer
 export default class Contacts extends Component {
-    componentWillMount() {
-        this.props.getContats();
-    }
-
     renderColumns(data, index) {
         var list = data.filter((e, i) => i % 3 === index);
 
@@ -81,7 +75,6 @@ export default class Contacts extends Component {
 
         return (
             <div className={classes.container}>
-                <Loader show={this.props.loading} fullscreen={true} />
                 <div className={classes.columns}>
                     <div className={classes.column}>
                         {

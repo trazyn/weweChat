@@ -47,6 +47,7 @@ import helper from 'utils/helper';
             message.Content = matchs[1];
         }
 
+        // If user is null, that mean user has been removed from this chat room
         return { message, user };
     },
     showAddFriend: (user) => stores.addfriend.toggle(true, user),
@@ -118,14 +119,15 @@ export default class ChatContent extends Component {
                             <p>${contact.name}</p>
                             <p>${contact.address}</p>
                         </div>
-                    </div>
                 `;
 
                 if (!contact.isFriend) {
                     html += `
-                        <i class="icon-ion-android-add" data-userid="${contact.UserName}" />
+                        <i class="icon-ion-android-add" data-userid="${contact.UserName}"></i>
                     `;
                 }
+
+                html += '</div>';
 
                 return html;
 
@@ -146,6 +148,23 @@ export default class ChatContent extends Component {
                         <h4>Money Transfer</h4>
                         <span>💰 ${transfer.money}</span>
                         <p>如需收钱，请打开手机微信确认收款。</p>
+                    </div>
+                `;
+
+            case 49 + 6:
+                // File message
+                let file = message.file;
+
+                return `
+                    <div class="${classes.file}">
+                        <img src="assets/images/filetypes/${helper.getFiletypeIcon(file.extension)}" />
+
+                        <div>
+                            <p>${file.name}</p>
+                            <p>${helper.humanSize(file.size)}</p>
+                        </div>
+
+                        <i class="icon-ion-android-arrow-down"></i>
                     </div>
                 `;
 
@@ -179,6 +198,10 @@ export default class ChatContent extends Component {
                 );
             }
 
+            if (!user) {
+                return false;
+            }
+
             return (
                 <div className={clazz(classes.message, {
                     [classes.isme]: message.isme,
@@ -191,9 +214,10 @@ export default class ChatContent extends Component {
                     [classes.isVideo]: type === 43,
 
                     // App messages
-                    [classes.appMessage]: [49 + 2000, 49 + 17].includes(type),
+                    [classes.appMessage]: [49 + 2000, 49 + 17, 49 + 6].includes(type),
                     [classes.isTransfer]: type === 49 + 2000,
                     [classes.isLocationSharing]: type === 49 + 17,
+                    [classes.isFile]: type === 49 + 6,
                 })} key={index}>
                     <div>
                         <Avatar
@@ -305,7 +329,7 @@ export default class ChatContent extends Component {
                         </div>
                     ) : (
                         <div className={classes.inner}>
-                            <img src="assets/images/noselected.png" className={clazz(classes.tada, classes.animated)} />
+                            <img src="assets/images/noselected.png" />
                             <h1>No Chat selected.</h1>
                         </div>
                     )

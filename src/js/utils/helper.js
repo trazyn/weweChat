@@ -1,4 +1,6 @@
 
+import { remote } from 'electron';
+
 const CHATROOM_NOTIFY_CLOSE = 0;
 const CONTACTFLAG_NOTIFYCLOSECONTACT = 512;
 const MM_USERATTRVERIFYFALG_BIZ_BRAND = 8;
@@ -107,12 +109,77 @@ const helper = {
                 return '[Emoji]';
 
             case 49 + 17:
-                return '🚀 Location sharing, Please check your phone.';
+                return '🚀 &nbsp; Location sharing, Please check your phone.';
+
+            case 49 + 6:
+                return `🚚 &nbsp; ${message.file.name}`;
 
             case 49 + 2000:
                 // Transfer
                 return `Money +${message.transfer.money} 💰💰💰`;
         }
+    },
+
+    getCookie: async(name) => {
+        var value = {
+            name,
+        };
+
+        return new Promise((resolve, reject) => {
+            var session = remote.getCurrentWindow().webContents.session;
+            session.cookies.get(value, (err, cookies) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(cookies[0].value);
+                }
+            });
+        });
+    },
+
+    humanSize: (size) => {
+        var value = (size / 1024).toFixed(1);
+
+        if (size > (1024 << 10)) {
+            value = (value / 1024).toFixed(1);
+            return `${value} M`;
+        } else {
+            return `${value} KB`;
+        }
+    },
+
+    getFiletypeIcon: (extension) => {
+        var filename = 'unknow';
+
+        extension = (extension || '').toLowerCase().replace(/^\./, '');
+
+        switch (true) {
+            case ['mp3', 'flac', 'aac', 'm4a', 'wma'].includes(extension):
+                filename = 'audio';
+                break;
+
+            case ['mp4', 'mkv', 'avi', 'flv'].includes(extension):
+                filename = 'audio';
+                break;
+
+            case ['zip', 'rar', 'tar', 'tar.gz'].includes(extension):
+                filename = 'archive';
+                break;
+
+            case ['doc', 'docx'].includes(extension):
+                filename = 'word';
+                break;
+
+            case ['xls', 'xlsx'].includes(extension):
+                filename = 'excel';
+                break;
+
+            case ['ai', 'apk', 'exe', 'ipa', 'pdf', 'ppt', 'psd'].includes(extension):
+                filename = extension;
+                break;
+        }
+
+        return `${filename}.png`;
     }
 };
 

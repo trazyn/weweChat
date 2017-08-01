@@ -6,7 +6,7 @@ import userinfo from './userinfo';
 import contacts from './contacts';
 import settings from './settings';
 
-export default {
+const stores = {
     session,
     home,
     addfriend,
@@ -14,3 +14,5 @@ export default {
     contacts,
     settings,
 };
+
+export default stores;

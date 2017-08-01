@@ -91,6 +91,23 @@ async function resolveMessage(message) {
                     message.MsgType += 17;
                     break;
 
+                case 6:
+                    // Receive file
+                    let file = {
+                        name: message.FileName,
+                        size: message.FileSize,
+                        mediaId: message.MediaId,
+                        extension: (message.FileName.match(/\.\w+$/) || [])[0],
+                    };
+
+                    file.uid = await helper.getCookie('wxuin');
+                    file.ticket = await helper.getCookie('webwx_data_ticket');
+                    file.download = `${axios.defaults.baseURL.replace(/^https:\/\//, 'https://file.')}cgi-bin/mmwebwx-bin/webwxgetmedia?sender=${message.FromUserName}&mediaid=${file.mediaId}&filename=${file.name}&fromuser=${file.uid}&pass_ticket=undefined&webwx_data_ticket=${file.ticket}`;
+
+                    message.MsgType += 6;
+                    message.file = file;
+                    break;
+
                 default:
                     console.error('Unknow app message: %o', message);
                     message.Content = '收到一条暂不支持的消息类型，请在手机上查看。';
@@ -103,8 +120,6 @@ async function resolveMessage(message) {
             // Chat room has been changed
             await contacts.batch([message.FromUserName]);
             break;
-
-        // TODO: Vodeo, Red Pack etc
 
         default:
             // Unhandle message

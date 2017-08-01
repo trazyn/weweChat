@@ -42,6 +42,8 @@ label {
     text-decoration: none;
 }
 
+/* WEB WECHAT EMOJI :START */
+
 .emoji {
     background: url(./assets/images/emoji.png) 0 0 no-repeat;
     width: 20px;
@@ -3768,6 +3770,8 @@ label {
 .qq_face .qqface104 {
     background-position: -406px -174px;
 }
+
+/* WEB WECHAT EMOJI :END */
 
 ::-webkit-scrollbar {
     width: 0;
