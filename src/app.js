@@ -16,9 +16,10 @@ ElectronCookies.enable({
 });
 
 class App extends Component {
-    async componentWillMount() {
-        await stores.session.hasLogin();
-        await stores.settings.init();
+    componentWillMount() {
+        stores.session.hasLogin();
+        stores.search.getHistory();
+        stores.settings.init();
     }
 
     render() {

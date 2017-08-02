@@ -190,6 +190,25 @@ class Chat {
     }
 
     @action chatTo(user) {
+        var sessions = self.sessions;
+        var stickyed = [];
+        var normaled = [];
+        var index = self.sessions.findIndex(e => e.UserName === user.UserName);
+
+        if (index === -1) {
+            // User not in chatset
+            sessions = [user, ...self.sessions];
+        }
+
+        sessions.map(e => {
+            if (e.isTop) {
+                stickyed.push(e);
+            } else {
+                normaled.push(e);
+            }
+        });
+
+        self.sessions.replace([...stickyed, ...normaled]);
         self.user = user;
         self.markedRead(user.UserName);
     }
@@ -254,7 +273,6 @@ class Chat {
         sessions = sessions.map(e => {
             // Catch the contact update, eg: MsgType = 10000, chat room name has changed
             var user = contacts.memberList.find(user => user.UserName === e.UserName);
-            user.muted = e.muted;
             user.isTop = e.isTop;
 
             // Fix sticky bug
@@ -372,6 +390,14 @@ class Chat {
     @action removeChat(user) {
         var sessions = self.sessions.filter(e => e.UserName !== user.UserName);
         self.sessions.replace(sessions);
+    }
+
+    @action empty(user) {
+        // Empty the chat content
+        self.messages.set(user.UserName, {
+            data: [],
+            unread: 0,
+        });
     }
 }
 

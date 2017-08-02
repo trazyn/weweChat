@@ -30,6 +30,7 @@ moment.updateLocale('en', {
     sticky: stores.chat.sticky,
     removeChat: stores.chat.removeChat,
     loading: stores.session.loading,
+    searching: stores.search.searching,
 }))
 @observer
 export default class Chats extends Component {
@@ -92,7 +93,7 @@ export default class Chats extends Component {
     }
 
     render() {
-        var { loading, chats, selected, chatTo } = this.props;
+        var { loading, chats, selected, chatTo, searching } = this.props;
 
         if (loading) return false;
 
@@ -100,8 +101,9 @@ export default class Chats extends Component {
             <div className={classes.container}>
                 <div className={classes.chats}>
                     {
-                        chats.map((e, index) => {
+                        !searching && chats.map((e, index) => {
                             var message = this.getTheLastestMessage(e.UserName) || {};
+                            var muted = helper.isMuted(e);
 
                             return (
                                 <div
@@ -114,8 +116,8 @@ export default class Chats extends Component {
                                     onClick={ev => chatTo(e)}>
                                     <div className={classes.inner}>
                                         <div className={clazz(classes.dot, {
-                                            [classes.green]: !e.muted && this.hasUnreadMessage(e.UserName),
-                                            [classes.red]: e.muted && this.hasUnreadMessage(e.UserName)
+                                            [classes.green]: !muted && this.hasUnreadMessage(e.UserName),
+                                            [classes.red]: muted && this.hasUnreadMessage(e.UserName)
                                         })}>
                                             <Avatar src={e.HeadImgUrl} />
                                         </div>

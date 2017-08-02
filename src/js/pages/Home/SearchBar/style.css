@@ -27,3 +27,95 @@
         transform: translateY(-50%);
     }
 }
+
+.dropdown {
+    position: absolute;
+    width: 100%;
+    top: 60px;
+    left: 0;
+    height: calc(100vh - 100px - 60px);
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    & header {
+        display: flex;
+        padding: 13px 16px;
+        color: #777;
+        font-family: 'Roboto';
+        justify-content: space-between;
+        align-items: baseline;
+    }
+
+    & header h3 {
+        margin: 0;
+        font-family: 'Helvetica';
+        font-weight: 100;
+        color: #000;
+        border-bottom: 1px solid #000;
+        padding: 0 4px 2px 0;
+        text-transform: uppercase;
+    }
+
+    & header a {
+        font-size: 12px;
+        text-decoration: none;
+        color: #405de6;
+    }
+}
+
+.user {
+    position: relative;
+    display: flex;
+    padding: 13px 16px;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: pointer;
+    transition: .2s ease-in-out;
+
+    & img {
+        height: 32px;
+        width: 32px;
+    }
+
+    & > div {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    &.active,
+    &:hover {
+        background: #e8edf3;
+    }
+
+    & i {
+
+    }
+}
+
+.info {
+    margin-left: 16px;
+}
+
+.username {
+    max-width: 170px;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 4px;
+    font-family: 'Helvetica';
+    font-size: 15px;
+    color: rgba(74, 74, 74, .9);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.signature {
+    max-width: 170px;
+    font-family: 'Lucida Grande';
+    font-size: 14px;
+    color: #9b9b9b;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

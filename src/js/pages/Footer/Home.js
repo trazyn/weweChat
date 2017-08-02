@@ -44,6 +44,7 @@ export default class Input extends Component {
                     You should choice a contact at first.
                 </div>
                 <input
+                    id="messageInput"
                     type="text"
                     ref="input"
                     placeholder="Type someting to sned..."

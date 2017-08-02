@@ -8,7 +8,7 @@ import chat from './chat';
 import contacts from './contacts';
 
 class Session {
-    @observable loading = false;
+    @observable loading = true;
     @observable auth;
     @observable code;
     @observable avatar;
@@ -94,8 +94,6 @@ class Session {
     }
 
     @action async initUser() {
-        self.loading = true;
-
         var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxinit?r=${-new Date()}&pass_ticket=${self.auth.passTicket}`, {
             BaseRequest: {
                 Sid: self.auth.wxsid,
@@ -123,7 +121,6 @@ class Session {
         self.user.User.HeadImgUrl = `${axios.defaults.baseURL}${self.user.User.HeadImgUrl.substr(1)}`;
         await contacts.getContats();
         await chat.loadChats(self.user.ChatSet);
-        self.loading = false;
 
         return self.user;
     }
@@ -221,6 +218,7 @@ class Session {
             await chat.loadChats(e.StatusNotifyUserName);
         });
 
+        self.loading = false;
         self.genSyncKey(response.data.SyncKey.List);
 
         if (await loop() === false) {

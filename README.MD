@@ -10,7 +10,7 @@
   - [ ] Show members
   - [ ] Add / Remove member
   - [ ] Create chat room
-- [ ] Various message
+- [x] Various message
   - [x] Text
   - [x] Image
   - [x] Voice
@@ -20,5 +20,7 @@
   - [x] Video
   - [x] Money Transger
   - [x] Location sharing
+  - [ ] File
 - [ ] Show QQ emoji
+- [x] Search chat set
 - [ ] Keep online(bug)

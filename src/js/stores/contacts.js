@@ -9,12 +9,11 @@ import helper from 'utils/helper';
 class Contacts {
     @observable loading = false;
     @observable showGroup = true;
+    @observable memberList = [];
     @observable filtered = {
         query: '',
         result: [],
     };
-
-    memberList;
 
     @action group(list) {
         var mappings = {};
@@ -55,7 +54,6 @@ class Contacts {
         await self.batch([userid]);
         user = await self.getUser(userid);
         user.isTop = helper.isTop(user);
-        user.muted = helper.isMuted(user);
         return user;
     }
 
@@ -183,6 +181,8 @@ class Contacts {
             query: text,
             result: list.length ? self.group(list) : [],
         };
+
+        window.res = self.filtered;
     }
 
     @action toggleGroup(showGroup) {

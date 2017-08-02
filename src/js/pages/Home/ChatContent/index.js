@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, remote } from 'electron';
 import clazz from 'classname';
 import moment from 'moment';
 import axios from 'axios';
@@ -12,6 +12,9 @@ import helper from 'utils/helper';
 
 @inject(stores => ({
     user: stores.chat.user,
+    sticky: stores.chat.sticky,
+    empty: stores.chat.empty,
+    removeChat: stores.chat.removeChat,
     messages: stores.chat.messages,
     loading: stores.session.loading,
     showUserinfo: async(isme, user) => {
@@ -293,7 +296,32 @@ export default class ChatContent extends Component {
     }
 
     showMenu() {
+        var user = this.props.user;
+        var menu = new remote.Menu.buildFromTemplate([
+            {
+                label: 'Empty Content',
+                click: () => {
+                    this.props.empty(user);
+                }
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: user.isTop ? 'Unsticky' : 'Sticky on Top',
+                click: () => {
+                    this.props.sticky(user);
+                }
+            },
+            {
+                label: 'Delete',
+                click: () => {
+                    this.props.removeChat(user);
+                }
+            },
+        ]);
 
+        menu.popup(remote.getCurrentWindow());
     }
 
     componentDidUpdate() {

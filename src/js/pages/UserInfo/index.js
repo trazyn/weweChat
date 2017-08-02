@@ -70,6 +70,7 @@ export default class UserInfo extends Component {
         if (user.isFriend) {
             this.props.toggle(false);
             this.props.chatTo(user.UserName);
+            document.querySelector('#messageInput').focus();
         } else {
             this.props.showAddFriend(user);
         }
