@@ -308,7 +308,7 @@ export default class ChatContent extends Component {
                 type: 'separator'
             },
             {
-                label: user.isTop ? 'Unsticky' : 'Sticky on Top',
+                label: helper.isTop(user) ? 'Unsticky' : 'Sticky on Top',
                 click: () => {
                     this.props.sticky(user);
                 }

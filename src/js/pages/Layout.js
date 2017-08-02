@@ -9,6 +9,7 @@ import Footer from './Footer';
 import Login from './Login';
 import UserInfo from './UserInfo';
 import AddFriend from './AddFriend';
+import NewChat from './NewChat';
 
 @inject(stores => ({
     isLogin: () => !!stores.session.auth,
@@ -38,6 +39,7 @@ export default class Layout extends Component {
                 <Footer location={this.props.location} />
                 <UserInfo />
                 <AddFriend />
+                <NewChat />
             </div>
         );
     }

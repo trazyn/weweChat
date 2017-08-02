@@ -51,6 +51,7 @@ class Search {
         }
 
         self.searching = true;
+        return self.result;
     }
 
     @action clearHistory() {

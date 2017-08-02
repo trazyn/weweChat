@@ -10,6 +10,7 @@ import ChatContent from './ChatContent';
 
 @inject(stores => ({
     loading: stores.session.loading,
+    newChat: () => stores.newchat.toggle(true),
 }))
 @observer
 export default class Home extends Component {
@@ -22,7 +23,7 @@ export default class Home extends Component {
                         <SearchBar />
                         <Chats />
 
-                        <div className={classes.addChat}>
+                        <div className={classes.addChat} onClick={() => this.props.newChat()}>
                             <i className="icon-ion-android-add" />
                         </div>
                     </div>

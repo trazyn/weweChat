@@ -110,7 +110,7 @@ async function resolveMessage(message) {
 
                 default:
                     console.error('Unknow app message: %o', message);
-                    message.Content = '收到一条暂不支持的消息类型，请在手机上查看。';
+                    message.Content = `收到一条暂不支持的消息类型，请在手机上查看（${message.FileName}）。`;
                     message.MsgType = 19999;
                     break;
             }
@@ -175,9 +175,8 @@ class Chat {
 
             // Save the original index to support sticky feature
             e.index = index;
-            e.isTop = helper.isTop(e);
 
-            if (e.isTop) {
+            if (helper.isTop(e)) {
                 sorted.unshift(e);
             } else {
                 sorted.push(e);
@@ -201,7 +200,7 @@ class Chat {
         }
 
         sessions.map(e => {
-            if (e.isTop) {
+            if (helper.isTop(e)) {
                 stickyed.push(e);
             } else {
                 normaled.push(e);
@@ -273,10 +272,9 @@ class Chat {
         sessions = sessions.map(e => {
             // Catch the contact update, eg: MsgType = 10000, chat room name has changed
             var user = contacts.memberList.find(user => user.UserName === e.UserName);
-            user.isTop = e.isTop;
 
             // Fix sticky bug
-            if (user.isTop) {
+            if (helper.isTop(user)) {
                 stickyed.push(user);
             } else {
                 normaled.push(user);
@@ -356,7 +354,7 @@ class Chat {
 
     @action async sticky(user) {
         var auth = await storage.get('auth');
-        var sticky = +!user.isTop;
+        var sticky = +!helper.isTop(user);
         var response = await axios.post('/cgi-bin/mmwebwx-bin/webwxoplog', {
             BaseRequest: {
                 Sid: auth.wxsid,
@@ -371,9 +369,9 @@ class Chat {
         var sorted = [];
 
         if (+response.data.BaseResponse.Ret === 0) {
-            self.sessions.find(e => e.UserName === user.UserName).isTop = !user.isTop;
+            self.sessions.find(e => e.UserName === user.UserName).isTop = !!sticky;
             self.sessions.sort((a, b) => a.index - b.index).map(e => {
-                if (e.isTop) {
+                if (helper.isTop(e)) {
                     sorted.unshift(e);
                 } else {
                     sorted.push(e);

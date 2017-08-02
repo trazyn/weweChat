@@ -70,7 +70,7 @@ export default class Chats extends Component {
                 type: 'separator'
             },
             {
-                label: user.isTop ? 'Unsticky' : 'Sticky on Top',
+                label: helper.isTop(user) ? 'Unsticky' : 'Sticky on Top',
                 click: () => {
                     this.props.sticky(user);
                 }
@@ -104,11 +104,12 @@ export default class Chats extends Component {
                         !searching && chats.map((e, index) => {
                             var message = this.getTheLastestMessage(e.UserName) || {};
                             var muted = helper.isMuted(e);
+                            var isTop = helper.isTop(e);
 
                             return (
                                 <div
                                     className={clazz(classes.chat, {
-                                        [classes.sticky]: e.isTop,
+                                        [classes.sticky]: isTop,
                                         [classes.active]: selected && selected.UserName === e.UserName
                                     })}
                                     key={index}

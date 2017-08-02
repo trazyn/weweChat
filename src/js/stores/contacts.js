@@ -53,7 +53,6 @@ class Contacts {
 
         await self.batch([userid]);
         user = await self.getUser(userid);
-        user.isTop = helper.isTop(user);
         return user;
     }
 
@@ -82,7 +81,7 @@ class Contacts {
         self.loading = false;
         self.filtered.result = self.group(self.memberList);
 
-        return self.memberList;
+        return (window.list = self.memberList);
     }
 
     // Batch get the contacts
@@ -142,22 +141,6 @@ class Contacts {
         }
 
         return response.data.ContactList;
-    }
-
-    async search(keyword) {
-        var auth = await storage.get('auth');
-        var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxsearchcontact`, {
-            BaseRequest: {
-                Sid: auth.wxsid,
-                Uin: auth.wxuin,
-                Skey: auth.skey,
-            },
-            KeyWord: keyword,
-        });
-
-        if (response.data.BaseResponse.Ret === 0) {
-            console.log(response.data);
-        }
     }
 
     @action filter(text = '') {

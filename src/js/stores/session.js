@@ -196,11 +196,13 @@ class Session {
                     // Has new message need sync
                     2,
                     // You got a new friend
-                    6
+                    6,
+                    // Unknow
+                    4,
                 ].includes(+window.synccheck.selector)) {
                     var selector = +window.synccheck.selector;
 
-                    if ([2, 6].includes(selector)) {
+                    if (selector !== 0) {
                         await self.getNewMessage();
                     }
 

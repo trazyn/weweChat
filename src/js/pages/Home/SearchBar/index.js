@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import Avatar from 'components/Avatar';
 
 import classes from './style.css';
 
@@ -116,7 +115,7 @@ export default class SearchBar extends Component {
     renderUser(user) {
         return (
             <div className={classes.user} onClick={e => this.chatTo(user)} data-userid={user.UserName}>
-                <Avatar src={user.HeadImgUrl} />
+                <img src={user.HeadImgUrl} />
 
                 <div className={classes.info}>
                     <p className={classes.username} dangerouslySetInnerHTML={{__html: user.RemarkName || user.NickName}} />

@@ -24,6 +24,10 @@ const helper = {
     },
 
     isTop(user) {
+        if (user.isTop !== void 0) {
+            return user.isTop;
+        }
+
         return user.ContactFlag & CONTACTFLAG_TOPCONTACT;
     },
 
