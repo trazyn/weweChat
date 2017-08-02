@@ -56,7 +56,8 @@ export default class SearchBar extends Component {
     }
 
     highlight(offset) {
-        var users = Array.from(this.refs.dropdown.querySelectorAll(`.${classes.user}`));
+        var scroller = this.refs.dropdown;
+        var users = Array.from(scroller.querySelectorAll(`.${classes.user}`));
         var index = users.findIndex(e => e.classList.contains(classes.active));
 
         if (index > -1) {
@@ -73,7 +74,11 @@ export default class SearchBar extends Component {
             index = 0;
         }
 
-        users[index].classList.add(classes.active);
+        var active = users[index];
+
+        // Keep active item always in the viewport
+        active.classList.add(classes.active);
+        scroller.scrollTop = active.offsetTop + active.offsetHeight - scroller.offsetHeight;
     }
 
     navigation(e) {
