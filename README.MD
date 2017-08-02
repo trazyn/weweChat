@@ -23,4 +23,5 @@
   - [ ] File
 - [ ] Show QQ emoji
 - [x] Search chat set
-- [ ] Keep online(bug)
+- [x] Search and create chat room
+- [x] Keep online(bug)
