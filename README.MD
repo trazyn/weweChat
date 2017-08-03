@@ -9,7 +9,7 @@
   - [x] Show correct contact
   - [ ] Show members
   - [ ] Add / Remove member
-  - [ ] Create chat room
+  - [x] Create chat room
 - [x] Various message
   - [x] Text
   - [x] Image
