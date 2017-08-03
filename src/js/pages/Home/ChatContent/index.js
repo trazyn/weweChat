@@ -31,6 +31,11 @@ import helper from 'utils/helper';
 
         stores.userinfo.toggle(true, user);
     },
+    showMembers: (user) => {
+        if (helper.isChatRoom(user.UserName)) {
+            stores.members.toggle(true, user);
+        }
+    },
     showContact: (userid) => {
         var user = stores.contacts.memberList.find(e => e.UserName === userid);
         stores.userinfo.toggle(true, user);
@@ -335,6 +340,7 @@ export default class ChatContent extends Component {
     render() {
         var { loading, user, messages } = this.props;
         var title = user.RemarkName || user.NickName;
+        var signature = user.Signature;
 
         if (loading) return false;
 
@@ -347,7 +353,11 @@ export default class ChatContent extends Component {
                                 <div className={classes.info}>
                                     <p title={title} dangerouslySetInnerHTML={{__html: title}} />
 
-                                    <span className={classes.signature} dangerouslySetInnerHTML={{__html: user.Signature || 'No Signature'}} />
+                                    <span
+                                        title={signature}
+                                        className={classes.signature}
+                                        onClick={e => this.props.showMembers(user)}
+                                        dangerouslySetInnerHTML={{__html: signature || 'No Signature'}} />
                                 </div>
 
                                 <i className="icon-ion-android-more-vertical" onClick={() => this.showMenu()} />

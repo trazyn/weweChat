@@ -71,9 +71,6 @@ class Contacts {
         // Remove all official account
         self.memberList = response.data.MemberList.filter(e => !helper.isOfficial(e) && !helper.isBrand(e));
         self.memberList.map(e => {
-            if (helper.isChatRoom(e.UserName) && !e.NickName) {
-                e.NickName = e.MemberList.map(e => e.NickName).join(',');
-            }
             e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
             e.isFriend = true;
         });
@@ -119,8 +116,14 @@ class Contacts {
                     return;
                 }
 
-                if (helper.isChatRoom(e.UserName) && !e.NickName) {
-                    e.NickName = e.MemberList.map(e => e.NickName).join(',');
+                if (helper.isChatRoom(e.UserName)) {
+                    let placeholder = e.MemberList.map(e => e.NickName).join(',');
+
+                    if (e.NickName) {
+                        e.Signature = placeholder;
+                    } else {
+                        e.NickName = placeholder;
+                    }
                 }
 
                 e.isFriend = isFriend;

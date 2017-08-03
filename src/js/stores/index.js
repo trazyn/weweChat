@@ -2,6 +2,7 @@
 import session from './session';
 import chat from './chat';
 import addfriend from './addfriend';
+import members from './members';
 import newchat from './newchat';
 import userinfo from './userinfo';
 import contacts from './contacts';
@@ -17,6 +18,7 @@ const stores = {
     contacts,
     search,
     settings,
+    members,
 };
 
 export default stores;

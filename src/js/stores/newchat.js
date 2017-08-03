@@ -5,7 +5,6 @@ import pinyin from 'han';
 
 import contacts from './contacts';
 import storage from 'utils/storage';
-import helper from 'utils/helper';
 
 class NewChat {
     @observable show = false;
@@ -37,8 +36,6 @@ class NewChat {
     }
 
     @action async createChatRoom(userids) {
-        userids = userids.filter(e => !helper.isChatRoom(e));
-
         var auth = await storage.get('auth');
         var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxcreatechatroom?r=${+new Date()}`, {
             BaseRequest: {

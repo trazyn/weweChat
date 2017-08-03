@@ -7,23 +7,27 @@ const MM_USERATTRVERIFYFALG_BIZ_BRAND = 8;
 const CONTACTFLAG_TOPCONTACT = 2048;
 
 const helper = {
-    isChatRoom(userid) {
+    isChatRoom: (userid) => {
         return userid && userid.startsWith('@@');
     },
 
-    isChatRoomRemoved(user) {
+    isChatRoomOwner: (user) => {
+        return helper.isChatRoom(user.UserName) && user.IsOwner;
+    },
+
+    isChatRoomRemoved: (user) => {
         return helper.isChatRoom(user.UserName) && user.ContactFlag === 0;
     },
 
-    isMuted(user) {
+    isMuted: (user) => {
         return helper.isChatRoom(user.UserName) ? user.Statues === CHATROOM_NOTIFY_CLOSE : user.ContactFlag & CONTACTFLAG_NOTIFYCLOSECONTACT;
     },
 
-    isOfficial(user) {
+    isOfficial: (user) => {
         return !(user.VerifyFlag !== 24 && user.VerifyFlag !== 8 && user.UserName.startsWith('@'));
     },
 
-    isTop(user) {
+    isTop: (user) => {
         if (user.isTop !== void 0) {
             return user.isTop;
         }
@@ -31,7 +35,7 @@ const helper = {
         return user.ContactFlag & CONTACTFLAG_TOPCONTACT;
     },
 
-    isBrand(user) {
+    isBrand: (user) => {
         return user.VerifyFlag & MM_USERATTRVERIFYFALG_BIZ_BRAND;
     },
 
@@ -184,6 +188,22 @@ const helper = {
         }
 
         return `${filename}.png`;
+    },
+
+    getPallet: (image) => {
+        return new Promise((resolve, reject) => {
+            new window.AlbumColors(image).getColors((colors, err) => {
+                if (err) {
+                    resolve([
+                        [0, 0, 0],
+                        [0, 0, 0],
+                        [0, 0, 0],
+                    ]);
+                } else {
+                    resolve(colors);
+                }
+            });
+        });
     }
 };
 

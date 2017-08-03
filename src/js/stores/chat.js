@@ -48,7 +48,7 @@ async function resolveMessage(message) {
 
             let emoji = helper.parseKV(content);
 
-            emoji.src = emoji.cdnurl || `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${message.MsgId}&skey=${auth.skey}`;
+            emoji.src = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${message.MsgId}&skey=${auth.skey}`;
             message.emoji = emoji;
             break;
 
@@ -109,8 +109,8 @@ async function resolveMessage(message) {
                     break;
 
                 default:
-                    console.error('Unknow app message: %o', message);
-                    message.Content = `收到一条暂不支持的消息类型，请在手机上查看（${message.FileName}）。`;
+                    console.error('Unknow app message: %o', Object.assign({}, message));
+                    message.Content = `收到一条暂不支持的消息类型，请在手机上查看（${message.FileName || message.Content}）。`;
                     message.MsgType = 19999;
                     break;
             }

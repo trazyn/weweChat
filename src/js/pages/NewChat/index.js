@@ -5,6 +5,7 @@ import { inject, observer } from 'mobx-react';
 import clazz from 'classname';
 
 import classes from './style.css';
+import helper from 'utils/helper';
 
 @inject(stores => ({
     show: stores.newchat.show,
@@ -146,8 +147,8 @@ export default class NewChat extends Component {
         if (selected.length === 1) {
             this.props.chatTo(this.props.getUser(selected[0]));
         } else {
-            // Create a chat room
-            let user = await this.props.createChatRoom(selected);
+            // You can not create a chat room by another chat room
+            let user = await this.props.createChatRoom(selected.filter(e => !helper.isChatRoom(e)));
             this.props.chatTo(user);
         }
 

@@ -2,6 +2,7 @@
 import { observable, action } from 'mobx';
 import axios from 'axios';
 
+import helper from 'utils/helper';
 import storage from 'utils/storage';
 
 class UserInfo {
@@ -9,14 +10,12 @@ class UserInfo {
     @observable user = {};
     @observable pallet = [];
 
-    @action toggle(show = self.show, user = self.user) {
+    @action async toggle(show = self.show, user = self.user) {
         self.show = show;
         self.user = user;
 
         if (show) {
-            new window.AlbumColors(user.HeadImgUrl).getColors(
-                colors => (self.pallet = colors)
-            );
+            self.pallet = await helper.getPallet(user.HeadImgUrl);
         }
     }
 
