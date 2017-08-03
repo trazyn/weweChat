@@ -16,6 +16,7 @@ import { Modal, ModalBody } from 'components/Modal';
     pallet: stores.userinfo.pallet,
     show: stores.userinfo.show,
     user: stores.userinfo.user,
+    remove: stores.userinfo.remove,
     toggle: stores.userinfo.toggle,
     setRemarkName: stores.userinfo.setRemarkName,
     refreshContacts: async(user) => {
@@ -111,7 +112,11 @@ export default class UserInfo extends Component {
             <Modal show={this.props.show} onCancel={() => this.handleClose()}>
                 <ModalBody className={classes.container}>
                     <div
-                        className={clazz(classes.hero, this.state.showEdit && classes.showEdit)}
+                        className={clazz(classes.hero, {
+                            [classes.showEdit]: this.state.showEdit,
+                            [classes.large]: !this.props.remove,
+                            [classes.isme]: isme,
+                        })}
                         onClick={() => {
                             var showEdit = this.state.showEdit;
 
@@ -140,13 +145,31 @@ export default class UserInfo extends Component {
 
                         <h3 dangerouslySetInnerHTML={{__html: NickName}} />
 
-                        <p dangerouslySetInnerHTML={{__html: Signature || 'No Signature'}} />
+                        {
+                            !this.props.remove ? (
+                                <div>
+                                    <p dangerouslySetInnerHTML={{__html: Signature || 'No Signature'}} />
 
-                        <div className={classes.address}>
-                            <i className="icon-ion-android-map" style={{ color: fontColor }} />
+                                    <div className={classes.address}>
+                                        <i className="icon-ion-android-map" style={{ color: fontColor }} />
 
-                            {City || 'UNKNOW'}, {Province || 'UNKNOW'}
-                        </div>
+                                        {City || 'UNKNOW'}, {Province || 'UNKNOW'}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div
+                                    className={classes.action}
+                                    style={{
+                                        color: buttonColor,
+                                        opacity: .6,
+                                        marginTop: 20,
+                                        marginBottom: -30,
+                                    }}
+                                    onClick={() => this.handleAction(this.props.user)}>
+                                    Delete Member
+                                </div>
+                            )
+                        }
 
                         <div
                             className={classes.action}

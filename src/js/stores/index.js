@@ -2,6 +2,7 @@
 import session from './session';
 import chat from './chat';
 import addfriend from './addfriend';
+import addmember from './addmember';
 import members from './members';
 import newchat from './newchat';
 import userinfo from './userinfo';
@@ -13,6 +14,7 @@ const stores = {
     session,
     chat,
     addfriend,
+    addmember,
     newchat,
     userinfo,
     contacts,

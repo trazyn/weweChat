@@ -2,15 +2,22 @@
 import { observable, action } from 'mobx';
 import axios from 'axios';
 
+import session from './session';
 import helper from 'utils/helper';
 import storage from 'utils/storage';
 
 class UserInfo {
     @observable show = false;
+    @observable remove = false;
     @observable user = {};
     @observable pallet = [];
 
-    @action async toggle(show = self.show, user = self.user) {
+    @action async toggle(show = self.show, user = self.user, remove = false) {
+        if (user.UserName === session.user.User.UserName) {
+            remove = false;
+        }
+
+        self.remove = remove;
         self.show = show;
         self.user = user;
 

@@ -1,6 +1,7 @@
 
 import { observable, action } from 'mobx';
 import axios from 'axios';
+import pinyin from 'han';
 
 import storage from 'utils/storage';
 import helper from 'utils/helper';
@@ -11,6 +12,8 @@ class Members {
         MemberList: [],
     };
     @observable list = [];
+    @observable filtered = [];
+    @observable query = '';
 
     @action async toggle(show = self.show, user = self.user) {
         var list = [];
@@ -19,10 +22,12 @@ class Members {
         self.user = user;
 
         if (show === false) {
+            self.query = '';
+            self.filtered.replace([]);
             return;
         }
 
-        self.list.replace(user.MemberList.sort((a, b) => a.PYQuanPin - b.PYQuanPin));
+        self.list.replace(user.MemberList);
 
         Promise.all(
             user.MemberList.map(async e => {
@@ -34,8 +39,25 @@ class Members {
                 list.push(e);
             })
         ).then(() => {
-            self.list.replace(list.sort((a, b) => a.PYQuanPin - b.PYQuanPin));
+            self.list.replace(list);
         });
+    }
+
+    @action search(text = '') {
+        var list;
+
+        self.query = text;
+
+        if (text) {
+            list = self.list.filter(e => {
+                return pinyin.letter(e.NickName).toLowerCase().indexOf(pinyin.letter(text.toLocaleLowerCase())) > -1;
+            });
+            self.filtered.replace(list);
+
+            return;
+        }
+
+        self.filtered.replace([]);
     }
 
     @action async sendRequest(message) {

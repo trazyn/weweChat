@@ -11,6 +11,7 @@ import UserInfo from './UserInfo';
 import AddFriend from './AddFriend';
 import NewChat from './NewChat';
 import Members from './Members';
+import AddMember from './AddMember';
 
 @inject(stores => ({
     isLogin: () => !!stores.session.auth,
@@ -42,6 +43,7 @@ export default class Layout extends Component {
                 <AddFriend />
                 <NewChat />
                 <Members />
+                <AddMember />
             </div>
         );
     }

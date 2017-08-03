@@ -8,50 +8,31 @@ import UserList from 'components/UserList';
 import helper from 'utils/helper';
 
 @inject(stores => ({
-    show: stores.newchat.show,
-    searching: stores.newchat.query,
+    show: stores.addmember.show,
+    searching: stores.addmember.query,
     getList: () => {
-        var { newchat, contacts } = stores;
+        var { addmember, contacts } = stores;
 
-        if (newchat.query) {
-            return newchat.list;
+        if (addmember.query) {
+            return addmember.list;
         }
 
-        return contacts.memberList;
+        return contacts.memberList.filter(e => !helper.isChatRoom(e.UserName));
     },
     getUser: (userid) => {
         return stores.contacts.memberList.find(e => e.UserName === userid);
     },
-    search: stores.newchat.search,
-    createChatRoom: stores.newchat.createChatRoom,
+    search: stores.addmember.search,
     close: () => {
-        stores.newchat.reset();
-        stores.newchat.toggle(false);
+        stores.addmember.reset();
+        stores.addmember.toggle(false);
     },
-    chatTo: (user) => stores.chat.chatTo(user),
 }))
 @observer
-export default class NewChat extends Component {
+export default class AddMember extends Component {
     state = {
         selected: [],
     };
-
-    async chat() {
-        var selected = this.state.selected;
-
-        if (selected.length === 1) {
-            this.props.chatTo(this.props.getUser(selected[0]));
-        } else {
-            // You can not create a chat room by another chat room
-            let user = await this.props.createChatRoom(selected.filter(e => !helper.isChatRoom(e)));
-            this.props.chatTo(user);
-        }
-
-        this.close();
-        setTimeout(() => {
-            document.querySelector('#messageInput').focus();
-        });
-    }
 
     close() {
         this.props.close();
@@ -75,6 +56,7 @@ export default class NewChat extends Component {
                 search,
                 getList,
                 searching: !!searching,
+                max: -1,
 
                 onChange(selected) {
                     self.setState({
@@ -89,7 +71,7 @@ export default class NewChat extends Component {
         return (
             <Modal show={this.props.show} fullscreen={true}>
                 <ModalBody className={classes.container}>
-                    New Chat ({this.state.selected.length} / 20)
+                    Add Members
 
                     <div className={classes.avatars}>
                         {
@@ -103,7 +85,7 @@ export default class NewChat extends Component {
                     {this.renderList()}
 
                     <div>
-                        <button onClick={e => this.chat()} disabled={!this.state.selected.length}>Chat</button>
+                        <button onClick={e => this.add()} disabled={!this.state.selected.length}>Add</button>
 
                         <button onClick={e => this.close()}>Cancel</button>
                     </div>

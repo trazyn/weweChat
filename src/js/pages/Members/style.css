@@ -7,7 +7,6 @@
     background: #fff;
     color: #333;
     z-index: 9;
-    box-shadow: inset 0 -1px 0 0 #eaedea;
 
     & header {
         display: flex;
@@ -28,16 +27,20 @@
     }
 
     & header i:hover {
-        color: red;
+        color: #34b7f1;
+    }
+
+    & header :global(.emoji) {
+        margin-top: 20px;
     }
 }
 
 .list {
     position: relative;
-    padding: 8px;
+    padding: 0;
     margin: 0;
     list-style: none;
-    max-height: calc(100vh - 90px);
+    height: calc(100vh - 90px - 60px);
     overflow: hidden;
     overflow-y: auto;
 
@@ -47,8 +50,10 @@
         padding: 0 14px;
         margin: 6px 8px;
         height: 32px;
+        min-width: 70px;
         line-height: 32px;
         border-radius: 1px;
+        text-align: center;
         cursor: pointer;
         box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .3);
         overflow: hidden;
@@ -91,5 +96,42 @@
 
     & :global(.emoji) {
         margin-top: 10px;
+    }
+}
+
+.footer {
+    height: 60px;
+    box-shadow: inset 0 1px 0 0 #eaedea;
+
+    & input {
+        height: 60px;
+        width: 100%;
+        text-align: center;
+        line-height: 60px;
+        border: 0;
+        background: 0;
+        color: #333;
+        font-size: 14px;
+        outline: 0;
+    }
+}
+
+.notfound {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+
+    & img {
+        width: 240px;
+    }
+
+    & h1 {
+        font-family: 'Roboto';
+        font-weight: 100;
+        color: rgba(0, 0, 0, .8);
+        letter-spacing: 2px;
+        word-spacing: 4px;
     }
 }

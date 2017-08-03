@@ -38,12 +38,18 @@
 
 .hero {
     display: flex;
-    height: 400px;
+    height: 370px;
+    padding-top: 20px;
     font-family: 'Helvetica';
     justify-content: center;
     align-items: center;
     flex-direction: column;
     transition: .2s ease-in-out;
+
+    &.large {
+        height: 400px;
+        padding-top: 0;
+    }
 
     & h3 {
         letter-spacing: 1px;
@@ -62,6 +68,14 @@
 
 .hero.showEdit {
     transform: translateY(-60px);
+}
+
+.hero.isme {
+    height: 350px;
+
+    & .action {
+        display: none;
+    }
 }
 
 .address {

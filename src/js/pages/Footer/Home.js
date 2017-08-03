@@ -47,7 +47,7 @@ export default class Input extends Component {
                     id="messageInput"
                     type="text"
                     ref="input"
-                    placeholder="Type someting to sned..."
+                    placeholder="Type someting to send..."
                     readOnly={!canisend}
                     onKeyPress={e => this.handleEnter(e)} />
 

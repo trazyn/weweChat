@@ -123,6 +123,7 @@ class Contacts {
                         e.Signature = placeholder;
                     } else {
                         e.NickName = placeholder;
+                        e.Signature = placeholder;
                     }
                 }
 
