@@ -22,9 +22,7 @@ import helper from 'utils/helper';
     addMember: async(userids) => {
         var roomid = stores.chat.user.UserName;
 
-        await stores.addmember.addMember(roomid, userids);
-        stores.addmember.reset();
-        stores.addmember.toggle(false);
+        return stores.addmember.addMember(roomid, userids);
     },
     getUser: (userid) => {
         return stores.contacts.memberList.find(e => e.UserName === userid);
@@ -46,6 +44,11 @@ export default class AddMember extends Component {
         this.setState({
             selected: [],
         });
+    }
+
+    async add(userids) {
+        await this.props.addMember(userids);
+        this.close();
     }
 
     renderList() {
@@ -92,7 +95,7 @@ export default class AddMember extends Component {
                     {this.renderList()}
 
                     <div>
-                        <button onClick={e => this.props.addMember(this.state.selected)} disabled={!this.state.selected.length}>Add</button>
+                        <button onClick={e => this.add(this.state.selected)} disabled={!this.state.selected.length}>Add</button>
 
                         <button onClick={e => this.close()}>Cancel</button>
                     </div>

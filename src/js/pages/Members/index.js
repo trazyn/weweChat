@@ -14,14 +14,19 @@ import helper from 'utils/helper';
     searching: stores.members.query,
     filtered: stores.members.filtered,
     showUserinfo: async(user) => {
+        var me = stores.session.user.User;
         var caniremove = helper.isChatRoomOwner(stores.members.user);
 
-        stores.contacts.memberList.find(e => {
-            // Try to find contact in your contacts
-            if (e.UserName === user.UserName) {
-                return (user = e);
-            }
-        });
+        if (user.UserName === me.UserName) {
+            user = me;
+        } else {
+            stores.contacts.memberList.find(e => {
+                // Try to find contact in contacts
+                if (e.UserName === user.UserName) {
+                    return (user = e);
+                }
+            });
+        }
 
         stores.userinfo.toggle(true, user, caniremove);
     },

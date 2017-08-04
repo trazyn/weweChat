@@ -7,6 +7,7 @@ import storage from 'utils/storage';
 import helper from 'utils/helper';
 import contacts from './contacts';
 import session from './session';
+import members from './members';
 import settings from './settings';
 
 async function resolveMessage(message) {
@@ -117,8 +118,24 @@ async function resolveMessage(message) {
             break;
 
         case 10000:
+            let userid = message.FromUserName;
+
             // Chat room has been changed
-            await contacts.batch([message.FromUserName]);
+            await contacts.batch([userid]);
+
+            // Refresh the current chat room info
+            if (helper.isChatRoom(userid)) {
+                let user = await contacts.getUser(userid);
+
+                if (userid === self.user.UserName) {
+                    self.chatTo(user);
+                }
+
+                if (members.show
+                    && members.user.UserName === userid) {
+                    members.toggle(true, user);
+                }
+            }
             break;
 
         default:
