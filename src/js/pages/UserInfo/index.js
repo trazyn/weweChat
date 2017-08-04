@@ -19,6 +19,13 @@ import { Modal, ModalBody } from 'components/Modal';
     remove: stores.userinfo.remove,
     toggle: stores.userinfo.toggle,
     setRemarkName: stores.userinfo.setRemarkName,
+    removeMember: async(user) => {
+        var roomid = (stores.members.show && stores.members.user.UserName)
+            || stores.chat.user.UserName;
+
+        await stores.userinfo.removeMember(roomid, user.UserName);
+        stores.userinfo.toggle(false);
+    },
     refreshContacts: async(user) => {
         var { updateUser, filter, filtered } = stores.contacts;
 
@@ -165,7 +172,7 @@ export default class UserInfo extends Component {
                                         marginTop: 20,
                                         marginBottom: -30,
                                     }}
-                                    onClick={() => this.handleAction(this.props.user)}>
+                                    onClick={() => this.props.removeMember(this.props.user)}>
                                     Delete Member
                                 </div>
                             )

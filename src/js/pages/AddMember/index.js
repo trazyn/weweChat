@@ -19,6 +19,13 @@ import helper from 'utils/helper';
 
         return contacts.memberList.filter(e => !helper.isChatRoom(e.UserName));
     },
+    addMember: async(userids) => {
+        var roomid = stores.chat.user.UserName;
+
+        await stores.addmember.addMember(roomid, userids);
+        stores.addmember.reset();
+        stores.addmember.toggle(false);
+    },
     getUser: (userid) => {
         return stores.contacts.memberList.find(e => e.UserName === userid);
     },
@@ -85,7 +92,7 @@ export default class AddMember extends Component {
                     {this.renderList()}
 
                     <div>
-                        <button onClick={e => this.add()} disabled={!this.state.selected.length}>Add</button>
+                        <button onClick={e => this.props.addMember(this.state.selected)} disabled={!this.state.selected.length}>Add</button>
 
                         <button onClick={e => this.close()}>Cancel</button>
                     </div>

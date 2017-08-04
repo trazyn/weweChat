@@ -18,6 +18,8 @@ import helper from 'utils/helper';
     messages: stores.chat.messages,
     loading: stores.session.loading,
     showUserinfo: async(isme, user) => {
+        var caniremove = helper.isChatRoomOwner(stores.chat.user);
+
         if (isme) {
             user = stores.session.user.User;
         } else {
@@ -29,7 +31,7 @@ import helper from 'utils/helper';
             });
         }
 
-        stores.userinfo.toggle(true, user);
+        stores.userinfo.toggle(true, user, caniremove);
     },
     showMembers: (user) => {
         if (helper.isChatRoom(user.UserName)) {

@@ -36,25 +36,19 @@ class AddMember {
         self.list.replace([]);
     }
 
-    @action async addToChatRoom(userids) {
+    @action async addMember(roomId, userids) {
         var auth = await storage.get('auth');
-        var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxcreatechatroom?r=${+new Date()}`, {
+        var response = await axios.post('/cgi-bin/mmwebwx-bin/webwxupdatechatroom?fun=addmember', {
             BaseRequest: {
                 Sid: auth.wxsid,
                 Uin: auth.wxuin,
                 Skey: auth.skey,
             },
-            MemberCount: userids.length,
-            MemberList: userids.map(e => ({ UserName: e }))
+            ChatRoomName: roomId,
+            AddMemberList: userids.join(','),
         });
 
-        if (+response.data.BaseResponse.Ret === 0) {
-            // Load the new contact infomation
-            let user = await contacts.getUser(response.data.ChatRoomName);
-            return user;
-        }
-
-        return false;
+        return +response.data.BaseResponse.Ret === 0;
     }
 }
 
