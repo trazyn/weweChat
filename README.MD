@@ -1,3 +1,19 @@
+# weweChat
+Unofficial WeChat client built with React, MobX and Electron. 
+
+## Feature
+- Work on desktop
+- On macOS,  window vibrancy effect
+- Desktop notifications
+
+## Screenshot
+
+
+## Development
+```
+$ npm install
+$ npm run dev
+```
 
 ### TODO
 - [x] Right click on chat session
@@ -8,7 +24,7 @@
 - [x] Chat Room
   - [x] Show correct contact
   - [x] Show members
-  - [ ] Add / Remove member
+  - [x] Add / Remove member
   - [x] Create chat room
 - [x] Various message
   - [x] Text
@@ -22,6 +38,17 @@
   - [x] Location sharing
   - [ ] File
 - [ ] Show QQ emoji
+- [x] Send text message
+- [ ] Send file
+- [ ] Send image
+- [ ] Send emoji
 - [x] Search chat set
 - [x] Search and create chat room
 - [x] Keep online(bug)
+- [ ] History
+- [ ] Background behavior
+- [ ] Theme
+- [ ] Plugins
+
+### License
+MIT License
