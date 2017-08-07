@@ -516,6 +516,23 @@
     }
 }
 
+.message.isme.isEmoji {
+    & > div {
+        display: flex;
+        padding: 16px 31px 0 0;
+        justify-content: flex-end;
+    }
+
+    & .avatar {
+        left: auto;
+        right: -16px;
+    }
+
+    & .content {
+        text-align: right;
+    }
+}
+
 .invalidEmoji {
     position: relative;
     margin-top: -30px;

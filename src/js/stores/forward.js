@@ -4,7 +4,6 @@ import pinyin from 'han';
 
 import contacts from './contacts';
 import chat from './chat';
-import helper from 'utils/helper';
 
 class Forward {
     @observable show = false;
@@ -45,16 +44,12 @@ class Forward {
         var message = self.message;
         var user = await contacts.getUser(userid);
 
-        switch (message.MsgType) {
-            case 1:
-                // Text Message
-                chat.sendMessage(user, message.Content);
-                break;
+        message = Object.assign(message, {
+            content: message.Content,
+            type: message.MsgType,
+        });
 
-            case 3:
-                chat.sendImage(user, helper.decodeHTML(message.Content), true);
-                break;
-        }
+        chat.sendMessage(user, message);
     }
 }
 

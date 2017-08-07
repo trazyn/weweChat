@@ -14,7 +14,10 @@ export default class Input extends Component {
     handleEnter(e) {
         if (e.charCode !== 13) return;
 
-        this.props.sendMessage(this.props.user, this.refs.input.value);
+        this.props.sendMessage(this.props.user, {
+            content: this.refs.input.value,
+            type: 1,
+        });
         this.refs.input.value = '';
     }
 

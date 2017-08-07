@@ -307,7 +307,7 @@ export default class ChatContent extends Component {
     }
 
     showMessageAction(message) {
-        var caniforward = [1, 3].includes(message.MsgType);
+        var caniforward = [1, 3, 47].includes(message.MsgType);
         var templates = [
             {
                 label: 'Delete',
@@ -322,7 +322,7 @@ export default class ChatContent extends Component {
             templates.unshift({
                 label: 'Forward',
                 click: () => {
-                    this.props.showForward(true, message);
+                    this.props.showForward(message);
                 }
             });
         }

@@ -1,5 +1,5 @@
 # weweChat
-Unofficial WeChat client built with React, MobX and Electron. 
+Unofficial WeChat client built with React, MobX and Electron.
 
 ## Feature
 - Work on desktop
@@ -46,7 +46,9 @@ $ npm run dev
 - [x] Send text message
 - [ ] Send file
 - [ ] Send image
-- [ ] Send emoji
+- [x] Forward text message
+- [x] Forward emoji
+- [ ] Forward image
 - [x] Search chat set
 - [x] Search and create chat room
 - [x] Keep online(bug)

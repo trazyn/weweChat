@@ -302,11 +302,7 @@ class Chat {
         self.messages.set(from, list);
     }
 
-    @action async sendMessage(user, content) {
-        var id = (+new Date() * 1000) + Math.random().toString().substr(2, 4);
-        var auth = await storage.get('auth');
-        var from = session.user.User.UserName;
-        var to = user.UserName;
+    @action async sendTextMessage(auth, message) {
         var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxsendmsg`, {
             BaseRequest: {
                 Sid: auth.wxsid,
@@ -314,27 +310,102 @@ class Chat {
                 Skey: auth.skey,
             },
             Msg: {
-                Content: content,
-                FromUserName: from,
-                ToUserName: to,
-                ClientMsgId: id,
-                LocalID: id,
+                Content: message.content,
+                FromUserName: message.from,
+                ToUserName: message.to,
+                ClientMsgId: message.ClientMsgId,
+                LocalID: message.LocalID,
                 Type: 1,
             },
             Scene: 0,
         });
+        var res = {
+            data: response.data,
 
-        if (+response.data.BaseResponse.Ret === 0) {
-            // Sent success
-            let list = self.messages.get(to);
-
-            list.data.push({
+            item: {
                 isme: true,
-                Content: content,
+                Content: message.content,
                 MsgType: 1,
                 CreateTime: +new Date() / 1000,
                 HeadImgUrl: session.user.User.HeadImgUrl,
+            },
+        };
+
+        if (res.data.BaseResponse.Ret !== 0) {
+            console.error('Failed to send message: %o', response.data);
+        }
+
+        return res;
+    }
+
+    @action async sendEmojiMessage(auth, message) {
+        var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxsendemoticon?fun=sys&lang=en_US&pass_ticket=${auth.passTicket}`, {
+            BaseRequest: {
+                Sid: auth.wxsid,
+                Uin: auth.wxuin,
+                Skey: auth.skey,
+            },
+            Msg: {
+                FromUserName: message.from,
+                ToUserName: message.to,
+                ClientMsgId: message.ClientMsgId,
+                LocalID: message.LocalID,
+                Type: 47,
+                EMoticonMd5: message.emoji.md5,
+            },
+            Scene: 2,
+        });
+        var res = {
+            data: response.data,
+
+            item: Object.assign({}, message, {
+                isme: true,
+                CreateTime: +new Date() / 1000,
+                HeadImgUrl: session.user.User.HeadImgUrl,
+            }),
+        };
+
+        if (res.data.BaseResponse.Ret !== 0) {
+            console.error('Failed to send emoji: %o', response.data);
+        }
+
+        return res;
+    }
+
+    @action async sendMessage(user, message) {
+        var id = (+new Date() * 1000) + Math.random().toString().substr(2, 4);
+        var auth = await storage.get('auth');
+        var from = session.user.User.UserName;
+        var to = user.UserName;
+        var res;
+
+        if (message.type === 1) {
+            res = await self.sendTextMessage(auth, {
+                content: message.content,
+                from,
+                to,
+                ClientMsgId: id,
+                LocalID: id,
             });
+        } else if (message.type === 47) {
+            res = await self.sendEmojiMessage(auth, Object.assign({}, message, {
+                content: message.content,
+                from,
+                to,
+                ClientMsgId: message.MsgId,
+                LocalID: id,
+            }));
+        } else {
+            return false;
+        }
+
+        var { data, item } = res;
+
+        if (data.BaseResponse.Ret === 0) {
+            // Sent success
+            let list = self.messages.get(to);
+
+            list.data.push(item);
 
             if (!helper.isChatRoom(user.UserName)
                 && !user.isFriend) {
@@ -348,11 +419,11 @@ class Chat {
             self.markedRead(to);
             self.messages.set(to, list);
             self.chatTo(user);
-        } else {
-            console.error('Failed to send message: %o', response.data);
+
+            return true;
         }
 
-        return +response.data.BaseResponse.Ret === 0;
+        return false;
     }
 
     @action async sendImage(user, content, isForward) {
