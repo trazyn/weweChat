@@ -1,9 +1,7 @@
 
 import { observable, action } from 'mobx';
-import axios from 'axios';
 import pinyin from 'han';
 
-import storage from 'utils/storage';
 import helper from 'utils/helper';
 
 class Members {
@@ -58,29 +56,6 @@ class Members {
         }
 
         self.filtered.replace([]);
-    }
-
-    @action async sendRequest(message) {
-        var auth = await storage.get('auth');
-        var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxverifyuser?r=${+new Date()}`, {
-            BaseRequest: {
-                Sid: auth.wxsid,
-                Uin: auth.wxuin,
-                Skey: auth.skey,
-            },
-            Opcode: 2,
-            SceneList: [33],
-            SceneListCount: 1,
-            VerifyContent: message,
-            VerifyUserList: [{
-                Value: self.user.UserName,
-                VerifyUserTicket: '',
-            }],
-            VerifyUserListSize: 1,
-            skey: auth.skey,
-        });
-
-        return +response.data.BaseResponse.Ret === 0;
     }
 }
 

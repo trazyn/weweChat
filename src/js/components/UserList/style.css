@@ -61,3 +61,11 @@
         white-space: nowrap;
     }
 }
+
+.username {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70%;
+    display: inline-block;
+}

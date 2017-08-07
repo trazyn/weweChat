@@ -33,6 +33,9 @@ import helper from 'utils/helper';
 
         stores.userinfo.toggle(true, user, caniremove);
     },
+    deleteMessage: (messageid) => {
+        stores.chat.deleteMessage(stores.chat.user.UserName, messageid);
+    },
     showMembers: (user) => {
         if (helper.isChatRoom(user.UserName)) {
             stores.members.toggle(true, user);
@@ -42,6 +45,7 @@ import helper from 'utils/helper';
         var user = stores.contacts.memberList.find(e => e.UserName === userid);
         stores.userinfo.toggle(true, user);
     },
+    showForward: (message) => stores.forward.toggle(true, message),
     parseMessage: (message, from) => {
         var isChatRoom = message.isme ? false : helper.isChatRoom(message.FromUserName);
         var user = from;
@@ -235,7 +239,7 @@ export default class ChatContent extends Component {
                             className={classes.avatar}
                             onClick={ev => this.props.showUserinfo(message.isme, user)} />
 
-                        <div className={classes.content}>
+                        <div className={classes.content} onContextMenu={e => this.showMessageAction(message)}>
                             <p dangerouslySetInnerHTML={{__html: this.getMessageContent(message)}} />
 
                             <span className={classes.times}>{ moment(message.CreateTime * 1000).fromNow() }</span>
@@ -300,6 +304,31 @@ export default class ChatContent extends Component {
                 UserName: target.dataset.userid
             });
         }
+    }
+
+    showMessageAction(message) {
+        var caniforward = [1, 3].includes(message.MsgType);
+        var templates = [
+            {
+                label: 'Delete',
+                click: () => {
+                    this.props.deleteMessage(message.MsgId);
+                }
+            },
+        ];
+        var menu;
+
+        if (caniforward) {
+            templates.unshift({
+                label: 'Forward',
+                click: () => {
+                    this.props.showForward(true, message);
+                }
+            });
+        }
+
+        menu = new remote.Menu.buildFromTemplate(templates);
+        menu.popup(remote.getCurrentWindow());
     }
 
     showMenu() {

@@ -94,7 +94,7 @@ const helper = {
             case 1:
                 if (message.location) return '[Location]';
                 // Text message
-                return content;
+                return content.replace(/<br\/>/g, '');
 
             case 3:
                 // Image
@@ -204,7 +204,11 @@ const helper = {
                 }
             });
         });
-    }
+    },
+
+    decodeHTML: (text) => {
+        return text.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+    },
 };
 
 export default helper;

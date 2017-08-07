@@ -1,0 +1,70 @@
+
+.container {
+    background: #fff;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Roboto';
+    font-size: 36px;
+    color: #000;
+    font-weight: 100;
+    letter-spacing: 2px;
+    word-spacing: 4px;
+
+    & input {
+        height: 64px;
+        line-height: 64px;
+        width: 80%;
+        text-align: center;
+        border: none;
+        background: none;
+        outline: 0;
+        font-size: 32px;
+        font-weight: 100;
+    }
+
+    & button {
+        display: inline-block;
+        height: 36px;
+        background-color: rgba(99, 99, 99, 0);
+        font-family: 'Roboto', sans-serif;
+        font-weight: 500;
+        color: rgba(33, 150, 243, .9);
+        line-height: 36px;
+        text-align: center;
+        letter-spacing: .4px;
+        padding: 0 16px;
+        border: 0;
+        text-transform: uppercase;
+        margin: 0 12px;
+        font-size: 16px;
+        outline: 0;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        transition: .2s;
+    }
+
+    & button:disabled {
+        background: rgba(99, 99, 99, .2);
+        opacity: .5;
+    }
+
+    & button:hover {
+        background: rgba(99, 99, 99, .2);
+    }
+}
+
+.avatars {
+    min-height: 20px;
+
+    & img {
+        height: 24px;
+        width: 24px;
+        margin: 12px 4px;
+        box-shadow: 0 0 8px 0 rgba(0, 0, 0, .3);
+        cursor: pointer;
+    }
+}

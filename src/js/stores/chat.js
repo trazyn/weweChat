@@ -111,7 +111,7 @@ async function resolveMessage(message) {
 
                 default:
                     console.error('Unknow app message: %o', Object.assign({}, message));
-                    message.Content = `收到一条暂不支持的消息类型，请在手机上查看（${message.FileName || message.Content}）。`;
+                    message.Content = `收到一条暂不支持的消息类型，请在手机上查看（${message.FileName || 'No Title'}）。`;
                     message.MsgType = 19999;
                     break;
             }
@@ -347,11 +347,78 @@ class Chat {
 
             self.markedRead(to);
             self.messages.set(to, list);
+            self.chatTo(user);
         } else {
             console.error('Failed to send message: %o', response.data);
         }
 
         return +response.data.BaseResponse.Ret === 0;
+    }
+
+    @action async sendImage(user, content, isForward) {
+        var id = (+new Date() * 1000) + Math.random().toString().substr(2, 4);
+        var auth = await storage.get('auth');
+        var from = session.user.User.UserName;
+        var to = user.UserName;
+        var response = await axios.post((
+            isForward
+                ? '/cgi-bin/mmwebwx-bin/webwxsendmsgimg&fun=async&f=json'
+                : '/cgi-bin/mmwebwx-bin/webwxsendmsgimg&fun=async'
+        ), {
+            BaseRequest: {
+                Sid: auth.wxsid,
+                Uin: auth.wxuin,
+                Skey: auth.skey,
+            },
+            Msg: {
+                Content: content,
+                FromUserName: from,
+                ToUserName: to,
+                ClientMsgId: id,
+                LocalID: id,
+                MediaId: '',
+                Type: 3,
+            },
+            Scene: isForward ? 2 : 0,
+        });
+
+        if (+response.data.BaseResponse.Ret === 0) {
+            // Sent success
+            let list = self.messages.get(to);
+
+            list.data.push({
+                isme: true,
+                Content: content,
+                MsgType: 3,
+                CreateTime: +new Date() / 1000,
+                HeadImgUrl: session.user.User.HeadImgUrl,
+            });
+
+            if (!helper.isChatRoom(user.UserName)
+                && !user.isFriend) {
+                // The target is not your friend
+                list.data.push({
+                    Content: `${user.sex ? 'She' : 'He'} is not your friend, <a class="addFriend" data-userid="${user.UserName}">Send friend request</a>`,
+                    MsgType: 19999,
+                });
+            }
+
+            self.markedRead(to);
+            self.messages.set(to, list);
+            self.chatTo(user);
+        } else {
+            console.error('Failed to send image: %o', response.data);
+        }
+
+        return +response.data.BaseResponse.Ret === 0;
+    }
+
+    @action deleteMessage(userid, messageid) {
+        var list = self.messages.get(userid);
+
+        list.data = list.data.filter(e => e.MsgId !== messageid);
+        list.unread = 0;
+        self.messages.set(userid, list);
     }
 
     @action markedRead(userid) {

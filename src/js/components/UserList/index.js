@@ -158,7 +158,7 @@ export default class UserList extends Component {
                     })}
                     onClick={ev => this.toggleSelected(e.UserName)}>
                     <img src={e.HeadImgUrl} className={classes.avatar} />
-                    <span className={classes.userName} dangerouslySetInnerHTML={{__html: e.RemarkName || e.NickName}} />
+                    <span className={classes.username} dangerouslySetInnerHTML={{__html: e.RemarkName || e.NickName}} />
 
                     <i className="icon-ion-android-done-all" />
                 </li>
