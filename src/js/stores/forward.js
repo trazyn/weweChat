@@ -49,7 +49,7 @@ class Forward {
             type: message.MsgType,
         });
 
-        chat.sendMessage(user, message);
+        chat.sendMessage(user, message, true);
     }
 }
 

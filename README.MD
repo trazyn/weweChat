@@ -49,6 +49,7 @@ $ npm run dev
 - [x] Forward text message
 - [x] Forward emoji
 - [ ] Forward image
+- [x] Forward file
 - [x] Search chat set
 - [x] Search and create chat room
 - [x] Keep online(bug)

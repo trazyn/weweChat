@@ -214,6 +214,11 @@ class Chat {
         if (index === -1) {
             // User not in chatset
             sessions = [user, ...self.sessions];
+
+            self.messages.set(user.UserName, {
+                data: [],
+                unread: 0,
+            });
         }
 
         sessions.map(e => {
@@ -372,7 +377,102 @@ class Chat {
         return res;
     }
 
-    @action async sendMessage(user, message) {
+    @action async sendImageMessage(auth, message, isForward = false) {
+        var response = await axios.post((
+            isForward
+                ? '/cgi-bin/mmwebwx-bin/webwxsendmsgimg&fun=async&f=json'
+                : '/cgi-bin/mmwebwx-bin/webwxsendmsgimg&fun=async'
+        ), {
+            BaseRequest: {
+                Sid: auth.wxsid,
+                Uin: auth.wxuin,
+                Skey: auth.skey,
+            },
+            Msg: {
+                Content: message.content,
+                FromUserName: message.from,
+                ToUserName: message.to,
+                ClientMsgId: message.ClientMsgId,
+                LocalID: message.LocalID,
+                Type: 6,
+            },
+            Scene: isForward ? 2 : 0,
+        });
+        var res = {
+            data: response.data,
+
+            item: Object.assign({}, message, {
+                isme: true,
+                CreateTime: +new Date() / 1000,
+                MsgId: response.data.MsgID,
+                HeadImgUrl: session.user.User.HeadImgUrl,
+            }),
+        };
+
+        if (res.data.BaseResponse.Ret !== 0) {
+            console.error('Failed to send image: %o', response.data);
+        }
+
+        return res;
+    }
+
+    @action async sendFileMessage(auth, message, isForward) {
+        var response = await axios.post((
+            isForward
+                ? '/cgi-bin/mmwebwx-bin/webwxsendappmsg?fun=async&f=json'
+                : '/cgi-bin/mmwebwx-bin/webwxsendmsgimg&fun=async'
+        ), {
+            BaseRequest: {
+                Sid: auth.wxsid,
+                Uin: auth.wxuin,
+                Skey: auth.skey,
+            },
+            Msg: {
+                Content: `
+                    <appmsg appid="wxeb7ec651dd0aefa9" sdkver="">
+                       <title>${message.file.name}</title>
+                       <des />
+                       <action />
+                       <type>6</type>
+                       <content />
+                       <url />
+                       <lowurl />
+                       <appattach>
+                          <totallen>${message.file.size}</totallen>
+                          <attachid>${message.file.mediaId}</attachid>
+                          <fileext>${message.file.extension}</fileext>
+                       </appattach>
+                       <extinfo />
+                    </appmsg>
+                `,
+                FromUserName: message.from,
+                ToUserName: message.to,
+                ClientMsgId: message.ClientMsgId,
+                LocalID: message.LocalID,
+                MediaId: '',
+                Type: 6,
+            },
+            Scene: isForward ? 2 : 0,
+        });
+        var res = {
+            data: response.data,
+
+            item: Object.assign({}, message, {
+                isme: true,
+                CreateTime: +new Date() / 1000,
+                MsgId: response.data.MsgID,
+                HeadImgUrl: session.user.User.HeadImgUrl,
+            }),
+        };
+
+        if (res.data.BaseResponse.Ret !== 0) {
+            console.error('Failed to send file: %o', response.data);
+        }
+
+        return res;
+    }
+
+    @action async sendMessage(user, message, isForward = false) {
         var id = (+new Date() * 1000) + Math.random().toString().substr(2, 4);
         var auth = await storage.get('auth');
         var from = session.user.User.UserName;
@@ -386,7 +486,7 @@ class Chat {
                 to,
                 ClientMsgId: id,
                 LocalID: id,
-            });
+            }, isForward);
         } else if (message.type === 47) {
             res = await self.sendEmojiMessage(auth, Object.assign({}, message, {
                 content: message.content,
@@ -394,12 +494,29 @@ class Chat {
                 to,
                 ClientMsgId: message.MsgId,
                 LocalID: id,
-            }));
+            }), isForward);
+        } else if (message.type === 3) {
+            res = await self.sendImageMessage(auth, Object.assign({}, message, {
+                content: message.content,
+                from,
+                to,
+                ClientMsgId: id,
+                LocalID: id,
+            }), isForward);
+        } else if (message.type === 49 + 6) {
+            res = await self.sendFileMessage(auth, Object.assign({}, message, {
+                from,
+                to,
+                ClientMsgId: id,
+                LocalID: id,
+            }), isForward);
         } else {
             return false;
         }
 
         var { data, item } = res;
+
+        self.chatTo(user);
 
         if (data.BaseResponse.Ret === 0) {
             // Sent success
@@ -418,7 +535,6 @@ class Chat {
 
             self.markedRead(to);
             self.messages.set(to, list);
-            self.chatTo(user);
 
             return true;
         }
