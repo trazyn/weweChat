@@ -307,7 +307,7 @@ class Chat {
         self.messages.set(from, list);
     }
 
-    @action async sendTextMessage(auth, message) {
+    @action async sendTextMessage(auth, message, isForward) {
         var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxsendmsg`, {
             BaseRequest: {
                 Sid: auth.wxsid,
@@ -322,7 +322,7 @@ class Chat {
                 LocalID: message.LocalID,
                 Type: 1,
             },
-            Scene: 0,
+            Scene: isForward ? 2 : 0,
         });
         var res = {
             data: response.data,
@@ -377,10 +377,10 @@ class Chat {
         return res;
     }
 
-    @action async sendImageMessage(auth, message, isForward = false) {
+    @action async sendImageMessage(auth, message, isForward) {
         var response = await axios.post((
             isForward
-                ? '/cgi-bin/mmwebwx-bin/webwxsendmsgimg&fun=async&f=json'
+                ? '/cgi-bin/mmwebwx-bin/webwxsendmsgimg?fun=async&f=json'
                 : '/cgi-bin/mmwebwx-bin/webwxsendmsgimg&fun=async'
         ), {
             BaseRequest: {
@@ -394,7 +394,7 @@ class Chat {
                 ToUserName: message.to,
                 ClientMsgId: message.ClientMsgId,
                 LocalID: message.LocalID,
-                Type: 6,
+                Type: 3,
             },
             Scene: isForward ? 2 : 0,
         });
@@ -497,10 +497,10 @@ class Chat {
             }), isForward);
         } else if (message.type === 3) {
             res = await self.sendImageMessage(auth, Object.assign({}, message, {
-                content: message.content,
+                content: helper.decodeHTML(message.content),
                 from,
                 to,
-                ClientMsgId: id,
+                ClientMsgId: message.MsgId,
                 LocalID: id,
             }), isForward);
         } else if (message.type === 49 + 6) {
@@ -540,64 +540,6 @@ class Chat {
         }
 
         return false;
-    }
-
-    @action async sendImage(user, content, isForward) {
-        var id = (+new Date() * 1000) + Math.random().toString().substr(2, 4);
-        var auth = await storage.get('auth');
-        var from = session.user.User.UserName;
-        var to = user.UserName;
-        var response = await axios.post((
-            isForward
-                ? '/cgi-bin/mmwebwx-bin/webwxsendmsgimg&fun=async&f=json'
-                : '/cgi-bin/mmwebwx-bin/webwxsendmsgimg&fun=async'
-        ), {
-            BaseRequest: {
-                Sid: auth.wxsid,
-                Uin: auth.wxuin,
-                Skey: auth.skey,
-            },
-            Msg: {
-                Content: content,
-                FromUserName: from,
-                ToUserName: to,
-                ClientMsgId: id,
-                LocalID: id,
-                MediaId: '',
-                Type: 3,
-            },
-            Scene: isForward ? 2 : 0,
-        });
-
-        if (+response.data.BaseResponse.Ret === 0) {
-            // Sent success
-            let list = self.messages.get(to);
-
-            list.data.push({
-                isme: true,
-                Content: content,
-                MsgType: 3,
-                CreateTime: +new Date() / 1000,
-                HeadImgUrl: session.user.User.HeadImgUrl,
-            });
-
-            if (!helper.isChatRoom(user.UserName)
-                && !user.isFriend) {
-                // The target is not your friend
-                list.data.push({
-                    Content: `${user.sex ? 'She' : 'He'} is not your friend, <a class="addFriend" data-userid="${user.UserName}">Send friend request</a>`,
-                    MsgType: 19999,
-                });
-            }
-
-            self.markedRead(to);
-            self.messages.set(to, list);
-            self.chatTo(user);
-        } else {
-            console.error('Failed to send image: %o', response.data);
-        }
-
-        return +response.data.BaseResponse.Ret === 0;
     }
 
     @action deleteMessage(userid, messageid) {

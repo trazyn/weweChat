@@ -516,23 +516,8 @@
     }
 }
 
-.message.isme.isEmoji {
-    & > div {
-        display: flex;
-        padding: 16px 31px 0 0;
-        justify-content: flex-end;
-    }
-
-    & .avatar {
-        left: auto;
-        right: -16px;
-    }
-
-    & .content {
-        text-align: right;
-    }
-}
-
+.message.isme.isEmoji,
+.message.isme.isImage,
 .message.isme.isFile {
     & > div {
         display: flex;
