@@ -542,6 +542,49 @@ class Chat {
         return false;
     }
 
+    @action async upload(file) {
+        var id = (+new Date() * 1000) + Math.random().toString().substr(2, 4);
+        var auth = await storage.get('auth');
+        var ticket = await helper.getCookie('webwx_data_ticket');
+        var formdata = new window.FormData();
+        var server = axios.defaults.baseURL.replace(/https:\/\//, 'https://file.') + 'cgi-bin/mmwebwx-bin/webwxuploadmedia?f=json';
+
+        // Increase the counter
+        self.upload.count = self.upload.count ? 0 : self.upload.count + 1;
+
+        formdata.append('id', `WU_FILE_${self.upload.counter}`);
+        formdata.append('name', file.name);
+        formdata.append('type', file.type);
+        formdata.append('lastModifieDate', new Date(file.lastModifieDate).toString());
+        formdata.append('size', file.size);
+        formdata.append('mediatype', helper.getMediaType(file.name.split('.').slice(-1).pop()));
+        formdata.append('uploadmediarequest', JSON.stringify({
+            BaseRequest: {
+                Sid: auth.wxsid,
+                Uin: auth.wxuin,
+                Skey: auth.skey,
+            },
+            ClientMediaId: id,
+            DataLen: file.size,
+            FromUserName: session.user.User.UserName,
+            MediaType: 4,
+            StartPos: 0,
+            ToUserName: self.user.UserName,
+            TotalLen: file.size,
+        }));
+        formdata.append('webwx_data_ticket', ticket);
+        formdata.append('pass_ticket', auth.passTicket);
+        formdata.append('filename', file.slice(0, file.size));
+
+        var response = axios.post(server, formdata);
+
+        if (response.BaseResponse.Ret === 0) {
+            return response.MediaId;
+        }
+
+        return false;
+    }
+
     @action deleteMessage(userid, messageid) {
         var list = self.messages.get(userid);
 

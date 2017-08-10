@@ -9,6 +9,7 @@ import Emoji from './Emoji';
 @inject(stores => ({
     sendMessage: stores.chat.sendMessage,
     user: stores.chat.user,
+    upload: stores.chat.upload,
 }))
 export default class Input extends Component {
     handleEnter(e) {
@@ -35,6 +36,14 @@ export default class Input extends Component {
         this.refs.input.value += `[${emoji}]`;
     }
 
+    process(file) {
+        if (!file) return;
+
+        var mediaid = this.props.upload(file);
+
+        this.props.sendFile(mediaid);
+    }
+
     render() {
         var canisend = this.props.user;
 
@@ -56,9 +65,16 @@ export default class Input extends Component {
 
                 <div className={classes.action}>
                     <i className="icon-ion-ios-mic" />
-                    <i className="icon-ion-android-attach" />
+                    <i className="icon-ion-android-attach" onClick={e => this.refs.uploader.click()} />
                     <i className="icon-ion-ios-heart" onClick={e => this.toggleEmoji(true)} />
 
+                    <input
+                        type="file"
+                        ref="uploader"
+                        onChange={e => this.process(e.target.files[0])}
+                        style={{
+                            display: 'none',
+                        }} />
                     <Emoji
                         output={emoji => this.writeEmoji(emoji)}
                         close={e => setTimeout(() => this.toggleEmoji(false), 100)}

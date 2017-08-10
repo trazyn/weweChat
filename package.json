@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@exponent/electron-cookies": "^2.0.0",
+    "WebUploader": "github:fex-team/webuploader",
     "axios": "^0.16.2",
     "classname": "^0.0.0",
     "delegate": "^3.1.3",

@@ -209,6 +209,22 @@ const helper = {
     decodeHTML: (text) => {
         return text.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
     },
+
+    // 3 types supported: pic, video, doc
+    getMediaType(ext = '') {
+        ext = ext.toLowerCase();
+
+        switch (true) {
+            case ['bmp', 'gif', 'jpeg', 'jpg', 'png'].includes(ext):
+                return 'pic';
+
+            case ['mp4'].includes(ext):
+                return 'video';
+
+            default:
+                return 'doc';
+        }
+    }
 };
 
 export default helper;
