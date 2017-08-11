@@ -405,6 +405,7 @@ class Chat {
                 isme: true,
                 CreateTime: +new Date() / 1000,
                 MsgId: response.data.MsgID,
+                MsgType: 3,
                 HeadImgUrl: session.user.User.HeadImgUrl,
             }),
         };
@@ -417,11 +418,7 @@ class Chat {
     }
 
     @action async sendFileMessage(auth, message, isForward) {
-        var response = await axios.post((
-            isForward
-                ? '/cgi-bin/mmwebwx-bin/webwxsendappmsg?fun=async&f=json'
-                : '/cgi-bin/mmwebwx-bin/webwxsendmsgimg&fun=async'
-        ), {
+        var response = await axios.post('/cgi-bin/mmwebwx-bin/webwxsendappmsg?fun=async&f=json', {
             BaseRequest: {
                 Sid: auth.wxsid,
                 Uin: auth.wxuin,
@@ -461,6 +458,7 @@ class Chat {
                 isme: true,
                 CreateTime: +new Date() / 1000,
                 MsgId: response.data.MsgID,
+                MsgType: 49 + 6,
                 HeadImgUrl: session.user.User.HeadImgUrl,
             }),
         };
@@ -576,10 +574,10 @@ class Chat {
         formdata.append('pass_ticket', auth.passTicket);
         formdata.append('filename', file.slice(0, file.size));
 
-        var response = axios.post(server, formdata);
+        var response = await axios.post(server, formdata);
 
-        if (response.BaseResponse.Ret === 0) {
-            return response.MediaId;
+        if (response.data.BaseResponse.Ret === 0) {
+            return response.data.MediaId;
         }
 
         return false;

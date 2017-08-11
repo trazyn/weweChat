@@ -36,12 +36,20 @@ export default class Input extends Component {
         this.refs.input.value += `[${emoji}]`;
     }
 
-    process(file) {
+    async process(file) {
         if (!file) return;
 
-        var mediaid = this.props.upload(file);
+        var mediaId = await this.props.upload(file);
 
-        this.props.sendFile(mediaid);
+        this.props.sendMessage(this.props.user, {
+            type: 49 + 6,
+            file: {
+                name: file.name,
+                size: file.size,
+                mediaId,
+                extension: file.name.split('.').slice(-1).pop()
+            },
+        });
     }
 
     render() {
