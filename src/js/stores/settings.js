@@ -54,6 +54,8 @@ class Settings {
                 startup,
             });
         }
+
+        return settings;
     }
 
     save() {

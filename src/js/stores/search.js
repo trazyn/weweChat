@@ -60,17 +60,10 @@ class Search {
     }
 
     @action async addHistory(user) {
-        var history = [user.UserName, ...self.history.filter(e => e !== user.UserName)];
+        var list = [user, ...self.history.filter(e => e.UserName !== user.UserName)];
 
-        await storage.set('history', history);
-        self.history.replace(history);
-
-        return history;
-    }
-
-    @action async updateHistory(history) {
-        await storage.set('history', history);
-        self.history.replace(history);
+        await storage.set('history', list);
+        await self.getHistory();
     }
 
     @action reset() {
@@ -83,9 +76,20 @@ class Search {
     }
 
     @action async getHistory() {
-        var history = await storage.get('history');
+        var list = await storage.get('history');
+        var history = [];
 
-        self.history.replace(Array.isArray(history) ? history : []);
+        Array.from(list).map(e => {
+            var user = contacts.memberList.find(user => user.UserName === e.UserName);
+
+            if (user) {
+                history.push(user);
+            }
+        });
+
+        await storage.set('history', history);
+        self.history.replace(history);
+
         return history;
     }
 

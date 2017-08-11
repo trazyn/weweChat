@@ -207,10 +207,13 @@ class Session {
                     }
 
                     // Do next sync keep your wechat alive
-                    return loop();
+                    return (loop(), true);
                 }
 
-                return loop();
+                loop();
+
+                // Reolve promise
+                return true;
             } else {
                 return false;
             }

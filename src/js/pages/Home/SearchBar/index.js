@@ -5,22 +5,11 @@ import { inject, observer } from 'mobx-react';
 import classes from './style.css';
 
 @inject(stores => ({
+    history: stores.search.history,
     searching: stores.search.searching,
     toggle: stores.search.toggle,
     filter: stores.search.filter,
     result: stores.search.result,
-    getHistory: () => {
-        var history = [];
-
-        stores.search.history.map(e => {
-            var user = stores.contacts.memberList.find(user => user.UserName === e);
-
-            if (user) {
-                history.push(user);
-            }
-        });
-        return history;
-    },
     getPlaceholder: () => {
         stores.contacts.filter();
         return stores.contacts.filtered.result;
@@ -92,8 +81,7 @@ export default class SearchBar extends Component {
     }
 
     navigation(e) {
-        var { result, getHistory, getPlaceholder } = this.props;
-        var history = getHistory();
+        var { result, history, getPlaceholder } = this.props;
 
         if (![
             38, // Up
@@ -193,8 +181,7 @@ export default class SearchBar extends Component {
     }
 
     render() {
-        var { searching, getHistory, result } = this.props;
-        var history = getHistory();
+        var { searching, history, result } = this.props;
 
         return (
             <div className={classes.container}>
