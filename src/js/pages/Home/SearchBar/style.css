@@ -70,7 +70,6 @@
     justify-content: flex-start;
     align-items: center;
     cursor: pointer;
-    transition: .2s ease-in-out;
 
     & img {
         height: 32px;
