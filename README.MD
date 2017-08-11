@@ -41,18 +41,19 @@ $ npm run dev
   - [x] Video
   - [x] Money Transger
   - [x] Location sharing
-  - [ ] File
+  - [ ] Download File
 - [ ] Show QQ emoji
 - [x] Send text message
-- [ ] Send file
-- [ ] Send image
+- [x] Send file
+- [x] Send image
 - [x] Forward text message
 - [x] Forward emoji
-- [ ] Forward image
+- [x] Forward image
 - [x] Forward file
 - [x] Search chat set
 - [x] Search and create chat room
-- [x] Keep online(bug)
+- [x] Desktop notification
+- [ ] Keep online(bug)
 - [ ] History
 - [ ] Background behavior
 - [ ] Theme
