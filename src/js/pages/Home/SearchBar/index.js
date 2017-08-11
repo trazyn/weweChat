@@ -75,9 +75,11 @@ export default class SearchBar extends Component {
 
         var active = users[index];
 
-        // Keep active item always in the viewport
-        active.classList.add(classes.active);
-        scroller.scrollTop = active.offsetTop + active.offsetHeight - scroller.offsetHeight;
+        if (active) {
+            // Keep active item always in the viewport
+            active.classList.add(classes.active);
+            scroller.scrollTop = active.offsetTop + active.offsetHeight - scroller.offsetHeight;
+        }
     }
 
     navigation(e) {
