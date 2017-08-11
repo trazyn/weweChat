@@ -31,9 +31,9 @@ async function resolveMessage(message) {
             break;
         case 3:
             // Image
-            let images = helper.parseKV(content);
-            images.src = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${message.MsgId}&skey=${auth.skey}`;
-            message.images = images;
+            let image = helper.parseKV(content);
+            image.src = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${message.MsgId}&skey=${auth.skey}`;
+            message.image = image;
             break;
 
         case 34:
@@ -378,11 +378,7 @@ class Chat {
     }
 
     @action async sendImageMessage(auth, message, isForward) {
-        var response = await axios.post((
-            isForward
-                ? '/cgi-bin/mmwebwx-bin/webwxsendmsgimg?fun=async&f=json'
-                : '/cgi-bin/mmwebwx-bin/webwxsendmsgimg&fun=async'
-        ), {
+        var response = await axios.post('/cgi-bin/mmwebwx-bin/webwxsendmsgimg?fun=async&f=json', {
             BaseRequest: {
                 Sid: auth.wxsid,
                 Uin: auth.wxuin,
@@ -394,6 +390,7 @@ class Chat {
                 ToUserName: message.to,
                 ClientMsgId: message.ClientMsgId,
                 LocalID: message.LocalID,
+                MediaId: isForward ? '' : message.file.mediaId,
                 Type: 3,
             },
             Scene: isForward ? 2 : 0,
@@ -405,8 +402,12 @@ class Chat {
                 isme: true,
                 CreateTime: +new Date() / 1000,
                 MsgId: response.data.MsgID,
-                MsgType: 3,
                 HeadImgUrl: session.user.User.HeadImgUrl,
+
+                MsgType: 3,
+                image: {
+                    src: `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${response.data.MsgID}&skey=${auth.skey}`
+                }
             }),
         };
 
@@ -494,13 +495,20 @@ class Chat {
                 LocalID: id,
             }), isForward);
         } else if (message.type === 3) {
-            res = await self.sendImageMessage(auth, Object.assign({}, message, {
-                content: helper.decodeHTML(message.content),
+            let data = Object.assign({}, message, {
+                content: '',
                 from,
                 to,
                 ClientMsgId: message.MsgId,
                 LocalID: id,
-            }), isForward);
+            });
+
+            if (isForward === true) {
+                Object.assign(data, {
+                    content: helper.decodeHTML(message.content),
+                });
+            }
+            res = await self.sendImageMessage(auth, data, isForward);
         } else if (message.type === 49 + 6) {
             res = await self.sendFileMessage(auth, Object.assign({}, message, {
                 from,
@@ -546,6 +554,7 @@ class Chat {
         var ticket = await helper.getCookie('webwx_data_ticket');
         var formdata = new window.FormData();
         var server = axios.defaults.baseURL.replace(/https:\/\//, 'https://file.') + 'cgi-bin/mmwebwx-bin/webwxuploadmedia?f=json';
+        var mediaType = helper.getMediaType(file.name.split('.').slice(-1).pop());
 
         // Increase the counter
         self.upload.count = self.upload.count ? 0 : self.upload.count + 1;
@@ -555,7 +564,7 @@ class Chat {
         formdata.append('type', file.type);
         formdata.append('lastModifieDate', new Date(file.lastModifieDate).toString());
         formdata.append('size', file.size);
-        formdata.append('mediatype', helper.getMediaType(file.name.split('.').slice(-1).pop()));
+        formdata.append('mediatype', mediaType);
         formdata.append('uploadmediarequest', JSON.stringify({
             BaseRequest: {
                 Sid: auth.wxsid,
@@ -577,7 +586,14 @@ class Chat {
         var response = await axios.post(server, formdata);
 
         if (response.data.BaseResponse.Ret === 0) {
-            return response.data.MediaId;
+            return {
+                mediaId: response.data.MediaId,
+                type: {
+                    'pic': 3,
+                    'video': 43,
+                    'doc': 49 + 6,
+                }[mediaType],
+            };
         }
 
         return false;

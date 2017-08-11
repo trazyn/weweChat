@@ -39,10 +39,10 @@ export default class Input extends Component {
     async process(file) {
         if (!file) return;
 
-        var mediaId = await this.props.upload(file);
+        var { mediaId, type } = await this.props.upload(file);
 
         this.props.sendMessage(this.props.user, {
-            type: 49 + 6,
+            type,
             file: {
                 name: file.name,
                 size: file.size,

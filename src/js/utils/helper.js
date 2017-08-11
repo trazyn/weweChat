@@ -210,12 +210,16 @@ const helper = {
         return text.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
     },
 
+    isImage: (ext) => {
+        return ['bmp', 'gif', 'jpeg', 'jpg', 'png'].includes(ext);
+    },
+
     // 3 types supported: pic, video, doc
     getMediaType(ext = '') {
         ext = ext.toLowerCase();
 
         switch (true) {
-            case ['bmp', 'gif', 'jpeg', 'jpg', 'png'].includes(ext):
+            case helper.isImage(ext):
                 return 'pic';
 
             case ['mp4'].includes(ext):

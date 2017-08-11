@@ -81,8 +81,8 @@ export default class ChatContent extends Component {
                 return message.Content;
             case 3:
                 // Image
-                let images = message.images;
-                return `<img class="open-image" data-id="${message.MsgId}" src="${images.src}" />`;
+                let image = message.image;
+                return `<img class="open-image" data-id="${message.MsgId}" src="${image.src}" />`;
             case 34:
                 /* eslint-disable */
                 // Voice
