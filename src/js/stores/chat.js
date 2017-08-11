@@ -117,6 +117,14 @@ async function resolveMessage(message) {
             }
             break;
 
+        case 10002:
+            let text = isChatRoom ? message.Content.split(':<br/>').slice(-1).pop() : message.Content;
+            let { value } = helper.parseXml(text, 'replacemsg');
+
+            message.Content = value;
+            message.MsgType = 19999;
+            break;
+
         case 10000:
             let userid = message.FromUserName;
 
