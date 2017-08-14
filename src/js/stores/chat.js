@@ -398,7 +398,7 @@ class Chat {
                 ToUserName: message.to,
                 ClientMsgId: message.ClientMsgId,
                 LocalID: message.LocalID,
-                MediaId: isForward ? '' : message.file.mediaId,
+                MediaId: message.file.mediaId,
                 Type: 3,
             },
             Scene: isForward ? 2 : 0,

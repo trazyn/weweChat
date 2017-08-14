@@ -206,7 +206,7 @@ const helper = {
         });
     },
 
-    decodeHTML: (text) => {
+    decodeHTML: (text = '') => {
         return text.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
     },
 
