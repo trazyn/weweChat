@@ -139,8 +139,8 @@ class Session {
         var mods = [];
 
         // Refresh the sync keys
-        self.user.SyncKey = response.data.SyncKey;
-        self.genSyncKey(response.data.SyncKey.List);
+        self.user.SyncKey = response.data.SyncCheckKey;
+        self.genSyncKey(response.data.SyncCheckKey.List);
 
         // Get the new friend
         response.data.ModContactList.map(e => {
@@ -224,7 +224,7 @@ class Session {
         });
 
         self.loading = false;
-        self.genSyncKey(response.data.SyncKey.List);
+        self.genSyncKey(response.data.SyncCheckKey.List);
 
         if (await loop() === false) {
             throw window.synccheck;
