@@ -8,6 +8,7 @@ let mainWindow;
 let userData = app.getPath('userData');
 let imagesCacheDir = `${userData}/images`;
 let voicesCacheDir = `${userData}/voices`;
+let downloadDir = app.getPath('downloads');
 
 [imagesCacheDir, voicesCacheDir].map(e => {
     if (!fs.existsSync(e)) {
@@ -77,6 +78,25 @@ const createMainWindow = () => {
 
         fs.writeFileSync(filename, data.replace(/^data:image\/png;base64,/, ''), 'base64');
         shell.openItem(filename);
+    });
+
+    ipcMain.on('file-download', async(event, args) => {
+        var filename = `${downloadDir}/${args.id}_${args.filename}`;
+
+        fs.writeFileSync(filename, args.raw.replace(/^data:image\/png;base64,/, ''), {
+            encoding: 'base64',
+            // Overwrite file
+            flag: 'wx',
+        });
+        event.returnValue = filename;
+    });
+
+    ipcMain.on('open-file', async(event, filename) => {
+        shell.openItem(filename);
+    });
+
+    ipcMain.on('open-folder', async(event, dir) => {
+        shell.openItem(dir);
     });
 
     ipcMain.on('open-map', (event, map) => {

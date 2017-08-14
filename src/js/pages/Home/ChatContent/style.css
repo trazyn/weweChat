@@ -485,6 +485,10 @@
         color: #fff;
         transform: translateY(-50%);
     }
+
+    & :global(i.icon-ion-android-more-horizontal) {
+        background: #405de6;
+    }
 }
 
 .message.isme.isText {

@@ -33,6 +33,10 @@ import helper from 'utils/helper';
 
         stores.userinfo.toggle(true, user, caniremove);
     },
+    getMessage: (messageid) => {
+        var list = stores.chat.messages.get(stores.chat.user.UserName);
+        return list.data.find(e => e.MsgId === messageid);
+    },
     deleteMessage: (messageid) => {
         stores.chat.deleteMessage(stores.chat.user.UserName, messageid);
     },
@@ -179,9 +183,11 @@ export default class ChatContent extends Component {
             case 49 + 6:
                 // File message
                 let file = message.file;
+                let download = message.download;
 
+                /* eslint-disable */
                 return `
-                    <div class="${classes.file}">
+                    <div class="${classes.file}" data-id="${message.MsgId}">
                         <img src="assets/images/filetypes/${helper.getFiletypeIcon(file.extension)}" />
 
                         <div>
@@ -189,9 +195,14 @@ export default class ChatContent extends Component {
                             <p>${helper.humanSize(file.size)}</p>
                         </div>
 
-                        ${uploading ? '<i class="icon-ion-android-arrow-up"></i>' : '<i class="icon-ion-android-arrow-down"></i>'}
+                        ${
+                            uploading
+                                ? '<i class="icon-ion-android-arrow-up"></i>'
+                                : (download.done ? '<i class="icon-ion-android-more-horizontal is-file"></i>' : '<i class="icon-ion-android-arrow-down is-download"></i>')
+                        }
                     </div>
                 `;
+                /* eslint-enable */
 
             case 49 + 17:
                 // Location sharing...
@@ -275,8 +286,8 @@ export default class ChatContent extends Component {
         if (target.tagName === 'IMG'
             && target.classList.contains('open-image')) {
             // Get image from cache and convert to base64
-            var response = await axios.get(target.src, { responseType: 'arraybuffer' });
-            var base64 = new window.Buffer(response.data, 'binary').toString('base64');
+            let response = await axios.get(target.src, { responseType: 'arraybuffer' });
+            let base64 = new window.Buffer(response.data, 'binary').toString('base64');
 
             ipcRenderer.send('open-image', target.dataset, base64);
 
@@ -286,7 +297,7 @@ export default class ChatContent extends Component {
         // Play the voice message
         if (target.tagName === 'DIV'
             && target.classList.contains('play-voice')) {
-            var audio = target.querySelector('audio');
+            let audio = target.querySelector('audio');
 
             audio.onplay = () => target.classList.add(classes.playing);
             audio.onended = () => target.classList.remove(classes.playing);
@@ -317,11 +328,62 @@ export default class ChatContent extends Component {
 
         // Add new friend
         if (target.tagName === 'A'
-            && target.classList.contains('addFriend')) {
+            && target.classList.contains('add-friend')) {
             this.props.showAddFriend({
                 UserName: target.dataset.userid
             });
         }
+
+        // Open file & open folder
+        if (target.tagName === 'I'
+            && target.classList.contains('is-file')) {
+            let message = this.props.getMessage(e.target.parentElement.dataset.id);
+            this.showFileAction(message.download);
+        }
+
+        // Download file
+        if (target.tagName === 'I'
+            && target.classList.contains('is-download')) {
+            let message = this.props.getMessage(e.target.parentElement.dataset.id);
+            let response = await axios.get(message.file.download, { responseType: 'arraybuffer' });
+            let base64 = new window.Buffer(response.data, 'binary').toString('base64');
+            let filename = ipcRenderer.sendSync(
+                'file-download',
+                {
+                    id: message.MsgId,
+                    filename: message.file.name,
+                    raw: base64,
+                },
+            );
+
+            setTimeout(() => {
+                message.download = {
+                    done: true,
+                    path: filename,
+                };
+            });
+        }
+    }
+
+    showFileAction(download) {
+        var templates = [
+            {
+                label: 'Open file',
+                click: () => {
+                    ipcRenderer.send('open-file', download.path);
+                }
+            },
+            {
+                label: 'Open the folder',
+                click: () => {
+                    let dir = download.path.split('/').slice(0, -1).join('/');
+                    ipcRenderer.send('open-folder', dir);
+                }
+            },
+        ];
+        var menu = new remote.Menu.buildFromTemplate(templates);
+
+        menu.popup(remote.getCurrentWindow());
     }
 
     showMessageAction(message) {

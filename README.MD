@@ -41,7 +41,7 @@ $ npm run dev
   - [x] Video
   - [x] Money Transger
   - [x] Location sharing
-  - [ ] Download File
+  - [x] Download File
 - [ ] Show QQ emoji
 - [x] Send text message
 - [x] Send file

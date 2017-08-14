@@ -107,6 +107,9 @@ async function resolveMessage(message) {
 
                     message.MsgType += 6;
                     message.file = file;
+                    message.download = {
+                        done: false,
+                    };
                     break;
 
                 default:
@@ -546,7 +549,7 @@ class Chat {
                 && !user.isFriend) {
                 // The target is not your friend
                 list.data.push({
-                    Content: `${user.sex ? 'She' : 'He'} is not your friend, <a class="addFriend" data-userid="${user.UserName}">Send friend request</a>`,
+                    Content: `${user.sex ? 'She' : 'He'} is not your friend, <a class="add-friend" data-userid="${user.UserName}">Send friend request</a>`,
                     MsgType: 19999,
                 });
             }
@@ -642,7 +645,11 @@ class Chat {
                         name: file.name,
                         size: file.size,
                         extension: file.name.split('.').slice(-1).pop()
-                    }
+                    },
+                    download: {
+                        done: true,
+                        path: file.path,
+                    },
                 });
                 break;
 
