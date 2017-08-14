@@ -535,6 +535,30 @@
     }
 }
 
+.message.uploading {
+    &.isFile i,
+    &.isImage i {
+        position: absolute;
+        top: 50%;
+        right: 16px;
+        height: 32px;
+        width: 32px;
+        border-radius: 100%;
+        line-height: 32px;
+        text-align: center;
+        font-size: 14px;
+        background: #3adcbe;
+        box-shadow: 0 0 24px 0 rgba(119, 119, 119, .5);
+        cursor: pointer;
+        color: #fff;
+        transform: translateY(-50%);
+    }
+
+    &.isFile i {
+        right: -16px !important;
+    }
+}
+
 .invalidEmoji {
     position: relative;
     margin-top: -30px;

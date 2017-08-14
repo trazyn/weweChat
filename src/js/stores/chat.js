@@ -479,7 +479,14 @@ class Chat {
         return res;
     }
 
-    @action async sendMessage(user, message, isForward = false) {
+    transformMessages(to, messages, message) {
+        // Sent success
+        let list = messages.get(to);
+        list.data.push(message);
+        return list;
+    }
+
+    @action async sendMessage(user, message, isForward = false, transformMessages = self.transformMessages) {
         var id = (+new Date() * 1000) + Math.random().toString().substr(2, 4);
         var auth = await storage.get('auth');
         var from = session.user.User.UserName;
@@ -533,10 +540,7 @@ class Chat {
         self.chatTo(user);
 
         if (data.BaseResponse.Ret === 0) {
-            // Sent success
-            let list = self.messages.get(to);
-
-            list.data.push(item);
+            let list = transformMessages(to, self.messages, item);
 
             if (!helper.isChatRoom(user.UserName)
                 && !user.isFriend) {
@@ -563,6 +567,11 @@ class Chat {
         var formdata = new window.FormData();
         var server = axios.defaults.baseURL.replace(/https:\/\//, 'https://file.') + 'cgi-bin/mmwebwx-bin/webwxuploadmedia?f=json';
         var mediaType = helper.getMediaType(file.name.split('.').slice(-1).pop());
+        var type = {
+            'pic': 3,
+            'video': 43,
+            'doc': 49 + 6,
+        }[mediaType];
 
         // Increase the counter
         self.upload.count = self.upload.count ? 0 : self.upload.count + 1;
@@ -591,20 +600,62 @@ class Chat {
         formdata.append('pass_ticket', auth.passTicket);
         formdata.append('filename', file.slice(0, file.size));
 
+        var uploaderid = self.addUploadPreview(file, type);
         var response = await axios.post(server, formdata);
 
         if (response.data.BaseResponse.Ret === 0) {
             return {
                 mediaId: response.data.MediaId,
-                type: {
-                    'pic': 3,
-                    'video': 43,
-                    'doc': 49 + 6,
-                }[mediaType],
+                type,
+                uploaderid,
             };
         }
 
         return false;
+    }
+
+    @action addUploadPreview(file, type) {
+        var to = self.user.UserName;
+        var list = self.messages.get(to);
+        var uploaderid = Math.random().toString();
+        var item = {
+            isme: true,
+            CreateTime: +new Date() / 1000,
+            HeadImgUrl: session.user.User.HeadImgUrl,
+            MsgType: type,
+            uploading: true,
+            uploaderid,
+        };
+
+        switch (type) {
+            case 3:
+                Object.assign(item, {
+                    image: {
+                        src: file.path,
+                    },
+                });
+                break;
+
+            case 49 + 6:
+                Object.assign(item, {
+                    file: {
+                        name: file.name,
+                        size: file.size,
+                        extension: file.name.split('.').slice(-1).pop()
+                    }
+                });
+                break;
+
+            default:
+                return 'Unknow Type';
+        }
+
+        list.data.push(item);
+
+        self.markedRead(to);
+        self.messages.set(to, list);
+
+        return uploaderid;
     }
 
     @action deleteMessage(userid, messageid) {

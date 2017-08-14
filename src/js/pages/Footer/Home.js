@@ -39,7 +39,9 @@ export default class Input extends Component {
     async process(file) {
         if (!file) return;
 
-        var { mediaId, type } = await this.props.upload(file);
+        var { mediaId, type, uploaderid } = await this.props.upload(file);
+
+        this.refs.uploader.value = '';
 
         this.props.sendMessage(this.props.user, {
             type,
@@ -49,6 +51,19 @@ export default class Input extends Component {
                 mediaId,
                 extension: file.name.split('.').slice(-1).pop()
             },
+        }, false, (to, messages, message) => {
+            // Sent success
+            var list = messages.get(to);
+            var item = list.data.find(e => e.uploaderid === uploaderid);
+
+            Object.assign(item, message, {
+                uploading: false,
+
+                // Avoid to update image
+                image: item.image,
+            });
+
+            return list;
         });
     }
 

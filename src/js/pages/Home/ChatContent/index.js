@@ -69,6 +69,8 @@ import helper from 'utils/helper';
 @observer
 export default class ChatContent extends Component {
     getMessageContent(message) {
+        var uploading = message.uploading;
+
         switch (message.MsgType) {
             case 1:
                 if (message.location) {
@@ -82,6 +84,15 @@ export default class ChatContent extends Component {
             case 3:
                 // Image
                 let image = message.image;
+
+                if (uploading) {
+                    return `
+                        <div>
+                            <img class="open-image" data-id="${message.MsgId}" src="${image.src}" />
+                            <i class="icon-ion-android-arrow-up"></i>
+                        </div>
+                    `;
+                }
                 return `<img class="open-image" data-id="${message.MsgId}" src="${image.src}" />`;
             case 34:
                 /* eslint-disable */
@@ -178,7 +189,7 @@ export default class ChatContent extends Component {
                             <p>${helper.humanSize(file.size)}</p>
                         </div>
 
-                        <i class="icon-ion-android-arrow-down"></i>
+                        ${uploading ? '<i class="icon-ion-android-arrow-up"></i>' : '<i class="icon-ion-android-arrow-down"></i>'}
                     </div>
                 `;
 
@@ -218,6 +229,9 @@ export default class ChatContent extends Component {
 
             return (
                 <div className={clazz(classes.message, {
+                    // File is uploading
+                    [classes.uploading]: message.uploading === true,
+
                     [classes.isme]: message.isme,
                     [classes.isText]: type === 1 && !message.location,
                     [classes.isLocation]: type === 1 && message.location,
@@ -330,6 +344,8 @@ export default class ChatContent extends Component {
                 }
             });
         }
+
+        if (message.uploading) return;
 
         menu = new remote.Menu.buildFromTemplate(templates);
         menu.popup(remote.getCurrentWindow());
