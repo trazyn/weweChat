@@ -21,17 +21,15 @@ $ npm run dev
 ```
 
 ### TODO
-- [x] Right click on chat session
-  - [x] Sticky on top
-  - [x] Delete chat session
-  - [x] Mark as Read
-  - [x] Send Message
+- [x] Sticky on top
+- [x] Delete chat session
+- [x] Mark as Read
 - [x] Chat Room
   - [x] Show correct contact
   - [x] Show members
   - [x] Add / Remove member
   - [x] Create chat room
-- [x] Various message
+- [x] Receive message
   - [x] Text
   - [x] Image
   - [x] Voice
@@ -42,14 +40,17 @@ $ npm run dev
   - [x] Money Transger
   - [x] Location sharing
   - [x] Download File
-- [ ] Show QQ emoji
-- [x] Send text message
-- [x] Send file
-- [x] Send image
+- [x] Send message
+  - [x] Text
+  - [x] File
+  - [x] Image
+  - [ ] Video
 - [x] Forward text message
 - [x] Forward emoji
 - [x] Forward image
 - [x] Forward file
+- [ ] Forward video
+- [ ] Show QQ emoji
 - [x] Search chat set
 - [x] Search and create chat room
 - [x] Desktop notification
