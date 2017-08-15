@@ -15,8 +15,6 @@ class Forward {
         self.show = show;
         self.message = message;
 
-        console.log(message);
-
         if (show === false) {
             self.query = '';
             self.list.replace([]);

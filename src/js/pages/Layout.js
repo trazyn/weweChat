@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react';
 import { ipcRenderer } from 'electron';
 
 import Loader from 'components/Loader';
+import Snackbar from 'components/Snackbar';
 import Header from './Header';
 import Footer from './Footer';
 import Login from './Login';
@@ -17,6 +18,10 @@ import Forward from './Forward';
 @inject(stores => ({
     isLogin: () => !!stores.session.auth,
     loading: stores.session.loading,
+
+    message: stores.snackbar.text,
+    show: stores.snackbar.show,
+    close: () => stores.snackbar.toggle(false),
 }))
 @observer
 export default class Layout extends Component {
@@ -29,6 +34,11 @@ export default class Layout extends Component {
 
         return (
             <div>
+                <Snackbar
+                    close={this.props.close}
+                    show={this.props.show}
+                    text={this.props.message} />
+
                 <Loader show={this.props.loading} />
                 <Header location={this.props.location} />
                 <div style={{

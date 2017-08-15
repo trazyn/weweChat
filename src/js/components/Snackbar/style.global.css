@@ -1,0 +1,45 @@
+
+.Snackbar {
+    position: fixed;
+    right: 17px;
+    bottom: 84px;
+    display: flex;
+    height: 48px;
+    line-height: 48px;
+    min-width: 288px;
+    max-width: 568px;
+    border-radius: 2px;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 24px;
+    font-family: 'Roboto';
+    background-color: #323232;
+}
+
+.Snackbar-action {
+    padding: 0 24px;
+    color: #ff4081;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.Snackbar-enter {
+    transform: translateY(24px);
+    opacity: 0;
+    transition: .2s cubic-bezier(.5, -.55, .4, 1.55);
+}
+
+.Snackbar-enter.Snackbar-enter-active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.Snackbar-leave {
+    opacity: 1;
+    transition: .14s;
+}
+
+.Snackbar-leave.Snackbar-leave-active {
+    transform: translateY(-24px);
+    opacity: 0;
+}

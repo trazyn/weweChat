@@ -10,6 +10,7 @@ import userinfo from './userinfo';
 import contacts from './contacts';
 import search from './search';
 import settings from './settings';
+import snackbar from './snackbar';
 
 const stores = {
     session,
@@ -23,6 +24,7 @@ const stores = {
     settings,
     members,
     forward,
+    snackbar,
 };
 
 export default stores;

@@ -10,6 +10,7 @@ import Emoji from './Emoji';
     sendMessage: stores.chat.sendMessage,
     user: stores.chat.user,
     upload: stores.chat.upload,
+    showMessage: stores.snackbar.showMessage,
 }))
 export default class Input extends Component {
     handleEnter(e) {
@@ -39,9 +40,14 @@ export default class Input extends Component {
     async process(file) {
         if (!file) return;
 
-        var { mediaId, type, uploaderid } = await this.props.upload(file);
-
         this.refs.uploader.value = '';
+
+        if (file.size > 20 * 1024 * 1024) {
+            this.props.showMessage('Send file not allowed to exceed 20M.');
+            return;
+        }
+
+        var { mediaId, type, uploaderid } = await this.props.upload(file);
 
         this.props.sendMessage(this.props.user, {
             type,
