@@ -44,12 +44,12 @@ $ npm run dev
   - [x] Text
   - [x] File
   - [x] Image
-  - [ ] Video
+  - [x] Video
 - [x] Forward text message
 - [x] Forward emoji
 - [x] Forward image
 - [x] Forward file
-- [ ] Forward video
+- [x] Forward video
 - [ ] Show QQ emoji
 - [x] Search chat set
 - [x] Search and create chat room

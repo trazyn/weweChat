@@ -40,11 +40,7 @@ export default class Chats extends Component {
 
         if (list) {
             // Make sure all chatset has be loaded
-            list.data.map(e => {
-                if (e.FromUserName === userid) {
-                    res = e;
-                }
-            });
+            res = list.data.slice(-1)[0];
         }
 
         return res;

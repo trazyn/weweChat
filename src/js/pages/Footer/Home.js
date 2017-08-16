@@ -13,14 +13,19 @@ import Emoji from './Emoji';
     showMessage: stores.snackbar.showMessage,
 }))
 export default class Input extends Component {
-    handleEnter(e) {
+    async handleEnter(e) {
         if (e.charCode !== 13) return;
 
-        this.props.sendMessage(this.props.user, {
+        var res = this.props.sendMessage(this.props.user, {
             content: this.refs.input.value,
             type: 1,
         });
-        this.refs.input.value = '';
+
+        if (res) {
+            this.refs.input.value = '';
+        } else {
+            this.props.showMessage('Failed to send message.');
+        }
     }
 
     state = {
@@ -48,8 +53,7 @@ export default class Input extends Component {
         }
 
         var { mediaId, type, uploaderid } = await this.props.upload(file);
-
-        this.props.sendMessage(this.props.user, {
+        var res = await this.props.sendMessage(this.props.user, {
             type,
             file: {
                 name: file.name,
@@ -62,15 +66,40 @@ export default class Input extends Component {
             var list = messages.get(to);
             var item = list.data.find(e => e.uploaderid === uploaderid);
 
-            Object.assign(item, message, {
-                uploading: false,
+            switch (type) {
+                case 3:
+                    // Image
+                    Object.assign(item, message, {
+                        uploading: false,
 
-                // Avoid to update image
-                image: item.image,
-            });
+                        // Avoid rerender
+                        image: item.image,
+                    });
+                    break;
+
+                case 43:
+                    // Video
+                    Object.assign(item, message, {
+                        uploading: false,
+                        video: {
+                            ...message.video,
+                            src: item.video.src,
+                        },
+                    });
+                    break;
+
+                default:
+                    Object.assign(item, message, {
+                        uploading: false,
+                    });
+            }
 
             return list;
         });
+
+        if (res === false) {
+            this.props.showMessage(`Failed to send ${file.name}.`);
+        }
     }
 
     render() {

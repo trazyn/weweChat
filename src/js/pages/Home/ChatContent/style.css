@@ -520,6 +520,20 @@
     }
 }
 
+.message.isme.isVideo {
+    text-align: right;
+
+    & > div {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    & .avatar {
+        left: auto;
+        right: -16px;
+    }
+}
+
 .message.isme.isEmoji,
 .message.isme.isImage,
 .message.isme.isFile {
@@ -541,6 +555,7 @@
 
 .message.uploading {
     &.isFile i,
+    &.isVideo i,
     &.isImage i {
         position: absolute;
         top: 50%;
@@ -558,6 +573,7 @@
         transform: translateY(-50%);
     }
 
+    &.isVideo i,
     &.isFile i {
         right: -16px !important;
     }

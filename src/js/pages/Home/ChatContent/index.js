@@ -164,6 +164,16 @@ export default class ChatContent extends Component {
                 // Video message
                 let video = message.video;
 
+                if (uploading) {
+                    return `
+                        <div>
+                            <video preload="metadata" controls src="${video.src}"></video>
+
+                            <i class="icon-ion-android-arrow-up"></i>
+                        </div>
+                    `;
+                }
+
                 return `
                     <video preload="metadata" poster="${video.cover}" controls src="${video.src}" />
                 `;
@@ -385,7 +395,7 @@ export default class ChatContent extends Component {
     }
 
     showMessageAction(message) {
-        var caniforward = [1, 3, 47, 49 + 6].includes(message.MsgType);
+        var caniforward = [1, 3, 47, 43, 49 + 6].includes(message.MsgType);
         var templates = [
             {
                 label: 'Delete',

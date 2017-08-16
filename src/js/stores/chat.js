@@ -216,7 +216,7 @@ class Chat {
         return res;
     }
 
-    @action chatTo(user) {
+    @action chatTo(user, onTop) {
         var sessions = self.sessions;
         var stickyed = [];
         var normaled = [];
@@ -230,6 +230,14 @@ class Chat {
                 data: [],
                 unread: 0,
             });
+        } else {
+            if (onTop === true) {
+                sessions = [
+                    ...self.sessions.slice(index, index + 1),
+                    ...self.sessions.slice(0, index),
+                    ...self.sessions.slice(index + 1, self.sessions.length)
+                ];
+            }
         }
 
         sessions.map(e => {
@@ -348,7 +356,8 @@ class Chat {
         };
 
         if (res.data.BaseResponse.Ret !== 0) {
-            console.error('Failed to send message: %o', response.data);
+            console.error('Failed to send text: %o', response.data);
+            throw response.data;
         }
 
         return res;
@@ -383,6 +392,7 @@ class Chat {
 
         if (res.data.BaseResponse.Ret !== 0) {
             console.error('Failed to send emoji: %o', response.data);
+            throw response.data;
         }
 
         return res;
@@ -417,6 +427,7 @@ class Chat {
 
                 MsgType: 3,
                 image: {
+                    // Update the image src
                     src: `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${response.data.MsgID}&skey=${auth.skey}`
                 }
             }),
@@ -424,6 +435,7 @@ class Chat {
 
         if (res.data.BaseResponse.Ret !== 0) {
             console.error('Failed to send image: %o', response.data);
+            throw response.data;
         }
 
         return res;
@@ -477,6 +489,50 @@ class Chat {
 
         if (res.data.BaseResponse.Ret !== 0) {
             console.error('Failed to send file: %o', response.data);
+            throw response.data;
+        }
+
+        return res;
+    }
+
+    @action async sendVideoMessage(auth, message, isForward) {
+        var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxsendvideomsg?fun=async&f=json&pass_ticket=${auth.passTicket}`, {
+            BaseRequest: {
+                Sid: auth.wxsid,
+                Uin: auth.wxuin,
+                Skey: auth.skey,
+            },
+            Msg: {
+                Content: message.content,
+                FromUserName: message.from,
+                ToUserName: message.to,
+                ClientMsgId: message.ClientMsgId,
+                LocalID: message.LocalID,
+                MediaId: message.file.mediaId,
+                Type: 43,
+            },
+            Scene: isForward ? 2 : 0,
+        });
+        var res = {
+            data: response.data,
+
+            item: Object.assign({}, message, {
+                isme: true,
+                CreateTime: +new Date() / 1000,
+                MsgId: response.data.MsgID,
+                HeadImgUrl: session.user.User.HeadImgUrl,
+                MsgType: 43,
+
+                video: {
+                    src: `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${response.data.MsgID}&skey=${auth.skey}`,
+                    cover: `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetmsgimg?&MsgId=${response.data.MsgID}&skey=${auth.skey}&type=slave`,
+                }
+            }),
+        };
+
+        if (res.data.BaseResponse.Ret !== 0) {
+            console.error('Failed to send video: %o', response.data);
+            throw response.data;
         }
 
         return res;
@@ -492,58 +548,44 @@ class Chat {
     @action async sendMessage(user, message, isForward = false, transformMessages = self.transformMessages) {
         var id = (+new Date() * 1000) + Math.random().toString().substr(2, 4);
         var auth = await storage.get('auth');
-        var from = session.user.User.UserName;
-        var to = user.UserName;
+        var payload = Object.assign({}, message, {
+            content: helper.decodeHTML(message.content),
+            from: session.user.User.UserName,
+            to: user.UserName,
+            ClientMsgId: id,
+            LocalID: id
+        });
         var res;
 
-        if (message.type === 1) {
-            res = await self.sendTextMessage(auth, {
-                content: message.content,
-                from,
-                to,
-                ClientMsgId: id,
-                LocalID: id,
-            }, isForward);
-        } else if (message.type === 47) {
-            res = await self.sendEmojiMessage(auth, Object.assign({}, message, {
-                content: message.content,
-                from,
-                to,
-                ClientMsgId: message.MsgId,
-                LocalID: id,
-            }), isForward);
-        } else if (message.type === 3) {
-            let data = Object.assign({}, message, {
-                content: '',
-                from,
-                to,
-                ClientMsgId: message.MsgId,
-                LocalID: id,
-            });
-
-            if (isForward === true) {
-                Object.assign(data, {
-                    content: helper.decodeHTML(message.content),
-                });
+        try {
+            if (message.type === 1) {
+                // Send text
+                res = await self.sendTextMessage(auth, payload, isForward);
+            } else if (message.type === 47) {
+                // Send emoji
+                res = await self.sendEmojiMessage(auth, payload, isForward);
+            } else if (message.type === 3) {
+                // Send image
+                res = await self.sendImageMessage(auth, payload, isForward);
+            } else if (message.type === 49 + 6) {
+                // Send file
+                res = await self.sendFileMessage(auth, payload, isForward);
+            } else if (message.type === 43) {
+                // Send video
+                res = await self.sendVideoMessage(auth, payload, isForward);
+            } else {
+                return false;
             }
-            res = await self.sendImageMessage(auth, data, isForward);
-        } else if (message.type === 49 + 6) {
-            res = await self.sendFileMessage(auth, Object.assign({}, message, {
-                from,
-                to,
-                ClientMsgId: id,
-                LocalID: id,
-            }), isForward);
-        } else {
+        } catch (ex) {
             return false;
         }
 
         var { data, item } = res;
 
-        self.chatTo(user);
+        self.chatTo(user, isForward);
 
         if (data.BaseResponse.Ret === 0) {
-            let list = transformMessages(to, self.messages, item);
+            let list = transformMessages(payload.to, self.messages, item);
 
             if (!helper.isChatRoom(user.UserName)
                 && !user.isFriend) {
@@ -554,8 +596,8 @@ class Chat {
                 });
             }
 
-            self.markedRead(to);
-            self.messages.set(to, list);
+            self.markedRead(payload.to);
+            self.messages.set(payload.to, list);
 
             return true;
         }
@@ -634,8 +676,17 @@ class Chat {
             case 3:
                 Object.assign(item, {
                     image: {
+                        // Use the local path
                         src: file.path,
                     },
+                });
+                break;
+
+            case 43:
+                Object.assign(item, {
+                    video: {
+                        src: file.path,
+                    }
                 });
                 break;
 
