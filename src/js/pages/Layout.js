@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, remote } from 'electron';
 
 import Loader from 'components/Loader';
 import Snackbar from 'components/Snackbar';
@@ -25,6 +25,49 @@ import Forward from './Forward';
 }))
 @observer
 export default class Layout extends Component {
+    componentDidMount() {
+        var templates = [
+            {
+                label: 'Undo',
+                role: 'undo',
+            }, {
+                label: 'Redo',
+                role: 'redo',
+            }, {
+                type: 'separator',
+            }, {
+                label: 'Cut',
+                role: 'cut',
+            }, {
+                label: 'Copy',
+                role: 'copy',
+            }, {
+                label: 'Paste',
+                role: 'paste',
+            }, {
+                type: 'separator',
+            }, {
+                label: 'Select all',
+                role: 'selectall',
+            },
+        ];
+        var menu = new remote.Menu.buildFromTemplate(templates);
+
+        document.body.addEventListener('contextmenu', e => {
+            e.preventDefault();
+
+            let node = e.target;
+
+            while (node) {
+                if (node.nodeName.match(/^(input|textarea)$/i) || node.isContentEditable) {
+                    menu.popup(remote.getCurrentWindow());
+                    break;
+                }
+                node = node.parentNode;
+            }
+        });
+    }
+
     render() {
         if (!this.props.isLogin()) {
             return <Login />;
