@@ -10,7 +10,6 @@ Unofficial WeChat client built with React, MobX and Electron.
 ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/0.png)
 ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/1.png)
 ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/2.png)
-![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/5.png)
 ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/3.png)
 ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/4.png)
 

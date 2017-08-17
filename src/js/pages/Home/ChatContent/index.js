@@ -9,6 +9,7 @@ import axios from 'axios';
 import classes from './style.css';
 import Avatar from 'components/Avatar';
 import helper from 'utils/helper';
+import { on, off } from 'utils/event';
 
 @inject(stores => ({
     user: stores.chat.user,
@@ -79,7 +80,7 @@ export default class ChatContent extends Component {
             case 1:
                 if (message.location) {
                     return `
-                        <img class="open-map" data-map="${message.location.href}" src="${message.location.image}" />
+                        <img class="open-map unload" data-map="${message.location.href}" src="${message.location.image}" />
                         <label>${message.location.label}</label>
                     `;
                 }
@@ -92,12 +93,12 @@ export default class ChatContent extends Component {
                 if (uploading) {
                     return `
                         <div>
-                            <img class="open-image" data-id="${message.MsgId}" src="${image.src}" />
+                            <img class="open-image unload" data-id="${message.MsgId}" src="${image.src}" />
                             <i class="icon-ion-android-arrow-up"></i>
                         </div>
                     `;
                 }
-                return `<img class="open-image" data-id="${message.MsgId}" src="${image.src}" />`;
+                return `<img class="open-image unload" data-id="${message.MsgId}" src="${image.src}" />`;
             case 34:
                 /* eslint-disable */
                 // Voice
@@ -128,7 +129,7 @@ export default class ChatContent extends Component {
                 let emoji = message.emoji;
 
                 if (emoji) {
-                    return `<img src="${emoji.src}" />`;
+                    return `<img src="${emoji.src}" class="unload" />`;
                 }
                 return `
                     <div class="${classes.invalidEmoji}">
@@ -142,7 +143,7 @@ export default class ChatContent extends Component {
                 let contact = message.contact;
                 let html = `
                     <div class="${clazz(classes.contact, { 'is-friend': contact.isFriend })}" data-userid="${contact.UserName}">
-                        <img src="${contact.image}" />
+                        <img src="${contact.image}" class="unload" />
 
                         <div>
                             <p>${contact.name}</p>
@@ -454,7 +455,15 @@ export default class ChatContent extends Component {
         var viewport = this.refs.viewport;
 
         if (viewport) {
-            viewport.scrollTop = viewport.scrollHeight;
+            var images = viewport.querySelectorAll('img.unload');
+
+            Array.from(images).map(e => {
+                on(e, 'load', ev => {
+                    off(e, 'load');
+                    e.classList.remove('unload');
+                    viewport.scrollTop = viewport.scrollHeight;
+                });
+            });
         }
     }
 
