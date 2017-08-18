@@ -240,7 +240,7 @@ export default class ChatContent extends Component {
                 return (
                     <div
                         key={index}
-                        className={clazz(classes.message, classes.system)}
+                        className={clazz('unread', classes.message, classes.system)}
                         dangerouslySetInnerHTML={{__html: e.Content}} />
                 );
             }
@@ -250,7 +250,7 @@ export default class ChatContent extends Component {
             }
 
             return (
-                <div className={clazz(classes.message, {
+                <div className={clazz('unread', classes.message, {
                     // File is uploading
                     [classes.uploading]: message.uploading === true,
 
@@ -451,19 +451,66 @@ export default class ChatContent extends Component {
         menu.popup(remote.getCurrentWindow());
     }
 
+    handleScroll(e) {
+        var tips = this.refs.tips;
+        var viewport = e.target;
+        var unread = viewport.querySelectorAll(`.${classes.message}.unread`);
+        var rect = viewport.getBoundingClientRect();
+        var counter = 0;
+
+        Array.from(unread).map(e => {
+            if (e.getBoundingClientRect().top > rect.bottom) {
+                counter += 1;
+            }
+        });
+
+        if (counter) {
+            tips.innerHTML = `You has ${counter} unread messages.`;
+            tips.classList.add(classes.show);
+        } else {
+            tips.classList.remove(classes.show);
+        }
+    }
+
     componentDidUpdate() {
         var viewport = this.refs.viewport;
+        var tips = this.refs.tips;
 
         if (viewport) {
             var images = viewport.querySelectorAll('img.unload');
+
+            if (viewport.scrollTop < this.scrollTop) {
+                let counter = viewport.querySelectorAll(`.${classes.message}.unread`).length;
+
+                if (counter) {
+                    tips.innerHTML = `You has ${counter} unread messages.`;
+                    tips.classList.add(classes.show);
+                }
+                return;
+            }
 
             Array.from(images).map(e => {
                 on(e, 'load', ev => {
                     off(e, 'load');
                     e.classList.remove('unload');
                     viewport.scrollTop = viewport.scrollHeight;
+                    this.scrollTop = viewport.scrollTop;
                 });
             });
+
+            tips.classList.remove(classes.show);
+            viewport.scrollTop = viewport.scrollHeight;
+            this.scrollTop = viewport.scrollTop;
+
+            Array.from(viewport.querySelectorAll(`.${classes.message}.unread`)).map(e => e.classList.remove('unread'));
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        // When the chat user has been changed, show the last message in viewport
+        if (this.props.user && nextProps.user
+            && this.props.user.UserName !== nextProps.user.UserName) {
+            this.scrollTop = -1;
         }
     }
 
@@ -493,7 +540,7 @@ export default class ChatContent extends Component {
                                 <i className="icon-ion-android-more-vertical" onClick={() => this.showMenu()} />
                             </header>
 
-                            <div className={classes.messages} ref="viewport">
+                            <div className={classes.messages} ref="viewport" onScroll={e => this.handleScroll(e)}>
                                 {
                                     this.renderMessages(messages.get(user.UserName), user)
                                 }
@@ -506,6 +553,12 @@ export default class ChatContent extends Component {
                         </div>
                     )
                 }
+
+                <div
+                    ref="tips"
+                    className={classes.tips}>
+                    Unread message.
+                </div>
             </div>
         );
     }

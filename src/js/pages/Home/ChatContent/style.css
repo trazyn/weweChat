@@ -1,5 +1,7 @@
 
 .container {
+    position: relative;
+
     & header {
         position: relative;
         display: flex;
@@ -601,3 +603,24 @@
     }
 }
 
+.tips {
+    position: absolute;
+    height: 32px;
+    left: 14px;
+    bottom: 0;
+    padding: 0 16px;
+    line-height: 32px;
+    font-size: 14px;
+    background: color(#616161 -alpha(10%));
+    border-radius: 1px;
+    opacity: 0;
+    transform-origin: center bottom;
+    transition: .15s cubic-bezier(0, 0, .2, 1);
+    pointer-events: none;
+    z-index: 99;
+}
+
+.tips.show {
+    opacity: 1;
+    bottom: 24px;
+}
