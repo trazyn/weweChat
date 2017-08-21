@@ -18,6 +18,9 @@ import { on, off } from 'utils/event';
     removeChat: stores.chat.removeChat,
     messages: stores.chat.messages,
     loading: stores.session.loading,
+    reset: () => {
+        stores.chat.user = false;
+    },
     showUserinfo: async(isme, user) => {
         var caniremove = helper.isChatRoomOwner(stores.chat.user);
 
@@ -483,6 +486,10 @@ export default class ChatContent extends Component {
         } else {
             tips.classList.remove(classes.show);
         }
+    }
+
+    componentWillUnmount() {
+        this.props.reset();
     }
 
     componentDidUpdate() {

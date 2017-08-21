@@ -205,14 +205,13 @@ class Session {
                     if (selector !== 0) {
                         await self.getNewMessage();
                     }
-
-                    // Do next sync keep your wechat alive
-                    return (loop(), true);
                 }
 
-                loop();
+                // Do next sync keep your wechat alive
+                if (await loop() === false) {
+                    window.location.reload();
+                }
 
-                // Reolve promise
                 return true;
             } else {
                 return false;

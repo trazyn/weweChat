@@ -25,6 +25,8 @@
     & li {
         padding-right: 42px;
         margin-bottom: 24px;
+        font-size: 13px;
+        font-family: 'Roboto';
     }
 
     & label {

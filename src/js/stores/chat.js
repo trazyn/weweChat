@@ -212,7 +212,6 @@ class Chat {
         });
 
         self.sessions.replace(sorted);
-
         return res;
     }
 

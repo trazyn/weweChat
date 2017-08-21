@@ -55,8 +55,6 @@ $ npm run dev
 - [x] Search and create chat room
 - [x] Desktop notification
 - [ ] Keep online(bug)
-- [ ] History
-- [ ] Background behavior
 - [ ] Theme
 - [ ] Plugins
 
