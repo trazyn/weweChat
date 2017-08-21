@@ -94,6 +94,9 @@ export default class UserInfo extends Component {
         var buttonColor = '#777';
 
         if (background) {
+            let pallet4font = pallet[1] || [0, 0, 0];
+            let pallet4button = pallet[2] || [0, 0, 0];
+
             gradient = `
                 -webkit-linear-gradient(top, rgb(${background[0]}, ${background[1]}, ${background[2]}) 5%, rgba(${background[0]}, ${background[1]}, ${background[2]}, 0) 15%),
                 -webkit-linear-gradient(bottom, rgb(${background[0]}, ${background[1]}, ${background[2]}) 5%, rgba(${background[0]}, ${background[1]}, ${background[2]}, 0) 15%),
@@ -102,14 +105,14 @@ export default class UserInfo extends Component {
             `;
             background = `rgba(${background[0]}, ${background[1]}, ${background[2]}, 1)`;
             fontColor = `rgb(
-                ${pallet[1][0]},
-                ${pallet[1][1]},
-                ${pallet[1][2]}
+                ${pallet4font[0]},
+                ${pallet4font[1]},
+                ${pallet4font[2]},
             )`;
             buttonColor = `rgb(
-                ${pallet[2][0]},
-                ${pallet[2][1]},
-                ${pallet[2][2]}
+                ${pallet4button[0]},
+                ${pallet4button[1]},
+                ${pallet4button[2]},
             )`;
         } else {
             background = '#fff';

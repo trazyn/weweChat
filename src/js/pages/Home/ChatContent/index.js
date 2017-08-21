@@ -472,6 +472,8 @@ export default class ChatContent extends Component {
         Array.from(unread).map(e => {
             if (e.getBoundingClientRect().top > rect.bottom) {
                 counter += 1;
+            } else {
+                e.classList.remove('unread');
             }
         });
 
