@@ -348,6 +348,7 @@ class Chat {
 
             item: {
                 isme: true,
+                MsgId: response.data.MsgID,
                 Content: message.content,
                 MsgType: 1,
                 CreateTime: +new Date() / 1000,
@@ -385,6 +386,7 @@ class Chat {
 
             item: Object.assign({}, message, {
                 isme: true,
+                MsgId: response.data.MsgID,
                 CreateTime: +new Date() / 1000,
                 HeadImgUrl: session.user.User.HeadImgUrl,
             }),
@@ -714,6 +716,29 @@ class Chat {
         self.messages.set(to, list);
 
         return uploaderid;
+    }
+
+    @action async recallMessage(message) {
+        var id = (+new Date() * 1000) + Math.random().toString().substr(2, 4);
+        var auth = await storage.get('auth');
+        var to = self.user.UserName;
+        var response = await axios.post('/cgi-bin/mmwebwx-bin/webwxrevokemsg', {
+            BaseRequest: {
+                Sid: auth.wxsid,
+                Uin: auth.wxuin,
+                Skey: auth.skey,
+            },
+            SvrMsgId: message.MsgId,
+            ToUserName: to,
+            ClientMsgId: id,
+        });
+
+        if (+response.data.BaseResponse.Ret === 0) {
+            self.deleteMessage(to, message.MsgId);
+            return true;
+        }
+
+        return false;
     }
 
     @action deleteMessage(userid, messageid) {

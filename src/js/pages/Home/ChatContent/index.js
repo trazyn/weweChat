@@ -70,6 +70,7 @@ import { on, off } from 'utils/event';
         return { message, user };
     },
     showAddFriend: (user) => stores.addfriend.toggle(true, user),
+    recallMessage: stores.chat.recallMessage,
 }))
 @observer
 export default class ChatContent extends Component {
@@ -412,6 +413,16 @@ export default class ChatContent extends Component {
                 label: 'Forward',
                 click: () => {
                     this.props.showForward(message);
+                }
+            });
+        }
+
+        if (message.isme
+            && message.CreateTime - new Date() < 2 * 60 * 1000) {
+            templates.unshift({
+                label: 'Recall',
+                click: () => {
+                    this.props.recallMessage(message);
                 }
             });
         }

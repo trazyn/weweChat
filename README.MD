@@ -44,6 +44,7 @@ $ npm run dev
   - [x] File
   - [x] Image
   - [x] Video
+  - [x] Recall
 - [x] Forward text message
 - [x] Forward emoji
 - [x] Forward image
