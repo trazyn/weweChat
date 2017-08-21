@@ -239,7 +239,7 @@ class Session {
 
         if (self.auth) {
             await self.initUser().catch(ex => self.relogin());
-            await self.keepalive().catch(ex => self.relogin());
+            self.keepalive().catch(ex => self.relogin());
         }
 
         return auth;

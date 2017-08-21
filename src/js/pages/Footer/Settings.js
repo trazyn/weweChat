@@ -12,7 +12,7 @@ export default class Placeholder extends Component {
                     <i className="icon-ion-ios-email-outline" />
                 </a>
 
-                <a className={classes.button} href="https://github.com/trazyn" target="_blank">
+                <a className={classes.button} href="https://github.com/trazyn/weweChat" target="_blank">
                     Fork on Github
                     <i className="icon-ion-social-github" />
                 </a>

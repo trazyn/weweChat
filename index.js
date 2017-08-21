@@ -81,7 +81,7 @@ const createMainWindow = () => {
     });
 
     ipcMain.on('file-download', async(event, args) => {
-        var filename = `${downloadDir}/${args.id}_${args.filename}`;
+        var filename = args.filename;
 
         fs.writeFileSync(filename, args.raw.replace(/^data:image\/png;base64,/, ''), {
             encoding: 'base64',

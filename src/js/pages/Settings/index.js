@@ -14,6 +14,8 @@ import Switch from 'components/Switch';
     setShowNotification: stores.settings.setShowNotification,
     startup: stores.settings.startup,
     setStartup: stores.settings.setStartup,
+    downloads: stores.settings.downloads,
+    setDownloads: stores.settings.setDownloads,
 
     plugins: stores.settings.plugins,
 }))
@@ -42,6 +44,14 @@ export default class Settings extends Component {
         });
     }
 
+    choiceDownloadDir() {
+        this.refs.downloads.click();
+    }
+
+    componentDidMount() {
+        this.refs.downloads.webkitdirectory = true;
+    }
+
     render() {
         var {
             showOnDock,
@@ -52,6 +62,8 @@ export default class Settings extends Component {
             setShowNotification,
             startup,
             setStartup,
+            downloads,
+            setDownloads,
             plugins
         } = this.props;
 
@@ -87,6 +99,16 @@ export default class Settings extends Component {
                                 <span>Launch at startup</span>
                                 <Switch id="startup" checked={startup} onChange={e => setStartup(e.target.checked)} />
                             </label>
+                        </li>
+
+                        <li className={classes.downloads}>
+                            <div>
+                                <input type="file" ref="downloads" onChange={e => setDownloads(e.target.files[0])} />
+                                <p>Downloads</p>
+                                <p onClick={e => this.choiceDownloadDir()}>{downloads}</p>
+                            </div>
+
+                            <button onClick={e => this.choiceDownloadDir()}>Change</button>
                         </li>
                     </ul>
                 </div>

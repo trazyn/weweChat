@@ -74,6 +74,7 @@ import { on, off } from 'utils/event';
     },
     showAddFriend: (user) => stores.addfriend.toggle(true, user),
     recallMessage: stores.chat.recallMessage,
+    downloads: stores.settings.downloads,
 }))
 @observer
 export default class ChatContent extends Component {
@@ -363,8 +364,7 @@ export default class ChatContent extends Component {
             let filename = ipcRenderer.sendSync(
                 'file-download',
                 {
-                    id: message.MsgId,
-                    filename: message.file.name,
+                    filename: `${this.props.downloads}/${message.MsgId}_${message.file.name}`,
                     raw: base64,
                 },
             );

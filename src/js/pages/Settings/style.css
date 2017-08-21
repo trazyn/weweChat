@@ -36,6 +36,46 @@
     }
 }
 
+.downloads {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & p {
+        margin: 0;
+        height: 20px;
+        line-height: 20px;
+    }
+
+    & input {
+        display: none;
+    }
+
+    & > div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    & button {
+        padding: 8px 12px;
+        text-transform: uppercase;
+        border: 0;
+        border-radius: 2px;
+        background: none;
+        outline: 0;
+        transition: .2s;
+    }
+
+    & button:hover {
+        background: rgba(0, 0, 0, .1);
+    }
+
+    & :matches(p:last-child, button) {
+        color: rgb(117, 117, 117);
+        cursor: pointer;
+    }
+}
+
 .plugin {
     display: flex;
     justify-content: space-between;

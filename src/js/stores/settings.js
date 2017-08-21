@@ -1,5 +1,6 @@
 
 import { observable, action } from 'mobx';
+import { remote } from 'electron';
 
 import storage from 'utils/storage';
 
@@ -8,6 +9,7 @@ class Settings {
     @observable showOnTray = true;
     @observable showNotification = true;
     @observable startup = false;
+    @observable downloads = '';
     @observable plugins = [{
         name: 'Message Backup',
         link: 'https://github.com/trazyn',
@@ -37,35 +39,47 @@ class Settings {
         self.save();
     }
 
+    @action setDownloads(downloads) {
+        self.downloads = downloads.path;
+        self.save();
+    }
+
     @action async init() {
         var settings = await storage.get('settings');
-        var { showOnDock, showOnTray, showNotification, startup } = self;
+        var { showOnDock, showOnTray, showNotification, startup, downloads } = self;
 
         if (settings && Object.keys(settings).length) {
             self.showOnDock = settings.showOnDock;
             self.showOnTray = settings.showOnTray;
             self.showNotification = settings.showNotification;
             self.startup = settings.startup;
+            self.downloads = settings.downloads;
         } else {
             await storage.set('settings', {
                 showOnDock,
                 showOnTray,
                 showNotification,
                 startup,
+                downloads,
             });
+        }
+
+        if (!self.downloads) {
+            self.downloads = remote.app.getPath('downloads');
         }
 
         return settings;
     }
 
     save() {
-        var { showOnDock, showOnTray, showNotification, startup } = self;
+        var { showOnDock, showOnTray, showNotification, startup, downloads } = self;
 
         storage.set('settings', {
             showOnDock,
             showOnTray,
             showNotification,
             startup,
+            downloads,
         });
     }
 }
