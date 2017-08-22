@@ -173,6 +173,11 @@
             color: #4a4a4a;
         }
 
+        & h3 :global(.emoji) {
+            margin-top: 5px;
+            margin-right: 2px;
+        }
+
         & p {
             max-width: 280px;
             font-size: 12px;

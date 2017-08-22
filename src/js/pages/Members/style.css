@@ -135,3 +135,60 @@
         word-spacing: 4px;
     }
 }
+
+@media (width <= 800px) {
+    .container {
+        top: 30px;
+
+        & header {
+            padding: 0 10px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 16px;
+        }
+
+        & header :global(.emoji) {
+            margin-top: 20px;
+        }
+    }
+
+    .list {
+        height: calc(100vh - 70px - 46px);
+
+        & li {
+            padding: 0 10px;
+            margin: 4px 6px;
+            height: 28px;
+            min-width: 70px;
+            line-height: 28px;
+        }
+    }
+
+    .footer {
+        height: 46px;
+
+        & input {
+            height: 46px;
+            line-height: 46px;
+            font-size: 13px;
+        }
+    }
+
+    .username {
+        font-size: 12px;
+
+        & :global(.emoji) {
+            margin-top: 8px;
+        }
+    }
+
+    .notfound {
+        & img {
+            width: 220px;
+        }
+
+        & h1 {
+            word-spacing: 2px;
+        }
+    }
+}
