@@ -176,7 +176,7 @@ export default class UserInfo extends Component {
                                         marginBottom: -30,
                                     }}
                                     onClick={() => this.props.removeMember(this.props.user)}>
-                                    Delete Member
+                                    Delete
                                 </div>
                             )
                         }

@@ -74,7 +74,7 @@ export default class NewChat extends Component {
 
                 search,
                 getList,
-                searching: !!searching,
+                searching,
 
                 onChange(selected) {
                     self.setState({

@@ -104,3 +104,51 @@
         background: red;
     }
 }
+
+@media (width <= 800px) {
+    .chats {
+        height: calc(100vh - 76px - 46px);
+    }
+
+    .chat {
+        height: 36px;
+        padding: 8px 16px;
+
+        & img {
+            height: 36px;
+            width: 36px;
+        }
+
+        &.sticky::before {
+            width: 4px;
+        }
+    }
+
+    .info {
+        margin-left: 12px;
+    }
+
+    .username {
+        max-width: 160px;
+        margin-bottom: 4px;
+        font-size: 13px;
+    }
+
+    .message {
+        max-width: 160px;
+        font-size: 12px;
+    }
+
+    .times {
+        font-size: 11px;
+    }
+
+    .dot {
+        &::after {
+            bottom: 4px;
+            width: 4px;
+            height: 4px;
+            border-radius: 4px;
+        }
+    }
+}

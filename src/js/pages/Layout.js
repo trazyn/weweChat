@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import { ipcRenderer, remote } from 'electron';
 
-import Loader from 'components/Loader';
-import Snackbar from 'components/Snackbar';
+import classes from './Layout.css';
 import Header from './Header';
 import Footer from './Footer';
 import Login from './Login';
@@ -14,6 +13,8 @@ import NewChat from './NewChat';
 import Members from './Members';
 import AddMember from './AddMember';
 import Forward from './Forward';
+import Loader from 'components/Loader';
+import Snackbar from 'components/Snackbar';
 
 @inject(stores => ({
     isLogin: () => !!stores.session.auth,
@@ -84,12 +85,7 @@ export default class Layout extends Component {
 
                 <Loader show={this.props.loading} />
                 <Header location={this.props.location} />
-                <div style={{
-                    height: 'calc(100vh - 100px)',
-                    overflow: 'hidden',
-                    overflowY: 'auto',
-                    background: `rgba(255,255,255,.8)`,
-                }}>
+                <div className={classes.container}>
                     {this.props.children}
                 </div>
                 <Footer location={this.props.location} />

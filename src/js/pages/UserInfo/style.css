@@ -73,6 +73,11 @@
 .hero.isme {
     height: 350px;
 
+    & .address {
+        border: 0;
+        margin-top: 24px;
+    }
+
     & .action {
         display: none;
     }
@@ -132,5 +137,79 @@
 
     &:hover {
         opacity: 1 !important;
+    }
+}
+
+@media (width <= 800px) {
+    .container {
+        width: 240px;
+
+        & input {
+            height: 46px;
+            font-size: 13px;
+        }
+    }
+
+    .edit {
+        top: 10px;
+        right: 10px;
+        height: 30px;
+        width: 30px;
+        line-height: 30px;
+        border-radius: 30px;
+    }
+
+    .hero {
+        height: 280px;
+        padding-top: 10px;
+
+        &.large {
+            height: 300px;
+            padding-top: 10px;
+        }
+
+        & h3 {
+            letter-spacing: 1px;
+            color: #4a4a4a;
+        }
+
+        & p {
+            max-width: 280px;
+            font-size: 12px;
+        }
+    }
+
+    .hero.showEdit {
+        transform: translateY(-46px);
+    }
+
+    .hero.isme {
+        height: 270px;
+    }
+
+    .address {
+        height: 24px;
+        padding: 0 8px;
+        line-height: 24px;
+        font-size: 13px;
+    }
+
+    .inner {
+        & img {
+            width: 100px;
+            height: 100px;
+        }
+    }
+
+    .mask {
+        width: 100px;
+        height: 100px;
+    }
+
+    .action {
+        margin-top: 33px;
+        padding: 6px 10px;
+        font-size: 18px;
+        letter-spacing: 2px;
     }
 }

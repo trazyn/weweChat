@@ -7,7 +7,7 @@ import classes from './style.css';
 export default class UserList extends Component {
     static propTypes = {
         max: PropTypes.number.isRequired,
-        searching: PropTypes.bool.isRequired,
+        searching: PropTypes.string.isRequired,
         search: PropTypes.func.isRequired,
         getList: PropTypes.func.isRequired,
         onChange: PropTypes.func.isRequired,

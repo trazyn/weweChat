@@ -60,7 +60,7 @@
         padding: 8px 12px;
         text-transform: uppercase;
         border: 0;
-        border-radius: 2px;
+        border-radius: 1px;
         background: none;
         outline: 0;
         transition: .2s;
@@ -110,4 +110,26 @@
     font: 12px;
     color: #9b9b9b;
     line-height: 20px;
+}
+
+@media (width <= 800px) {
+    .container {
+        padding: 14px 17px 0;
+
+        & h2 {
+            font-size: 20px;
+        }
+    }
+
+    .column {
+        & ul {
+            margin-top: 32px;
+        }
+
+        & li {
+            padding-right: 32px;
+            margin-bottom: 18px;
+            font-size: 12px;
+        }
+    }
 }

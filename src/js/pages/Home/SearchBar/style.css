@@ -87,10 +87,6 @@
     &:hover {
         background: #e8edf3;
     }
-
-    & i {
-
-    }
 }
 
 .info {
@@ -118,4 +114,64 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+@media (width <= 800px) {
+    .container {
+        height: 46px;
+
+        & input {
+            height: 46px;
+            line-height: 46px;
+            font-size: 16px;
+            text-indent: 36px;
+        }
+
+        & i {
+            left: 14px;
+            font-size: 20px;
+        }
+    }
+
+    .dropdown {
+        top: 46px;
+        height: calc(100vh - 76px - 46px);
+
+        & header {
+            padding: 6px 16px;
+        }
+
+        & header h3 {
+            padding: 0 8px 2px 0;
+        }
+
+        & header a {
+            font-size: 11px;
+        }
+    }
+
+    .user {
+        padding: 6px 16px;
+
+        & img {
+            height: 24px;
+            width: 24px;
+            border-radius: 24px;
+        }
+    }
+
+    .info {
+        margin-left: 16px;
+    }
+
+    .username {
+        max-width: 160px;
+        font-size: 13px;
+        margin-bottom: 2px;
+    }
+
+    .signature {
+        max-width: 160px;
+        font-size: 12px;
+    }
 }

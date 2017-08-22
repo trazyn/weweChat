@@ -8,7 +8,6 @@ let mainWindow;
 let userData = app.getPath('userData');
 let imagesCacheDir = `${userData}/images`;
 let voicesCacheDir = `${userData}/voices`;
-let downloadDir = app.getPath('downloads');
 
 [imagesCacheDir, voicesCacheDir].map(e => {
     if (!fs.existsSync(e)) {

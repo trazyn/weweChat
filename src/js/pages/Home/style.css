@@ -26,5 +26,24 @@
 }
 
 .right {
-    width: calc(100vw - 311px);
+    width: calc(100vw - 280px);
+}
+
+@media (width <= 800px) {
+    .left {
+        width: 280px;
+
+        & .addChat {
+            right: -15px;
+            top: 30px;
+            height: 30px;
+            width: 30px;
+            line-height: 30px;
+            font-size: 15px;
+        }
+    }
+
+    .right {
+        width: calc(100vw - 280px);
+    }
 }

@@ -54,3 +54,23 @@
     }
 }
 
+@media (width <= 800px) {
+    .container {
+        font-size: 26px;
+        word-spacing: 2px;
+
+        & input {
+            height: 46px;
+            line-height: 46px;
+            font-size: 24px;
+        }
+
+        & button {
+            height: 26px;
+            line-height: 26px;
+            padding: 0 12px;
+            margin: 24px 12px;
+            font-size: 14px;
+        }
+    }
+}

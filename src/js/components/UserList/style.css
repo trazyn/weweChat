@@ -69,3 +69,29 @@
     max-width: 70%;
     display: inline-block;
 }
+
+@media (width <= 800px) {
+    .list {
+        & li {
+            margin: 20px;
+            font-size: 13px;
+        }
+
+        & li i {
+            right: 24px;
+            font-size: 16px;
+        }
+    }
+
+    .avatar {
+        height: 24px;
+        width: 24px;
+        margin-right: 20px;
+    }
+
+    .notfound {
+        & img {
+            width: 200px;
+        }
+    }
+}

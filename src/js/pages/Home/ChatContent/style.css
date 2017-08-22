@@ -12,11 +12,6 @@
         align-items: center;
     }
 
-    & header.large {
-        height: auto;
-        max-height: 200px;
-    }
-
     & header i {
         position: absolute;
         top: 50%;
@@ -72,7 +67,7 @@
     justify-content: center;
     align-items: center;
 
-    & .avatar {
+    & img {
         width: 200px;
         margin-bottom: 5vh;
     }
@@ -120,7 +115,7 @@
 
 .message.system {
     color: #777;
-    font-size: 12px;
+    font-size: 11px;
     text-align: center;
 
     & a {
@@ -418,7 +413,7 @@
         align-items: center;
         font-size: 12px;
         color: #fff;
-        border-radius: 2px;
+        border-radius: 1px;
         white-space: nowrap;
         box-shadow: 0 6px 28px 0 rgba(230, 230, 230, 1);
     }
@@ -541,7 +536,7 @@
 .message.isme.isFile {
     & > div {
         display: flex;
-        padding: 16px 31px 0 0;
+        padding: 16px 32px 0 0;
         justify-content: flex-end;
     }
 
@@ -623,4 +618,287 @@
 .tips.show {
     opacity: 1;
     bottom: 24px;
+}
+
+@media (width <= 800px) {
+    .container {
+        & header {
+            height: 46px;
+            padding-left: 24px;
+        }
+
+        & header i {
+            right: calc(32px + 17px);
+            font-size: 18px;
+        }
+
+        & .signature,
+        & .times {
+            font-size: 11px;
+        }
+
+        & .signature,
+        & header p {
+            max-width: calc(100vw - 280px - 100px);
+        }
+
+        & p {
+            margin-bottom: 2px;
+            font-size: 12px;
+        }
+    }
+
+    .messages {
+        height: calc(100vh - 92px - 30px - 12px);
+        padding-top: 12px;
+    }
+
+    .message {
+        max-width: calc(100% - 24px - 36px);
+        padding: 0 24px;
+        margin-bottom: 14px;
+
+        & > div {
+            position: relative;
+            display: inline-block;
+            padding: 12px 0 0 12px;
+        }
+
+        & .avatar {
+            height: 24px;
+            width: 24px;
+        }
+    }
+
+    .message.isText {
+        & p {
+            min-width: 37px;
+            padding: 8.32px 11.3px 6px 26px;
+            font-size: 13px;
+            line-height: 16px;
+        }
+
+        & .times {
+            margin-left: 26px;
+            margin-bottom: 4px;
+        }
+    }
+
+    .message.isEmoji {
+        & > div {
+            padding: 12px 0 0 36px;
+        }
+    }
+
+    .message.isImage {
+        & > div {
+            padding: 12px 0 0 36px;
+        }
+    }
+
+    .message.isContact {
+        & > div {
+            padding: 12px 0 0 36px;
+        }
+
+        & .contact {
+            padding: 6px 12px;
+            padding-right: 32px;
+        }
+
+        & .contact img {
+            height: 36px;
+            width: 36px;
+            margin-right: 18px;
+        }
+
+        & .contact p:last-child {
+            font-size: 12px;
+            color: rgba(0, 0, 0, .5);
+        }
+
+        & i {
+            right: -12px;
+            height: 24px;
+            width: 24px;
+            line-height: 24px;
+            font-size: 12px;
+        }
+    }
+
+    .message.isLocation {
+        & p {
+            width: 90%;
+            height: 200px;
+        }
+
+        & p img {
+            width: 80%;
+        }
+
+        & label {
+            height: 24px;
+            line-height: 24px;
+            text-indent: 12px;
+            font-size: 12px;
+        }
+
+        & > div {
+            padding: 12px 0 0 36px;
+        }
+    }
+
+    .message.isVoice {
+        & .content {
+            left: 36px;
+            height: 24px;
+            padding-left: 14px;
+            padding-right: 12px;
+        }
+
+        & i + span {
+            margin-left: 8px;
+            transform: translateY(-1px);
+        }
+    }
+
+    .message.isVideo {
+        & video {
+            max-width: 80%;
+        }
+    }
+
+    .message.isFile {
+        & > div {
+            padding: 12px 0 0 36px;
+        }
+
+        & .file {
+            padding: 6px 12px;
+        }
+
+        & .file img {
+            height: 24px;
+            width: 24px;
+            margin: 6px 0;
+            margin-right: 12px;
+        }
+
+        & .file p:last-child {
+            font-size: 11px;
+        }
+
+        & i {
+            right: -12px;
+            height: 24px;
+            width: 24px;
+            line-height: 24px;
+            font-size: 12px;
+        }
+    }
+
+    .message.isLocationSharing {
+        & .locationSharing {
+            margin-top: -12px;
+            margin-left: 24px;
+            height: 24px;
+            padding-left: 12px;
+            padding-right: 14px;
+            font-size: 12px;
+        }
+
+        & .locationSharing i {
+            margin-right: 6px;
+        }
+
+        & .times {
+            margin-left: 32px;
+        }
+    }
+
+    .message.isTransfer {
+        & > div {
+            padding: 12px 0 0 36px;
+        }
+
+        & .transfer {
+            padding: 6px 12px;
+        }
+
+        & .transfer span {
+            padding: 6px 12px;
+            font-size: 18px;
+        }
+
+        & .transfer p {
+            font-size: 12px;
+            margin: 15px 15px 8px;
+        }
+
+        & h4 {
+            font-size: 14px;
+        }
+    }
+
+    .message.uploading {
+        &.isFile i,
+        &.isVideo i,
+        &.isImage i {
+            right: 12px;
+            height: 24px;
+            width: 24px;
+            line-height: 24px;
+            font-size: 12px;
+        }
+
+        &.isVideo i,
+        &.isFile i {
+            right: -12px !important;
+        }
+    }
+
+    .message.isme.isText {
+        & .avatar {
+            right: -12px;
+        }
+
+        & p {
+            padding: 8.32px 30px 6px 11.3px;
+        }
+
+        & .times {
+            margin-left: 11.3px;
+        }
+    }
+
+    .message.isme.isVideo {
+        & .avatar {
+            right: -12px;
+        }
+    }
+
+    .message.isme.isEmoji,
+    .message.isme.isImage,
+    .message.isme.isFile {
+        & > div {
+            padding: 12px 24px 0 0;
+        }
+
+        & .avatar {
+            left: auto;
+            right: -12px;
+        }
+    }
+
+    .tips {
+        height: 24px;
+        top: -24px;
+        padding: 0 12px;
+        line-height: 24px;
+        font-size: 12px;
+    }
+
+    .tips.show {
+        bottom: 12px;
+    }
 }

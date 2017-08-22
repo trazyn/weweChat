@@ -132,10 +132,10 @@
     justify-content: flex-end;
     align-items: center;
 
-    & button {
+    & .button {
         position: relative;
         margin-right: 17px;
-        width: 150px;
+        width: 166px;
         color: rgba(0, 0, 0, .8);
         font-size: 14px;
         padding: 9px 8px;
@@ -147,44 +147,22 @@
         text-transform: uppercase;
         text-align: left;
         cursor: pointer;
+        text-decoration: none;
         transform: translateY(4px);
         transition: .2s;
+
+        &:hover {
+            background: color(var(--shadow-color) alpha(-50%));
+        }
     }
 
-    & button:hover {
-        background: color(var(--shadow-color) alpha(-50%));
-    }
 
-    & i {
+    & .button i {
         position: absolute;
         right: 14px;
         top: 50%;
         transform: translateY(-50%);
-        font-size: 20px !important;
-    }
-}
-
-.button {
-    position: relative;
-    margin-right: 17px;
-    width: 166px;
-    color: rgba(0, 0, 0, .8);
-    font-size: 14px;
-    padding: 9px 8px;
-    font-family: 'Roboto';
-    border: 0;
-    border-radius: 2px;
-    background: 0;
-    outline: 0;
-    text-transform: uppercase;
-    text-align: left;
-    cursor: pointer;
-    text-decoration: none;
-    transform: translateY(4px);
-    transition: .2s;
-
-    &:hover {
-        background: color(var(--shadow-color) alpha(-50%));
+        font-size: 20px;
     }
 }
 
@@ -216,4 +194,84 @@
 .shouldSelectUser:hover .tips {
     opacity: 1;
     top: calc(-32px - 24px);
+}
+
+@media (width <= 800px) {
+    .footer {
+        height: 46px;
+
+        & nav {
+            width: calc(280px - 34px);
+            padding: 14px 17px 0;
+            height: 46px;
+        }
+
+        & nav span {
+            width: 20px;
+            height: 20px;
+        }
+
+        & nav i {
+            font-size: 16px;
+        }
+    }
+
+    .right {
+        width: calc(100% - 280px);
+    }
+
+    .home,
+    .contacts {
+        height: 46px;
+
+        & input {
+            height: 46px;
+            width: calc(100% - 200px);
+            margin-left: 20px;
+            line-height: 46px;
+        }
+
+        & i {
+            font-size: 16px;
+        }
+    }
+
+    .home {
+        & .action {
+            width: 80px;
+        }
+    }
+
+    .settings {
+        height: 46px;
+
+        & .button {
+            margin-right: 8px;
+            width: 130px;
+            font-size: 12px;
+            padding: 6px 8px;
+            transform: translateY(0);
+        }
+
+        & .button i {
+            font-size: 16px;
+        }
+    }
+
+    .tips {
+        height: 24px;
+        top: -24px;
+        padding: 0 12px;
+        line-height: 24px;
+        font-size: 12px;
+    }
+
+    .shouldSelectUser:hover .tips {
+        opacity: 1;
+        top: calc(-24px - 12px);
+    }
+
+    .options {
+        font-size: 12px;
+    }
 }

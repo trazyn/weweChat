@@ -38,6 +38,7 @@
         letter-spacing: .4px;
         padding: 0 16px;
         border: 0;
+        border-radius: 1px;
         text-transform: uppercase;
         margin: 0 12px;
         font-size: 16px;
@@ -66,5 +67,38 @@
         margin: 12px 4px;
         box-shadow: 0 0 8px 0 rgba(0, 0, 0, .3);
         cursor: pointer;
+    }
+}
+
+@media (width <= 800px) {
+    .container {
+        font-size: 26px;
+        letter-spacing: 2px;
+        word-spacing: 2px;
+
+        & input {
+            height: 46px;
+            line-height: 46px;
+            font-size: 24px;
+        }
+
+        & button {
+            height: 26px;
+            line-height: 26px;
+            letter-spacing: .4px;
+            padding: 0 12px;
+            margin: 0 10px;
+            font-size: 14px;
+        }
+    }
+
+    .avatars {
+        min-height: 20px;
+
+        & img {
+            height: 24px;
+            width: 24px;
+            margin: 12px 4px;
+        }
     }
 }

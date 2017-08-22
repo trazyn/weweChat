@@ -1,0 +1,13 @@
+
+.container {
+    height: calc(100vh - 100px);
+    overflow: hidden;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, .8);
+}
+
+@media (width <= 800px) {
+    .container {
+        height: calc(100vh - 76px);
+    }
+}
