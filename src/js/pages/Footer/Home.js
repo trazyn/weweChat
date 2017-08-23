@@ -16,7 +16,7 @@ export default class Input extends Component {
     async handleEnter(e) {
         if (e.charCode !== 13) return;
 
-        var res = this.props.sendMessage(this.props.user, {
+        var res = await this.props.sendMessage(this.props.user, {
             content: this.refs.input.value,
             type: 1,
         });

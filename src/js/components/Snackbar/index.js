@@ -42,7 +42,7 @@ export default class Snackbar extends Component {
         return (
             <div className="Snackbar">
                 <div className="Snackbar-text">{this.props.text}</div>
-                <div className="Snackbar-action" onClick={() => this.props.close()}>UNDO</div>
+                <div className="Snackbar-action" onClick={() => this.props.close()}>DONE</div>
             </div>
         );
     }

@@ -43,3 +43,28 @@
     transform: translateY(-24px);
     opacity: 0;
 }
+
+@media screen and (max-width: 800px) {
+    .Snackbar {
+        right: 17px;
+        bottom: 59px;
+        height: 36px;
+        line-height: 36px;
+        min-width: 220px;
+        max-width: 460px;
+        padding-left: 12px;
+        font-size: 12px;
+    }
+
+    .Snackbar-action {
+        padding: 0 12px;
+    }
+
+    .Snackbar-enter {
+        transform: translateY(12px);
+    }
+
+    .Snackbar-leave.Snackbar-leave-active {
+        transform: translateY(-12px);
+    }
+}
