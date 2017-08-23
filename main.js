@@ -219,8 +219,8 @@ function createMenu() {
 
 const createMainWindow = () => {
     var mainWindowState = windowStateKeeper({
-        defaultWidth: 1024,
-        defaultHeight: 600
+        defaultWidth: 745,
+        defaultHeight: 500,
     });
 
     mainWindow = new BrowserWindow({
