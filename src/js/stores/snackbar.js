@@ -15,7 +15,7 @@ class Snackbar {
             clearTimeout(self.timer);
             self.timer = setTimeout(() => {
                 self.toggle(false);
-            }, 30000000);
+            }, 3000);
         } else {
             clearTimeout(self.timer);
         }

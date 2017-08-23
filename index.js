@@ -5,6 +5,7 @@ import windowStateKeeper from 'electron-window-state';
 import notifier from 'node-notifier';
 
 let mainWindow;
+let settings;
 let userData = app.getPath('userData');
 let imagesCacheDir = `${userData}/images`;
 let voicesCacheDir = `${userData}/voices`;
@@ -60,18 +61,25 @@ const createMainWindow = () => {
         mainWindowState.manage(mainWindow);
     });
 
+    ipcMain.on('apply-settings', (event, args) => {
+        settings = args.settings;
+        mainWindow.setAlwaysOnTop(settings.alwaysOnTop);
+    });
+
     ipcMain.on('receive-message', (event, data) => {
         var { icon, title, message } = data;
         var filename = `${imagesCacheDir}/notifier-icon.png`;
 
-        fs.writeFileSync(filename, icon.replace(/^data:image\/png;base64,/, ''), 'base64');
+        if (settings.showNotification) {
+            fs.writeFileSync(filename, icon.replace(/^data:image\/png;base64,/, ''), 'base64');
 
-        notifier.notify({
-            title,
-            sound: 'Blow',
-            contentImage: filename,
-            message,
-        });
+            notifier.notify({
+                title,
+                sound: 'Blow',
+                contentImage: filename,
+                message,
+            });
+        }
     });
 
     ipcMain.on('open-image', async(event, dataset, data) => {

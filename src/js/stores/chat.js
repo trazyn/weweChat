@@ -8,7 +8,6 @@ import helper from 'utils/helper';
 import contacts from './contacts';
 import session from './session';
 import members from './members';
-import settings from './settings';
 
 async function resolveMessage(message) {
     var auth = await storage.get('auth');
@@ -282,7 +281,7 @@ class Chat {
             if (!list.data.find(e => e.NewMsgId === message.NewMsgId)) {
                 message = await resolveMessage(message);
 
-                if (settings.showNotification && !helper.isMuted(user)) {
+                if (!helper.isMuted(user)) {
                     // Get the user avatar and use it as notifier icon
                     let response = await axios.get(user.HeadImgUrl, { responseType: 'arraybuffer' });
                     let base64 = new window.Buffer(response.data, 'binary').toString('base64');

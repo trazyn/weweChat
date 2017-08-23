@@ -1,14 +1,15 @@
 
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import { ipcRenderer } from 'electron';
 
 import classes from './style.css';
 import Switch from 'components/Switch';
 import Avatar from 'components/Avatar';
 
 @inject(stores => ({
-    showOnDock: stores.settings.showOnDock,
-    setShowOnDock: stores.settings.setShowOnDock,
+    alwaysOnTop: stores.settings.alwaysOnTop,
+    setAlwaysOnTop: stores.settings.setAlwaysOnTop,
     showOnTray: stores.settings.showOnTray,
     setShowOnTray: stores.settings.setShowOnTray,
     showNotification: stores.settings.showNotification,
@@ -53,12 +54,37 @@ export default class Settings extends Component {
 
     componentDidMount() {
         this.refs.downloads.webkitdirectory = true;
+        this.applySettings();
+    }
+
+    componentDidUpdate() {
+        this.applySettings();
+    }
+
+    applySettings() {
+        var {
+            alwaysOnTop,
+            showOnTray,
+            showNotification,
+            startup,
+            downloads,
+        } = this.props;
+
+        ipcRenderer.send('apply-settings', {
+            settings: {
+                alwaysOnTop,
+                showOnTray,
+                showNotification,
+                startup,
+                downloads,
+            }
+        });
     }
 
     render() {
         var {
-            showOnDock,
-            setShowOnDock,
+            alwaysOnTop,
+            setAlwaysOnTop,
             showOnTray,
             setShowOnTray,
             showNotification,
@@ -95,9 +121,9 @@ export default class Settings extends Component {
                             <button onClick={e => this.choiceDownloadDir()}>Change</button>
                         </li>
                         <li>
-                            <label htmlFor="showOnDock">
-                                <span>Show on Dock</span>
-                                <Switch id="showOnDock" checked={showOnDock} onChange={e => setShowOnDock(e.target.checked)} />
+                            <label htmlFor="alwaysOnTop">
+                                <span>Always on Top</span>
+                                <Switch id="alwaysOnTop" checked={alwaysOnTop} onChange={e => setAlwaysOnTop(e.target.checked)} />
                             </label>
                         </li>
 

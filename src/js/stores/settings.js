@@ -5,7 +5,7 @@ import { remote } from 'electron';
 import storage from 'utils/storage';
 
 class Settings {
-    @observable showOnDock = true;
+    @observable alwaysOnTop = false;
     @observable showOnTray = true;
     @observable showNotification = true;
     @observable startup = false;
@@ -19,8 +19,8 @@ class Settings {
         enabled: true,
     }];
 
-    @action setShowOnDock(showOnDock) {
-        self.showOnDock = showOnDock;
+    @action setAlwaysOnTop(alwaysOnTop) {
+        self.alwaysOnTop = alwaysOnTop;
         self.save();
     }
 
@@ -46,17 +46,17 @@ class Settings {
 
     @action async init() {
         var settings = await storage.get('settings');
-        var { showOnDock, showOnTray, showNotification, startup, downloads } = self;
+        var { alwaysOnTop, showOnTray, showNotification, startup, downloads } = self;
 
         if (settings && Object.keys(settings).length) {
-            self.showOnDock = settings.showOnDock;
+            self.alwaysOnTop = settings.alwaysOnTop;
             self.showOnTray = settings.showOnTray;
             self.showNotification = settings.showNotification;
             self.startup = settings.startup;
             self.downloads = settings.downloads;
         } else {
             await storage.set('settings', {
-                showOnDock,
+                alwaysOnTop,
                 showOnTray,
                 showNotification,
                 startup,
@@ -72,10 +72,10 @@ class Settings {
     }
 
     save() {
-        var { showOnDock, showOnTray, showNotification, startup, downloads } = self;
+        var { alwaysOnTop, showOnTray, showNotification, startup, downloads } = self;
 
         storage.set('settings', {
-            showOnDock,
+            alwaysOnTop,
             showOnTray,
             showNotification,
             startup,
