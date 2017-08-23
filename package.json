@@ -5,8 +5,9 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "js-lint": "eslint --format=node_modules/eslint-formatter-pretty .",
+    "js-lint": "node node_modules/.bin/eslint .",
     "css-lint": "stylelint --fix src/**/*.css",
+    "lint": "npm run css-lint && npm run js-lint",
     "build-main": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./config/webpack.config.electron.js --progress --profile --colors",
     "build-renderer": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./config/webpack.config.production.js --progress --profile --colors",
     "build": "rm -rf dist && npm run build-main && npm run build-renderer",
