@@ -14,12 +14,6 @@ let userData = app.getPath('userData');
 let imagesCacheDir = `${userData}/images`;
 let voicesCacheDir = `${userData}/voices`;
 
-[imagesCacheDir, voicesCacheDir].map(e => {
-    if (!fs.existsSync(e)) {
-        fs.mkdirSync(e);
-    }
-});
-
 function updateTray(unread = 0) {
     if (settings.showOnTray) {
         if (tray) {
@@ -340,6 +334,12 @@ const createMainWindow = () => {
     });
 
     createMenu();
+
+    [imagesCacheDir, voicesCacheDir].map(e => {
+        if (!fs.existsSync(e)) {
+            fs.mkdirSync(e);
+        }
+    });
 };
 
 app.setName(pkg.name);

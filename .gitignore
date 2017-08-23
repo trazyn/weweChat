@@ -2,6 +2,11 @@
 #
 .DS_Store
 
+# Other
+#
+dist/
+release/
+
 # Xcode
 #
 build/
@@ -25,7 +30,6 @@ project.xcworkspace
 # Android/IntelliJ
 #
 build/
-release/
 .idea
 .gradle
 local.properties
