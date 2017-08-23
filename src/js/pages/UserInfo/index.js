@@ -7,6 +7,7 @@ import clazz from 'classname';
 import classes from './style.css';
 import Avatar from 'components/Avatar';
 import { Modal, ModalBody } from 'components/Modal';
+import helper from 'utils/helper';
 
 @inject(stores => ({
     chatTo: (userid) => {
@@ -75,7 +76,7 @@ export default class UserInfo extends Component {
     }
 
     handleAction(user) {
-        if (user.isFriend) {
+        if (user.isFriend || helper.isChatRoom(user.UserName)) {
             this.props.toggle(false);
             this.props.chatTo(user.UserName);
             document.querySelector('#messageInput').focus();
@@ -85,7 +86,7 @@ export default class UserInfo extends Component {
     }
 
     render() {
-        var { HeadImgUrl, NickName, RemarkName, Signature, City, Province, isFriend } = this.props.user;
+        var { UserName, HeadImgUrl, NickName, RemarkName, Signature, City, Province, isFriend } = this.props.user;
         var pallet = this.props.pallet;
         var isme = this.props.isme();
         var background = pallet[0];
@@ -188,7 +189,7 @@ export default class UserInfo extends Component {
                                 opacity: .6,
                             }}
                             onClick={() => this.handleAction(this.props.user)}>
-                            {isFriend ? 'Send Message' : 'Add Friend'}
+                            {helper.isChatRoom(UserName) || isFriend ? 'Send Message' : 'Add Friend'}
                         </div>
                     </div>
 

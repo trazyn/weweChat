@@ -23,7 +23,7 @@ class Search {
                 res = res || (e.RemarkPYQuanPin + '').toLowerCase().indexOf(pinyin.letter(text.toLocaleLowerCase())) > -1;
             }
 
-            return e.isFriend && res;
+            return (e.isFriend || helper.isChatRoom(e.UserName)) && res;
         });
         var groups = [];
         var friend = [];
