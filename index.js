@@ -78,7 +78,8 @@ function updateTray(unread = 0) {
                     mainWindow.webContents.send('hide-tray');
                 }
             },
-            { label: 'Quit weweChat',
+            {
+                label: 'Quit weweChat',
                 accelerator: 'Command+Q',
                 selector: 'terminate:',
                 click() {
@@ -112,6 +113,103 @@ function updateTray(unread = 0) {
 
     // Avoid tray icon been recreate
     updateTray.lastUnread = unread;
+}
+
+function createMenu() {
+    var menu = Menu.buildFromTemplate([
+        {
+            label: pkg.name,
+            submenu: [
+                {
+                    label: `About ${pkg.name}`,
+                    click() {
+                        shell.openExternal('https://github.com/trazyn/weweChat');
+                    }
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    role: 'hide'
+                },
+                {
+                    role: 'hideothers'
+                },
+                {
+                    role: 'unhide'
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    label: 'Quit weweChat',
+                    accelerator: 'Command+Q',
+                    selector: 'terminate:',
+                    click() {
+                        forceQuit = true;
+                        mainWindow = null;
+                        app.quit();
+                    }
+                }
+            ]
+        },
+        {
+            label: 'Edit',
+            submenu: [
+                {
+                    role: 'undo'
+                },
+                {
+                    role: 'redo'
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    role: 'cut'
+                },
+                {
+                    role: 'copy'
+                },
+                {
+                    role: 'paste'
+                },
+                {
+                    role: 'pasteandmatchstyle'
+                },
+                {
+                    role: 'delete'
+                },
+                {
+                    role: 'selectall'
+                }
+            ]
+        },
+        {
+            role: 'window',
+            submenu: [
+                {
+                    role: 'minimize'
+                },
+                {
+                    role: 'close'
+                }
+            ]
+        },
+        {
+            role: 'help',
+            submenu: [
+                {
+                    label: 'Learn More',
+                    click() {
+                        shell.openExternal('https://github.com/trazyn/weweChat/issues');
+                    }
+                }
+            ]
+        }
+    ]);
+
+    Menu.setApplicationMenu(menu);
 }
 
 const createMainWindow = () => {
@@ -225,7 +323,12 @@ const createMainWindow = () => {
         event.preventDefault();
         shell.openExternal(map);
     });
+
+    createMenu();
 };
+
+app.setName(pkg.name);
+app.dock.setIcon(`${__dirname}/src/assets/images/dock.png`);
 
 app.on('ready', createMainWindow);
 app.on('activate', e => {
@@ -233,5 +336,3 @@ app.on('activate', e => {
         mainWindow.show();
     }
 });
-app.setName(pkg.name);
-app.dock.setIcon(`${__dirname}/src/assets/images/dock.png`);
