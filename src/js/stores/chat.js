@@ -157,6 +157,20 @@ async function resolveMessage(message) {
     return message;
 }
 
+function hasUnreadMessage(messages) {
+    var counter = 0;
+
+    messages.keys().map(e => {
+        var item = messages.get(e);
+
+        counter += (item.data.length - item.unread);
+    });
+
+    ipcRenderer.send('unread-message', {
+        counter,
+    });
+}
+
 class Chat {
     @observable sessions = [];
     @observable messages = new Map();
@@ -249,6 +263,8 @@ class Chat {
         self.sessions.replace([...stickyed, ...normaled]);
         self.user = user;
         self.markedRead(user.UserName);
+
+        hasUnreadMessage(self.messages);
     }
 
     @action async addMessage(message) {
@@ -322,6 +338,8 @@ class Chat {
 
         self.sessions.replace([...stickyed, ...normaled]);
         self.messages.set(from, list);
+
+        hasUnreadMessage(self.messages);
     }
 
     @action async sendTextMessage(auth, message, isForward) {

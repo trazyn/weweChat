@@ -1,10 +1,14 @@
 
 import fs from 'fs';
-import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { app, BrowserWindow, Tray, Menu, ipcMain, shell } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import notifier from 'node-notifier';
 
+import pkg from './package.json';
+
+let forceQuit = false;
 let mainWindow;
+let tray;
 let settings;
 let userData = app.getPath('userData');
 let imagesCacheDir = `${userData}/images`;
@@ -15,6 +19,100 @@ let voicesCacheDir = `${userData}/voices`;
         fs.mkdirSync(e);
     }
 });
+
+function updateTray(unread = 0) {
+    if (settings.showOnTray) {
+        if (tray) {
+            if (updateTray.lastUnread === unread) {
+                return;
+            } else {
+                tray.destroy();
+            }
+        }
+
+        let contextmenu = Menu.buildFromTemplate([
+            {
+                label: `You have ${unread} messages`,
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('show-messages');
+                }
+            },
+            {
+                label: 'Toggle main window',
+                click() {
+                    let isVisible = mainWindow.isVisible();
+                    isVisible ? mainWindow.hide() : mainWindow.show();
+                }
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: 'Settings',
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('show-settings');
+                }
+            },
+            {
+                label: 'Fork me on Github',
+                click() {
+                    shell.openExternal('https://github.com/trazyn/weweChat');
+                }
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: 'Toggle DevTools',
+                accelerator: 'Alt+Command+I',
+                click() {
+                    mainWindow.show();
+                    mainWindow.toggleDevTools();
+                }
+            },
+            {
+                label: 'Hide menu bar icon',
+                click() {
+                    mainWindow.webContents.send('hide-tray');
+                }
+            },
+            { label: 'Quit weweChat',
+                accelerator: 'Command+Q',
+                selector: 'terminate:',
+                click() {
+                    forceQuit = true;
+                    mainWindow = null;
+                    app.quit();
+                }
+            }
+        ]);
+
+        // Make sure the last tray has been destroyed
+        setTimeout(() => {
+            tray && tray.destroy();
+
+            tray = new Tray(
+                unread
+                    ? `${__dirname}/src/assets/images/icon-new-message.png`
+                    : `${__dirname}/src/assets/images/icon.png`
+            );
+            tray.on('right-click', () => {
+                tray.popUpContextMenu();
+            });
+            tray.setContextMenu(contextmenu);
+        });
+    } else {
+        if (tray) {
+            tray.destroy();
+            tray = null;
+        }
+    }
+
+    // Avoid tray icon been recreate
+    updateTray.lastUnread = unread;
+}
 
 const createMainWindow = () => {
     var mainWindowState = windowStateKeeper({
@@ -50,9 +148,14 @@ const createMainWindow = () => {
         shell.openExternal(url);
     });
 
-    mainWindow.on('closed', () => {
-        mainWindow = null;
-        app.quit();
+    mainWindow.on('close', e => {
+        if (forceQuit) {
+            mainWindow = null;
+            app.quit();
+        } else {
+            e.preventDefault();
+            mainWindow.hide();
+        }
     });
 
     ipcMain.once('logined', event => {
@@ -63,7 +166,17 @@ const createMainWindow = () => {
 
     ipcMain.on('apply-settings', (event, args) => {
         settings = args.settings;
-        mainWindow.setAlwaysOnTop(settings.alwaysOnTop);
+        mainWindow.setAlwaysOnTop(!!settings.alwaysOnTop);
+
+        updateTray();
+    });
+
+    ipcMain.on('unread-message', (event, args) => {
+        var counter = args.counter;
+
+        if (settings.showOnTray) {
+            updateTray(counter);
+        }
     });
 
     ipcMain.on('receive-message', (event, data) => {
@@ -115,3 +228,10 @@ const createMainWindow = () => {
 };
 
 app.on('ready', createMainWindow);
+app.on('activate', e => {
+    if (!mainWindow.isVisible()) {
+        mainWindow.show();
+    }
+});
+app.setName(pkg.name);
+app.dock.setIcon(`${__dirname}/src/assets/images/dock.png`);

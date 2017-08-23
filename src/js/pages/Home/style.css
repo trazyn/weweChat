@@ -26,7 +26,7 @@
 }
 
 .right {
-    width: calc(100vw - 280px);
+    width: calc(100vw - 311px);
 }
 
 @media (width <= 800px) {

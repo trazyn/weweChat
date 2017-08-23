@@ -1,12 +1,12 @@
 
 import { observable, action } from 'mobx';
-import { remote } from 'electron';
+import { remote, ipcRenderer } from 'electron';
 
 import storage from 'utils/storage';
 
 class Settings {
     @observable alwaysOnTop = false;
-    @observable showOnTray = true;
+    @observable showOnTray = false;
     @observable showNotification = true;
     @observable startup = false;
     @observable downloads = '';
@@ -68,6 +68,7 @@ class Settings {
             self.downloads = remote.app.getPath('downloads');
         }
 
+        self.save();
         return settings;
     }
 
@@ -80,6 +81,16 @@ class Settings {
             showNotification,
             startup,
             downloads,
+        });
+
+        ipcRenderer.send('apply-settings', {
+            settings: {
+                alwaysOnTop,
+                showOnTray,
+                showNotification,
+                startup,
+                downloads,
+            }
         });
     }
 }

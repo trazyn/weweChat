@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { ipcRenderer } from 'electron';
 
 import classes from './style.css';
 import Switch from 'components/Switch';
@@ -54,31 +53,6 @@ export default class Settings extends Component {
 
     componentDidMount() {
         this.refs.downloads.webkitdirectory = true;
-        this.applySettings();
-    }
-
-    componentDidUpdate() {
-        this.applySettings();
-    }
-
-    applySettings() {
-        var {
-            alwaysOnTop,
-            showOnTray,
-            showNotification,
-            startup,
-            downloads,
-        } = this.props;
-
-        ipcRenderer.send('apply-settings', {
-            settings: {
-                alwaysOnTop,
-                showOnTray,
-                showNotification,
-                startup,
-                downloads,
-            }
-        });
     }
 
     render() {

@@ -37,7 +37,7 @@
     & .signature,
     & header p {
         display: block;
-        max-width: calc(100vw - 311px - 100px);
+        max-width: calc(100vw - 311px - 60px);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -643,7 +643,7 @@
 
         & .signature,
         & header p {
-            max-width: calc(100vw - 280px - 100px);
+            max-width: calc(100vw - 280px - 60px);
         }
 
         & p {

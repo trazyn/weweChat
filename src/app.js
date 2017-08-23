@@ -4,6 +4,7 @@ import { render } from 'react-dom';
 import { Provider } from 'mobx-react';
 import { Router, hashHistory } from 'react-router';
 import ElectronCookies from '@exponent/electron-cookies';
+import { ipcRenderer } from 'electron';
 
 import './global.css';
 import './assets/fonts/icomoon/style.css';
@@ -22,10 +23,24 @@ class App extends Component {
         await stores.search.getHistory();
     }
 
+    componentDidMount() {
+        ipcRenderer.on('hide-tray', () => {
+            stores.settings.setShowOnTray(false);
+        });
+
+        ipcRenderer.on('show-settings', () => {
+            this.refs.navigator.router.push('/settings');
+        });
+
+        ipcRenderer.on('show-messages', () => {
+            this.refs.navigator.router.push('/');
+        });
+    }
+
     render() {
         return (
             <Provider {...stores}>
-                <Router history={hashHistory}>
+                <Router history={hashHistory} ref="navigator">
                     {getRoutes()}
                 </Router>
             </Provider>
