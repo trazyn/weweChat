@@ -24,6 +24,8 @@ const createMainWindow = () => {
     mainWindow = new BrowserWindow({
         x: mainWindowState.x,
         y: mainWindowState.y,
+        minWidth: 745,
+        minHeight: 450,
         vibrancy: 'medium-light',
         transparent: true,
         titleBarStyle: 'hidden-inset',

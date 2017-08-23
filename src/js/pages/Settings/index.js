@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 
 import classes from './style.css';
 import Switch from 'components/Switch';
+import Avatar from 'components/Avatar';
 
 @inject(stores => ({
     showOnDock: stores.settings.showOnDock,
@@ -16,6 +17,8 @@ import Switch from 'components/Switch';
     setStartup: stores.settings.setStartup,
     downloads: stores.settings.downloads,
     setDownloads: stores.settings.setDownloads,
+    user: stores.session.user,
+    logout: stores.session.logout,
 
     plugins: stores.settings.plugins,
 }))
@@ -64,7 +67,8 @@ export default class Settings extends Component {
             setStartup,
             downloads,
             setDownloads,
-            plugins
+            plugins,
+            user,
         } = this.props;
 
         return (
@@ -73,6 +77,23 @@ export default class Settings extends Component {
                     <h2>Settings</h2>
 
                     <ul>
+                        {
+                            user && (
+                                <li className={classes.user}>
+                                    <Avatar src={this.props.user.User.HeadImgUrl} />
+                                    <button onClick={e => this.props.logout()}>Logout</button>
+                                </li>
+                            )
+                        }
+                        <li className={classes.downloads}>
+                            <div>
+                                <input type="file" ref="downloads" onChange={e => setDownloads(e.target.files[0])} />
+                                <p>Downloads</p>
+                                <p onClick={e => this.choiceDownloadDir()}>{downloads}</p>
+                            </div>
+
+                            <button onClick={e => this.choiceDownloadDir()}>Change</button>
+                        </li>
                         <li>
                             <label htmlFor="showOnDock">
                                 <span>Show on Dock</span>
@@ -99,16 +120,6 @@ export default class Settings extends Component {
                                 <span>Launch at startup</span>
                                 <Switch id="startup" checked={startup} onChange={e => setStartup(e.target.checked)} />
                             </label>
-                        </li>
-
-                        <li className={classes.downloads}>
-                            <div>
-                                <input type="file" ref="downloads" onChange={e => setDownloads(e.target.files[0])} />
-                                <p>Downloads</p>
-                                <p onClick={e => this.choiceDownloadDir()}>{downloads}</p>
-                            </div>
-
-                            <button onClick={e => this.choiceDownloadDir()}>Change</button>
                         </li>
                     </ul>
                 </div>

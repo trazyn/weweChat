@@ -54,9 +54,9 @@ $ npm run dev
 - [x] Search chat set
 - [x] Search and create chat room
 - [x] Desktop notification
-- [ ] Keep online(bug)
+- [x] Keep online
+- [x] Logout
 - [ ] Theme
-- [ ] Plugins
 
 ### License
 MIT License

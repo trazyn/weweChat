@@ -34,17 +34,46 @@
         justify-content: space-between;
         align-items: center;
     }
+
+    & button {
+        padding: 8px 12px;
+        text-transform: uppercase;
+        border: 0;
+        border-radius: 1px;
+        background: none;
+        color: rgb(117, 117, 117);
+        cursor: pointer;
+        outline: 0;
+        transition: .2s;
+    }
+
+    & button:hover {
+        background: rgba(0, 0, 0, .1);
+    }
 }
 
+.user,
 .downloads {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
 
+.user img {
+    height: 32px;
+    width: 32px;
+}
+
+.downloads {
     & p {
         margin: 0;
         height: 20px;
         line-height: 20px;
+    }
+
+    & p:last-child {
+        color: rgb(117, 117, 117);
+        cursor: pointer;
     }
 
     & input {
@@ -54,25 +83,6 @@
     & > div {
         display: flex;
         flex-direction: column;
-    }
-
-    & button {
-        padding: 8px 12px;
-        text-transform: uppercase;
-        border: 0;
-        border-radius: 1px;
-        background: none;
-        outline: 0;
-        transition: .2s;
-    }
-
-    & button:hover {
-        background: rgba(0, 0, 0, .1);
-    }
-
-    & :matches(p:last-child, button) {
-        color: rgb(117, 117, 117);
-        cursor: pointer;
     }
 }
 
@@ -114,7 +124,7 @@
 
 @media (width <= 800px) {
     .container {
-        padding: 14px 17px 0;
+        padding: 8px 17px 0;
 
         & h2 {
             font-size: 20px;

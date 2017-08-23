@@ -148,7 +148,7 @@
         }
 
         & header :global(.emoji) {
-            margin-top: 20px;
+            margin-top: 14px;
         }
     }
 

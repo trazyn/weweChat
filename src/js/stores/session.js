@@ -208,8 +208,12 @@ class Session {
                 }
 
                 // Do next sync keep your wechat alive
-                if (await loop() === false) {
-                    window.location.reload();
+                try {
+                    if (await loop() === false) {
+                        self.relogin();
+                    }
+                } catch (ex) {
+                    self.relogin();
                 }
 
                 return true;
@@ -243,6 +247,16 @@ class Session {
         }
 
         return auth;
+    }
+
+    @action async logout() {
+        var auth = self.auth;
+
+        await axios.post(`/cgi-bin/mmwebwx-bin/webwxlogout?skey=${auth.skey}&redirect=0&type=1`, {
+            sid: auth.sid,
+            uin: auth.uid,
+        });
+        self.relogin();
     }
 
     async relogin() {

@@ -110,7 +110,7 @@
 
 .home {
     & .action {
-        width: 105px;
+        width: 65px;
         margin-right: 17px;
         display: flex;
         justify-content: space-between;
@@ -238,7 +238,7 @@
 
     .home {
         & .action {
-            width: 80px;
+            width: 50px;
         }
     }
 

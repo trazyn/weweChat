@@ -122,7 +122,6 @@ export default class Input extends Component {
                     onKeyPress={e => this.handleEnter(e)} />
 
                 <div className={classes.action}>
-                    <i className="icon-ion-ios-mic" />
                     <i className="icon-ion-android-attach" onClick={e => canisend && this.refs.uploader.click()} />
                     <i className="icon-ion-ios-heart" onClick={e => canisend && this.toggleEmoji(true)} />
 
