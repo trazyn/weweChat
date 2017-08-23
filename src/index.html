@@ -4,25 +4,8 @@
 <head>
     <meta charset="utf-8">
     <title>weweChat</title>
-    <script>
-    if (!process.env.HOT) {
-        let link = document.createElement('link')
-        link.rel = 'stylesheet'
-        link.href = '../dist/style.css'
-        document.write(link.outerHTML)
-    }
-    </script>
 </head>
 <body>
     <div id="root"></div>
-    <script>
-    {
-        let script = document.createElement('script')
-        let port = process.env.PORT || 3000
-        script.async = ''
-        script.src = (process.env.HOT) ? `http://localhost:${port}/dist/bundle.js` : '../dist/bundle.js'
-        document.body.appendChild(script)
-    }
-    </script>
 </body>
 </html>

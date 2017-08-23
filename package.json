@@ -1,25 +1,55 @@
 {
   "name": "wewechat",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Unofficial WeChat client built with React, MobX and Electron.",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "js-lint": "eslint --format=node_modules/eslint-formatter-pretty .",
     "css-lint": "stylelint --fix src/**/*.css",
+    "build-main": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./config/webpack.config.electron.js --progress --profile --colors",
+    "build-renderer": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./config/webpack.config.production.js --progress --profile --colors",
+    "build": "rm -rf dist && npm run build-main && npm run build-renderer",
+    "package": "npm run build && build ./dist --publish",
     "hot-server": "cross-env NODE_ENV=development node -r babel-register scripts/dev.js",
-    "start-hot": "cross-env HOT=1 NODE_ENV=development ./node_modules/.bin/electron -r babel-register -r babel-polyfill ./index",
+    "start-hot": "cross-env HOT=1 NODE_ENV=development ./node_modules/.bin/electron -r babel-register -r babel-polyfill ./main",
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\""
   },
-  "author": "",
-  "license": "ISC",
+  "author": "var.darling@gmail.com",
+  "license": "MIT",
+  "build": {
+    "productName": "wewechat",
+    "appId": "com.aloop.wewechat",
+    "compression": "maximum",
+    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "title": "wewechat ${version}"
+    },
+    "mac": {
+      "icon": "./resource/icon.icns"
+    },
+    "directories": {
+      "output": "release"
+    }
+  },
   "dependencies": {
     "@exponent/electron-cookies": "^2.0.0",
-    "WebUploader": "github:fex-team/webuploader",
     "axios": "^0.16.2",
     "classname": "^0.0.0",
+    "copy-webpack-plugin": "^4.0.1",
     "delegate": "^3.1.3",
-    "electron": "^1.6.11",
     "electron-context-menu": "^0.9.1",
     "electron-json-storage": "^3.0.6",
     "electron-window-state": "^4.1.1",
@@ -34,9 +64,7 @@
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.0",
     "react-dom": "^15.6.1",
-    "react-router": "2.8.1",
-    "stylelint": "^8.0.0",
-    "stylelint-config-standard": "^17.0.0"
+    "react-router": "2.8.1"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -56,6 +84,7 @@
     "concurrently": "^3.5.0",
     "cross-env": "^5.0.1",
     "css-loader": "^0.28.4",
+    "electron": "^1.6.11",
     "eslint": "^4.1.1",
     "eslint-config-standard": "^10.2.1",
     "eslint-config-standard-react": "^5.0.0",
@@ -66,6 +95,7 @@
     "eslint-plugin-react": "^7.1.0",
     "eslint-plugin-standard": "^3.0.1",
     "express": "^4.15.3",
+    "electron-builder": "^19.24.1",
     "file-loader": "^0.11.2",
     "json-loader": "^0.5.4",
     "postcss-autoreset": "^2.0.0",
@@ -74,8 +104,12 @@
     "postcss-loader": "^2.0.6",
     "postcss-modules": "^0.8.0",
     "style-loader": "^0.18.2",
+    "stylelint": "^8.0.0",
+    "stylelint-config-standard": "^17.0.0",
     "url-loader": "^0.5.9",
     "webpack": "^3.0.0",
+    "html-webpack-plugin": "^2.30.1",
+    "extract-text-webpack-plugin": "^3.0.0",
     "webpack-dev-middleware": "^1.11.0",
     "webpack-hot-middleware": "^2.18.0"
   }
