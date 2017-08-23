@@ -1,9 +1,16 @@
 # weweChat
+
+[![Build Status](https://travis-ci.org/trazyn/weweChat.svg?branch=master)](https://travis-ci.org/trazyn/weweChat)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg)](https://github.com/trazyn/weweChat/pulls)
+
 Unofficial WeChat client built with React, MobX and Electron.
+
+API from [https://web.wechat.com/](https://web.wechat.com/)
 
 ## Feature
 - Work on desktop
-- On macOS,  window vibrancy effect
+- On macOS, window vibrancy effect
 - Desktop notifications
 
 ## Screenshot
@@ -18,6 +25,12 @@ Unofficial WeChat client built with React, MobX and Electron.
 $ npm install
 $ npm run dev
 ```
+
+Generate the binary:
+```
+$ npm run package
+```
+After that, you will see the binary in `./release` folder
 
 ### TODO
 - [x] Sticky on top
