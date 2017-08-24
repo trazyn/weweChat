@@ -91,7 +91,6 @@
     "cross-env": "^5.0.1",
     "css-loader": "^0.28.4",
     "electron": "^1.6.11",
-    "electron-builder": "^19.24.1",
     "eslint": "^4.1.1",
     "eslint-config-standard": "^10.2.1",
     "eslint-config-standard-react": "^5.0.0",
@@ -102,9 +101,8 @@
     "eslint-plugin-react": "^7.1.0",
     "eslint-plugin-standard": "^3.0.1",
     "express": "^4.15.3",
-    "extract-text-webpack-plugin": "^3.0.0",
+    "electron-builder": "^19.24.1",
     "file-loader": "^0.11.2",
-    "html-webpack-plugin": "^2.30.1",
     "json-loader": "^0.5.4",
     "postcss-autoreset": "^2.0.0",
     "postcss-cssnext": "^2.11.0",
@@ -116,6 +114,8 @@
     "stylelint-config-standard": "^17.0.0",
     "url-loader": "^0.5.9",
     "webpack": "^3.0.0",
+    "html-webpack-plugin": "^2.30.1",
+    "extract-text-webpack-plugin": "^3.0.0",
     "webpack-dev-middleware": "^1.11.0",
     "webpack-hot-middleware": "^2.18.0"
   }
