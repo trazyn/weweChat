@@ -35,6 +35,14 @@ class App extends Component {
         ipcRenderer.on('show-messages', () => {
             this.refs.navigator.router.push('/');
         });
+
+        ipcRenderer.on('os-resume', async() => {
+            try {
+                stores.session.keepalive();
+            } catch (ex) {
+                window.location.reload();
+            }
+        });
     }
 
     render() {

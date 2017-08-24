@@ -1,6 +1,6 @@
 
 import fs from 'fs';
-import { app, BrowserWindow, Tray, Menu, ipcMain, shell } from 'electron';
+import { app, powerMonitor, BrowserWindow, Tray, Menu, ipcMain, shell } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import notifier from 'node-notifier';
 
@@ -331,6 +331,10 @@ const createMainWindow = () => {
     ipcMain.on('open-map', (event, map) => {
         event.preventDefault();
         shell.openExternal(map);
+    });
+
+    powerMonitor.on('resume', () => {
+        mainWindow.webContents.send('os-resume');
     });
 
     createMenu();
