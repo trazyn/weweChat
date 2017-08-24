@@ -1,5 +1,6 @@
 
 import webpack from 'webpack';
+import MinifyPlugin from 'babel-minify-webpack-plugin';
 import config from './index';
 import baseConfig from './webpack.config.base';
 
@@ -21,11 +22,7 @@ export default {
 
     plugins: [
         // Minify the output
-        new webpack.optimize.UglifyJsPlugin({
-            compressor: {
-                warnings: false
-            }
-        }),
+        new MinifyPlugin(),
 
         // NODE_ENV should be production so that modules do not perform certain development checks
         new webpack.DefinePlugin({

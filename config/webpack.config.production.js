@@ -1,6 +1,7 @@
 
 import path from 'path';
 import webpack from 'webpack';
+import MinifyPlugin from 'babel-minify-webpack-plugin';
 import config from './index';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
@@ -23,6 +24,10 @@ export default {
     },
 
     plugins: [
+        // https://github.com/webpack/webpack/issues/2545
+        // Use babel-minify-webpack-plugin minify code
+        new MinifyPlugin(),
+
         // https://webpack.github.io/docs/list-of-plugins.html#occurrenceorderplugin
         // https://github.com/webpack/webpack/issues/864
         new webpack.optimize.OccurrenceOrderPlugin(),

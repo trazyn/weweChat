@@ -6,6 +6,7 @@
 #
 dist/
 release/
+package-lock.json
 
 # Xcode
 #
