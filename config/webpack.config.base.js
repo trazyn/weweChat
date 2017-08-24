@@ -88,7 +88,7 @@ export default {
             },
             {
                 test: /\.(png|jpg|jpeg|gif)$/,
-                loader: 'url-loader?limit=40000&name=images/[name].[ext]',
+                loader: 'url-loader'
             },
         ]
     },
