@@ -23,7 +23,7 @@ export default class Contacts extends Component {
                     <div className={classes.header}>
                         <label>{e.prefix}</label>
 
-                        <span>{e.list.length} poeples</span>
+                        <span>{e.list.length} people</span>
                         <span style={{
                             position: 'absolute',
                             left: 0,
