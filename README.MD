@@ -70,7 +70,9 @@ After that, you will see the binary in `./release` folder
 - [x] Keep online
 - [x] Logout
 - [ ] Theme
+- [ ] Send image from clipboard
 - [ ] ~~加入 Siri，像 Siri 学习撩妹~~
 
 ### License
 MIT License
+
