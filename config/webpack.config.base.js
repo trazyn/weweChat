@@ -64,27 +64,27 @@ export default {
             },
             {
                 test: /\.woff(\?.*)?$/,
-                loader: 'url-loader?prefix=fonts/&limit=40000&mimetype=application/font-woff',
+                loader: 'url-loader?prefix=fonts/&name=[path][name].[ext]&limit=40000&mimetype=application/font-woff',
             },
             {
                 test: /\.woff2(\?.*)?$/,
-                loader: 'url-loader?prefix=fonts/&limit=40000&mimetype=application/font-woff2',
+                loader: 'url-loader?prefix=fonts/&name=[path][name].[ext]&limit=40000&mimetype=application/font-woff2',
             },
             {
                 test: /\.otf(\?.*)?$/,
-                loader: 'url-loader?prefix=fonts/&limit=40000&mimetype=font/opentype',
+                loader: 'url-loader?prefix=fonts/&name=[path][name].[ext]&limit=40000&mimetype=font/opentype',
             },
             {
                 test: /\.ttf(\?.*)?$/,
-                loader: 'url-loader?prefix=fonts/&limit=40000&mimetype=application/octet-stream',
-            },
-            {
-                test: /\.eot(\?.*)?$/,
-                loader: 'url-loader?prefix=fonts/&limit=40000',
+                loader: 'url-loader?prefix=fonts/&name=[path][name].[ext]&limit=40000&mimetype=application/octet-stream',
             },
             {
                 test: /\.svg(\?.*)?$/,
-                loader: 'url-loader?prefix=fonts/&limit=40000&mimetype=image/svg+xml',
+                loader: 'url-loader?prefix=fonts/&name=[path][name].[ext]&limit=40000&mimetype=image/svg+xml',
+            },
+            {
+                test: /\.eot(\?.*)?$/,
+                loader: 'url-loader?prefix=fonts/&name=[path][name].[ext]&limit=40000',
             },
             {
                 test: /\.(png|jpg|jpeg|gif)$/,
