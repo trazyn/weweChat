@@ -27,7 +27,7 @@ $ npm run dev
 ```
 
 Generate the binary:
-* For Linux 
+* For Linux
 ```
 $ npm run package-linux
 ```
@@ -76,6 +76,7 @@ After that, you will see the binary in `./release` folder
 - [x] Desktop notification
 - [x] Keep online
 - [x] Logout
+- [x] Autosart at login
 - [ ] Theme
 - [ ] Send image from clipboard
 - [ ] ~~加入 Siri，像 Siri 学习撩妹~~

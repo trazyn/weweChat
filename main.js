@@ -3,6 +3,7 @@ import fs from 'fs';
 import { app, powerMonitor, BrowserWindow, Tray, Menu, ipcMain, shell } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import notifier from 'node-notifier';
+import AutoLaunch from 'auto-launch';
 
 import pkg from './package.json';
 
@@ -107,6 +108,32 @@ function updateTray(unread = 0) {
 
     // Avoid tray icon been recreate
     updateTray.lastUnread = unread;
+}
+
+async function autostart() {
+    var launcher = new AutoLaunch({
+        name: 'weweChat',
+        path: '/Applications/wewechat.app',
+    });
+
+    if (settings.startup) {
+        if (process.platform !== 'darwin') {
+            mainWindow.webContents.send('show-errors', {
+                message: 'Currently only supports the OSX.'
+            });
+            return;
+        }
+
+        launcher.enable()
+            .catch(ex => {
+                mainWindow.webContents.send('show-errors', {
+                    message: 'Failed to set auto launch at login.'
+                });
+                console.error(ex);
+            });
+    } else {
+        launcher.disable();
+    }
 }
 
 function createMenu() {
@@ -276,6 +303,7 @@ const createMainWindow = () => {
         mainWindow.setAlwaysOnTop(!!settings.alwaysOnTop);
 
         updateTray();
+        autostart();
     });
 
     ipcMain.on('unread-message', (event, args) => {
@@ -286,8 +314,8 @@ const createMainWindow = () => {
         }
     });
 
-    ipcMain.on('receive-message', (event, data) => {
-        var { icon, title, message } = data;
+    ipcMain.on('receive-message', (event, args) => {
+        var { icon, title, message } = args;
         var filename = `${imagesCacheDir}/notifier-icon.png`;
 
         if (settings.showNotification) {

@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "@exponent/electron-cookies": "^2.0.0",
+    "auto-launch": "^5.0.1",
     "axios": "^0.16.2",
     "classname": "^0.0.0",
     "copy-webpack-plugin": "^4.0.1",

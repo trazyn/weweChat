@@ -43,6 +43,10 @@ class App extends Component {
                 window.location.reload();
             }
         });
+
+        ipcRenderer.on('show-errors', (event, args) => {
+            stores.snackbar.showMessage(args.message);
+        });
     }
 
     render() {
