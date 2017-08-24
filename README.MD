@@ -27,8 +27,13 @@ $ npm run dev
 ```
 
 Generate the binary:
+* For Linux 
 ```
-$ npm run package
+$ npm run package-linux
+```
+* For Mac
+```
+$ npm run package-mac
 ```
 After that, you will see the binary in `./release` folder
 
