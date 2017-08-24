@@ -57,6 +57,7 @@
     }
 
     & p {
+        padding: 0 12px;
         max-width: 280px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -179,6 +180,7 @@
         }
 
         & p {
+            padding: 0 8px;
             max-width: 280px;
             font-size: 12px;
         }
