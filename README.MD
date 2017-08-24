@@ -15,7 +15,7 @@ API from [https://web.wechat.com/](https://web.wechat.com/)
 
 ## Downloads
 - [Mac](https://github.com/trazyn/weweChat/releases/download/1.0.0/wewechat-1.0.0-mac.dmg)
-- Windows(已添加打包脚本，由于网络不好导致打包失败，请自行打包)
+- [Windows](https://github.com/trazyn/weweChat/releases/download/1.0.0/wewechat-1.0.0-win-setup.exe)(Test on win7)
 - Linux(自行动手吧 😂)
 
 ## Screenshot
