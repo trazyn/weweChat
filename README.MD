@@ -33,6 +33,8 @@ $ npm run package
 After that, you will see the binary in `./release` folder
 
 ### TODO
+- [ ] Windows support
+- [ ] Linux support
 - [x] Sticky on top
 - [x] Delete chat session
 - [x] Mark as Read
@@ -70,6 +72,7 @@ After that, you will see the binary in `./release` folder
 - [x] Keep online
 - [x] Logout
 - [ ] Theme
+- [ ] Send image from clipboard
 - [ ] Send image from clipboard
 - [ ] ~~加入 Siri，像 Siri 学习撩妹~~
 
