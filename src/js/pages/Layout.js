@@ -67,6 +67,10 @@ export default class Layout extends Component {
                 node = node.parentNode;
             }
         });
+
+        if (window.process.platform === 'win32') {
+            document.body.classList.add('isWin');
+        }
     }
 
     render() {

@@ -11,6 +11,8 @@ let forceQuit = false;
 let mainWindow;
 let tray;
 let settings;
+let isWin = process.platform === 'win32';
+let isOsx = process.platform === 'darwin';
 let userData = app.getPath('userData');
 let imagesCacheDir = `${userData}/images`;
 let voicesCacheDir = `${userData}/voices`;
@@ -117,7 +119,7 @@ async function autostart() {
     });
 
     if (settings.startup) {
-        if (process.platform !== 'darwin') {
+        if (isOsx) {
             mainWindow.webContents.send('show-errors', {
                 message: 'Currently only supports the OSX.'
             });
@@ -262,7 +264,8 @@ const createMainWindow = () => {
         resizable: false,
         webPreferences: {
             scrollBounce: true
-        }
+        },
+        frame: !isWin,
     });
 
     mainWindow.setSize(350, 460);
@@ -365,7 +368,9 @@ const createMainWindow = () => {
         mainWindow.webContents.send('os-resume');
     });
 
-    createMenu();
+    if (isOsx) {
+        createMenu();
+    }
 
     [imagesCacheDir, voicesCacheDir].map(e => {
         if (!fs.existsSync(e)) {
