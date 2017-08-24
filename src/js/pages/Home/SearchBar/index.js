@@ -191,7 +191,7 @@ export default class SearchBar extends Component {
                 <input
                     ref="search"
                     type="text"
-                    placeholder="Saerch ..."
+                    placeholder="Search ..."
                     onKeyUp={e => this.navigation(e)}
                     onFocus={e => this.doFilter(e.target.value)}
                     onBlur={e => this.handleBlur(e.target.value)}
