@@ -347,7 +347,7 @@ const createMainWindow = () => {
 };
 
 app.setName(pkg.name);
-app.dock.setIcon(`${__dirname}/src/assets/images/dock.png`);
+app.dock && app.dock.setIcon(`${__dirname}/src/assets/images/dock.png`);
 
 app.on('ready', createMainWindow);
 app.on('activate', e => {
