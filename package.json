@@ -11,7 +11,8 @@
     "build-main": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./config/webpack.config.electron.js --progress --profile --colors",
     "build-renderer": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./config/webpack.config.production.js --progress --profile --colors",
     "build": "rm -rf dist && npm run build-main && npm run build-renderer",
-    "package": "npm run build && rm -rf release && build --projectDir ./dist",
+    "package-linux": "npm run build && rm -rf release && build --linux --projectDir ./dist",
+    "package-mac": "npm run build && rm -rf release && build --mac --projectDir ./dist",
     "hot-server": "cross-env NODE_ENV=development node -r babel-register scripts/dev.js",
     "start-hot": "cross-env HOT=1 NODE_ENV=development ./node_modules/.bin/electron -r babel-register -r babel-polyfill ./main",
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\""
@@ -40,6 +41,10 @@
     },
     "mac": {
       "icon": "../resource/icon.icns"
+    },
+    "linux": {
+      "icon": "../resource",
+      "category": "Chat"
     },
     "directories": {
       "output": "../release"
