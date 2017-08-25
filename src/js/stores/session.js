@@ -118,7 +118,6 @@ class Session {
         self.user.ContactList.map(e => {
             e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
         });
-        self.user.User.HeadImgUrl = `${axios.defaults.baseURL}${self.user.User.HeadImgUrl.substr(1)}`;
         await contacts.getContats();
         await chat.loadChats(self.user.ChatSet);
 
@@ -152,7 +151,8 @@ class Session {
         }
 
         response.data.AddMsgList.map(e => {
-            if (e.FromUserName === self.user.User.UserName) {
+            // When message has been readed on your phone, will receive this message
+            if (e.StatusNotifyCode !== 0) {
                 return chat.markedRead(e.ToUserName);
             }
 

@@ -23,6 +23,7 @@ class Search {
                 res = res || (e.RemarkPYQuanPin + '').toLowerCase().indexOf(pinyin.letter(text.toLocaleLowerCase())) > -1;
             }
 
+            // The contact should in your contacts
             return (e.isFriend || helper.isChatRoom(e.UserName)) && res;
         });
         var groups = [];

@@ -11,10 +11,16 @@ import Emoji from './Emoji';
     user: stores.chat.user,
     upload: stores.chat.upload,
     showMessage: stores.snackbar.showMessage,
+    isme: () => stores.chat.user.UserName === stores.session.user.User.UserName,
 }))
 export default class Input extends Component {
     async handleEnter(e) {
         if (e.charCode !== 13) return;
+
+        if (this.props.isme()) {
+            this.props.showMessage('Can\'t send message to yourself.');
+            return;
+        }
 
         var res = await this.props.sendMessage(this.props.user, {
             content: this.refs.input.value,

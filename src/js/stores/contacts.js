@@ -3,6 +3,7 @@ import { observable, action } from 'mobx';
 import axios from 'axios';
 import pinyin from 'han';
 
+import session from './session';
 import storage from 'utils/storage';
 import helper from 'utils/helper';
 
@@ -60,6 +61,7 @@ class Contacts {
         self.loading = true;
 
         var auth = await storage.get('auth');
+        var me = session.user.User;
         var response = await axios.get('/cgi-bin/mmwebwx-bin/webwxgetcontact', {
             params: {
                 r: +new Date(),
@@ -68,8 +70,8 @@ class Contacts {
             }
         });
 
-        // Remove all official account
-        self.memberList = response.data.MemberList.filter(e => !helper.isOfficial(e) && !helper.isBrand(e));
+        // Remove all official account and brand account
+        self.memberList = response.data.MemberList.filter(e => !helper.isOfficial(e) && !helper.isBrand(e)).concat(me);
         self.memberList.map(e => {
             e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
             e.isFriend = true;
