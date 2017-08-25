@@ -37,11 +37,10 @@ class App extends Component {
         });
 
         ipcRenderer.on('os-resume', async() => {
-            try {
-                stores.session.keepalive();
-            } catch (ex) {
-                window.location.reload();
-            }
+            var session = stores.session;
+
+            session.keepalive()
+                .catch(ex => session.logout());
         });
 
         ipcRenderer.on('show-errors', (event, args) => {
