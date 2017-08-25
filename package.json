@@ -12,6 +12,7 @@
     "build-renderer": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config ./config/webpack.config.production.js --progress --profile --colors",
     "build": "rm -rf dist && npm run build-main && npm run build-renderer",
     "package-win": "npm run build && rm -rf release && build --win --projectDir ./dist",
+    "package-win32": "npm run build && rm -rf release && build --win --ia32 --projectDir ./dist",
     "package-linux": "npm run build && rm -rf release && build --linux --projectDir ./dist",
     "package-mac": "npm run build && rm -rf release && build --mac --projectDir ./dist",
     "hot-server": "cross-env NODE_ENV=development node -r babel-register scripts/dev.js",
