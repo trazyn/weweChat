@@ -86,7 +86,7 @@ const helper = {
         var isChatRoom = helper.isChatRoom(message.FromUserName);
         var content = message.Content;
 
-        if (isChatRoom) {
+        if (isChatRoom && !message.isme) {
             content = message.Content.split(':<br/>')[1];
         }
 

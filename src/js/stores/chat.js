@@ -12,7 +12,7 @@ import members from './members';
 async function resolveMessage(message) {
     var auth = await storage.get('auth');
     var isChatRoom = helper.isChatRoom(message.FromUserName);
-    var content = isChatRoom ? message.Content.split(':<br/>')[1] : message.Content;
+    var content = (isChatRoom && !message.isme) ? message.Content.split(':<br/>')[1] : message.Content;
 
     switch (message.MsgType) {
         case 1:
@@ -22,7 +22,7 @@ async function resolveMessage(message) {
                 let parts = message.Content.split(':<br/>');
                 let location = helper.parseKV(message.OriContent);
 
-                location.image = `${axios.defaults.baseURL}${parts[isChatRoom ? 2 : 1]}`.replace(/\/+/g, '/');
+                location.image = `${axios.defaults.baseURL}${parts[(isChatRoom && !message.isme) ? 2 : 1]}`.replace(/\/+/g, '/');
                 location.href = message.Url;
 
                 message.location = location;
@@ -267,7 +267,7 @@ class Chat {
         hasUnreadMessage(self.messages);
     }
 
-    @action async addMessage(message) {
+    @action async addMessage(message, sync = false) {
         /* eslint-disable */
         var from = message.FromUserName;
         var user = await contacts.getUser(from);
@@ -276,6 +276,17 @@ class Chat {
         var stickyed = [];
         var normaled = [];
         /* eslint-enable */
+
+        // Add the messages of your sent on phone to the chat sets
+        if (sync) {
+            list = self.messages.get(message.ToUserName);
+            from = message.ToUserName;
+
+            message.isme = true;
+            message.HeadImgUrl = session.user.User.HeadImgUrl;
+            message.FromUserName = message.ToUserName;
+            message.ToUserName = user.UserName;
+        }
 
         // Check new message is already in the chat set
         if (list) {

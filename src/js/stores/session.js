@@ -151,12 +151,23 @@ class Session {
         }
 
         response.data.AddMsgList.map(e => {
+            var from = e.FromUserName;
+            var to = e.ToUserName;
+
             // When message has been readed on your phone, will receive this message
-            if (e.StatusNotifyCode !== 0) {
-                return chat.markedRead(e.ToUserName);
+            if (e.MsgType === 51) {
+                return chat.markedRead(to);
             }
 
-            if (e.FromUserName.startsWith('@')) {
+            // Sync message from your phone
+            if (from === self.user.User.UserName
+                && from !== to) {
+                // Message is sync from your phone
+                chat.addMessage(e, true);
+                return;
+            }
+
+            if (from.startsWith('@')) {
                 chat.addMessage(e);
             }
         });

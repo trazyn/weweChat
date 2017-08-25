@@ -283,12 +283,13 @@
     /* stylelint-enable */
 
     & > div {
-        padding: 16px 0 0 47px;
+        padding: 16px 16px 0 47px;
     }
 }
 
 .message.isVoice {
     position: relative;
+    margin-bottom: 30px;
 
     & p { margin: 0; }
 
@@ -535,6 +536,10 @@
     }
 }
 
+.message.isme.isTransfer,
+.message.isme.isContact,
+.message.isme.isLocation,
+.message.isme.isVoice,
 .message.isme.isEmoji,
 .message.isme.isImage,
 .message.isme.isFile {
@@ -551,6 +556,23 @@
 
     & .content {
         text-align: right;
+    }
+}
+
+.message.isme.isVoice {
+    & .content {
+        left: auto;
+        right: 32px;
+    }
+}
+
+.message.isme.isLocation {
+    & > div {
+        padding: 16px 32px 0;
+    }
+
+    & p {
+        float: right;
     }
 }
 
@@ -881,6 +903,10 @@
         }
     }
 
+    .message.isme.isTransfer,
+    .message.isme.isContact,
+    .message.isme.isLocation,
+    .message.isme.isVoice,
     .message.isme.isEmoji,
     .message.isme.isImage,
     .message.isme.isFile {
@@ -891,6 +917,28 @@
         & .avatar {
             left: auto;
             right: -12px;
+        }
+    }
+
+    .message.isme.isVoice {
+        & .content {
+            left: auto;
+            right: 24px;
+        }
+    }
+
+    .message.isme.isLocation {
+        & > div {
+            padding: 12px 24px 0;
+        }
+
+        & .avatar {
+            right: 0;
+        }
+
+        & p {
+            width: 100%;
+            text-align: left;
         }
     }
 
