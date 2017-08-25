@@ -536,6 +536,7 @@
     }
 }
 
+.message.isme.isLocationSharing,
 .message.isme.isTransfer,
 .message.isme.isContact,
 .message.isme.isLocation,
@@ -903,6 +904,7 @@
         }
     }
 
+    .message.isme.isLocationSharing,
     .message.isme.isTransfer,
     .message.isme.isContact,
     .message.isme.isLocation,
