@@ -228,7 +228,9 @@ const helper = {
             default:
                 return 'doc';
         }
-    }
+    },
+
+    isOsx: window.process.platform === 'darwin'
 };
 
 export default helper;

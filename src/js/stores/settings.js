@@ -3,6 +3,7 @@ import { observable, action } from 'mobx';
 import { remote, ipcRenderer } from 'electron';
 
 import storage from 'utils/storage';
+import helper from 'utils/helper';
 
 class Settings {
     @observable alwaysOnTop = false;
@@ -62,6 +63,11 @@ class Settings {
                 startup,
                 downloads,
             });
+        }
+
+        // Alway show the tray icon on windows
+        if (!helper.isOsx) {
+            self.showOnTray = true;
         }
 
         if (!self.downloads) {

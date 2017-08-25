@@ -5,6 +5,7 @@ import { inject, observer } from 'mobx-react';
 import classes from './style.css';
 import Switch from 'components/Switch';
 import Avatar from 'components/Avatar';
+import helper from 'utils/helper';
 
 @inject(stores => ({
     alwaysOnTop: stores.settings.alwaysOnTop,
@@ -104,7 +105,7 @@ export default class Settings extends Component {
                         <li>
                             <label htmlFor="showOnTray">
                                 <span>Show on Tray</span>
-                                <Switch id="showOnTray" checked={showOnTray} onChange={e => setShowOnTray(e.target.checked)} />
+                                <Switch id="showOnTray" checked={showOnTray} onChange={e => setShowOnTray(e.target.checked)} disabled={!helper.isOsx} />
                             </label>
                         </li>
 

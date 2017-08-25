@@ -54,3 +54,13 @@
     box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .5);
     transition: .2s;
 }
+
+.Switch input:disabled + .Switch--fake::before {
+    background: rgba(0, 0, 0, .12);
+}
+
+.Switch input:disabled + .Switch--fake::after {
+    left: auto;
+    right: 0;
+    background: #bdbdbd;
+}

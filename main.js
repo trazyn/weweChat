@@ -18,6 +18,11 @@ let imagesCacheDir = `${userData}/images`;
 let voicesCacheDir = `${userData}/voices`;
 
 function updateTray(unread = 0) {
+    if (isWin) {
+        // Always show the tray icon on windows
+        settings.showOnTray = true;
+    }
+
     if (settings.showOnTray) {
         if (tray) {
             if (updateTray.lastUnread === unread) {
