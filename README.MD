@@ -16,7 +16,7 @@ API from [https://web.wechat.com/](https://web.wechat.com/)
 ## Downloads
 - [Mac](https://github.com/trazyn/weweChat/releases/download/1.0.0/wewechat-1.0.0-mac.dmg)
 - [Windows](https://github.com/trazyn/weweChat/releases/download/1.0.0/wewechat-1.0.0-win-setup.exe)(Test on win7)
-- Linux(自行动手吧 😂)
+- [Linux](https://github.com/trazyn/weweChat/releases/download/1.0.0/wewechat-1.0.0-x86_64.AppImage)
 
 ## Screenshot
 ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/0.png)
