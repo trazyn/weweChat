@@ -88,10 +88,17 @@ export default class Chats extends Component {
     }
 
     componentDidUpdate() {
-        var active = this.refs.container.querySelector(`.${classes.chat}.${classes.active}`);
+        var container = this.refs.container;
+        var active = container.querySelector(`.${classes.chat}.${classes.active}`);
 
         if (active) {
-            active.scrollIntoView();
+            let rect4active = active.getBoundingClientRect();
+            let rect4container = container.getBoundingClientRect();
+
+            if (rect4active.top > rect4container.bottom
+                || rect4active.bottom < rect4container.top) {
+                container.scrollTop = rect4active.top;
+            }
         }
     }
 
@@ -101,8 +108,8 @@ export default class Chats extends Component {
         if (loading) return false;
 
         return (
-            <div className={classes.container} ref="container">
-                <div className={classes.chats}>
+            <div className={classes.container}>
+                <div className={classes.chats} ref="container">
                     {
                         !searching && chats.map((e, index) => {
                             var message = this.getTheLastestMessage(e.UserName) || {};
