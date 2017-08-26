@@ -76,13 +76,19 @@ export default class UserInfo extends Component {
     }
 
     handleAction(user) {
-        if (user.isFriend || helper.isChatRoom(user.UserName)) {
-            this.props.toggle(false);
-            this.props.chatTo(user.UserName);
-            document.querySelector('#messageInput').focus();
-        } else {
-            this.props.showAddFriend(user);
+        if (this._reactInternalInstance._context.location.pathname !== '/') {
+            this._reactInternalInstance._context.router.push('/');
         }
+
+        setTimeout(() => {
+            if (user.isFriend || helper.isChatRoom(user.UserName)) {
+                this.props.toggle(false);
+                this.props.chatTo(user.UserName);
+                document.querySelector('#messageInput').focus();
+            } else {
+                this.props.showAddFriend(user);
+            }
+        });
     }
 
     render() {

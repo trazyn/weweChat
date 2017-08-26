@@ -24,7 +24,9 @@ import Emoji from './Emoji';
 }))
 export default class Input extends Component {
     async handleEnter(e) {
-        if (e.charCode !== 13) return;
+        var message = this.refs.input.value.trim();
+
+        if (!message || e.charCode !== 13) return;
 
         if (this.props.isme()) {
             this.props.showMessage('Can\'t send message to yourself.');
@@ -32,7 +34,7 @@ export default class Input extends Component {
         }
 
         var res = await this.props.sendMessage(this.props.user, {
-            content: this.refs.input.value,
+            content: message,
             type: 1,
         });
 

@@ -44,6 +44,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    text-align: center;
     transition: .2s ease-in-out;
 
     &.large {
@@ -85,6 +86,7 @@
 }
 
 .address {
+    display: inline-block;
     height: 32px;
     margin: 0 auto;
     padding: 0 12px;
