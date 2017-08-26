@@ -85,6 +85,11 @@ export default class SearchBar extends Component {
     navigation(e) {
         var { result, history, getPlaceholder } = this.props;
 
+        // User press ESC
+        if (e.keyCode === 27) {
+            e.target.blur();
+        }
+
         if (![
             38, // Up
             40, // Down
@@ -189,6 +194,7 @@ export default class SearchBar extends Component {
             <div className={classes.container}>
                 <i className="icon-ion-ios-search-strong" />
                 <input
+                    id="search"
                     ref="search"
                     type="text"
                     placeholder="Search ..."

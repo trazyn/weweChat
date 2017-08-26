@@ -52,7 +52,8 @@ function updateTray(unread = 0) {
                 type: 'separator'
             },
             {
-                label: 'Settings',
+                label: 'Preferences...',
+                accelerator: 'Cmd+,',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-settings');
@@ -153,6 +154,14 @@ function createMenu() {
                     }
                 },
                 {
+                    label: 'Preferences...',
+                    accelerator: 'Cmd+,',
+                    click() {
+                        mainWindow.show();
+                        mainWindow.webContents.send('show-settings');
+                    }
+                },
+                {
                     type: 'separator'
                 },
                 {
@@ -177,6 +186,46 @@ function createMenu() {
                         app.quit();
                     }
                 }
+            ]
+        },
+        {
+            label: 'File',
+            submenu: [
+                {
+                    label: 'New Chat',
+                    accelerator: 'Cmd+N',
+                    click() {
+                        mainWindow.show();
+                        mainWindow.webContents.send('show-newchat');
+                    }
+                },
+                {
+                    label: 'Search...',
+                    accelerator: 'Cmd+F',
+                    click() {
+                        mainWindow.show();
+                        mainWindow.webContents.send('show-search');
+                    }
+                },
+                {
+                    type: 'separator',
+                },
+                {
+                    label: 'Next conversation',
+                    accelerator: 'Cmd+J',
+                    click() {
+                        mainWindow.show();
+                        mainWindow.webContents.send('show-next');
+                    }
+                },
+                {
+                    label: 'Previous conversation',
+                    accelerator: 'Cmd+K',
+                    click() {
+                        mainWindow.show();
+                        mainWindow.webContents.send('show-previous');
+                    }
+                },
             ]
         },
         {
@@ -215,6 +264,13 @@ function createMenu() {
             label: 'View',
             submenu: [
                 {
+                    label: 'Show Contacts',
+                    click() {
+                        mainWindow.show();
+                        mainWindow.webContents.send('show-contacts');
+                    }
+                },
+                {
                     role: 'toggledevtools'
                 },
                 {
@@ -237,7 +293,22 @@ function createMenu() {
             role: 'help',
             submenu: [
                 {
-                    label: 'Learn More',
+                    label: 'Feedback',
+                    click() {
+                        shell.openExternal('https://github.com/trazyn/weweChat/issues');
+                    }
+                },
+                {
+                    label: 'Fork me on Github',
+                    click() {
+                        shell.openExternal('https://github.com/trazyn/weweChat');
+                    }
+                },
+                {
+                    type: 'separator'
+                },
+                {
+                    label: '💕 Follow me on Twitter 👏',
                     click() {
                         shell.openExternal('https://github.com/trazyn/weweChat/issues');
                     }

@@ -228,6 +228,32 @@ class Chat {
         return res;
     }
 
+    @action chatToPrev() {
+        var sessions = self.sessions;
+        var index = self.user ? sessions.findIndex(e => e.UserName === self.user.UserName) : 0;
+
+        --index;
+
+        if (index === -1) {
+            index = sessions.length - 1;
+        }
+
+        self.chatTo(sessions[index]);
+    }
+
+    @action chatToNext() {
+        var sessions = self.sessions;
+        var index = self.user ? sessions.findIndex(e => e.UserName === self.user.UserName) : -1;
+
+        ++index;
+
+        if (index === sessions.length) {
+            index = 0;
+        }
+
+        self.chatTo(sessions[index]);
+    }
+
     @action chatTo(user, onTop) {
         var sessions = self.sessions;
         var stickyed = [];

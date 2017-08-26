@@ -87,7 +87,7 @@ export default class NewChat extends Component {
 
     render() {
         return (
-            <Modal show={this.props.show} fullscreen={true}>
+            <Modal show={this.props.show} fullscreen={true} onCancel={e => this.props.close()}>
                 <ModalBody className={classes.container}>
                     New Chat ({this.state.selected.length} / 20)
 

@@ -22,7 +22,7 @@ export default class AddFriend extends Component {
         var { me, show, close } = this.props;
 
         return (
-            <Modal show={show} fullscreen={true}>
+            <Modal show={show} fullscreen={true} onCancel={e => close()}>
                 <ModalBody className={classes.container}>
                     Send friend request first
 

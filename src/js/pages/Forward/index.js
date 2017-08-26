@@ -73,7 +73,7 @@ export default class Forward extends Component {
 
     render() {
         return (
-            <Modal show={this.props.show} fullscreen={true}>
+            <Modal show={this.props.show} fullscreen={true} onCancel={e => this.close()}>
                 <ModalBody className={classes.container}>
                     Forward Message
 

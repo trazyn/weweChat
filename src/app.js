@@ -32,8 +32,32 @@ class App extends Component {
             this.refs.navigator.router.push('/settings');
         });
 
+        ipcRenderer.on('show-newchat', () => {
+            this.refs.navigator.router.push('/');
+            stores.newchat.toggle(true);
+        });
+
+        ipcRenderer.on('show-search', () => {
+            this.refs.navigator.router.push('/');
+            setTimeout(() => document.querySelector('#search').focus());
+        });
+
         ipcRenderer.on('show-messages', () => {
             this.refs.navigator.router.push('/');
+        });
+
+        ipcRenderer.on('show-contacts', () => {
+            this.refs.navigator.router.push('/contacts');
+        });
+
+        ipcRenderer.on('show-next', () => {
+            this.refs.navigator.router.push('/');
+            setTimeout(stores.chat.chatToNext);
+        });
+
+        ipcRenderer.on('show-previous', () => {
+            this.refs.navigator.router.push('/');
+            setTimeout(stores.chat.chatToPrev);
         });
 
         ipcRenderer.on('os-resume', async() => {
