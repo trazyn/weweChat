@@ -28,6 +28,10 @@ export default class Filter extends Component {
         this.doFilter(this.refs.filter.value);
     }
 
+    componentWillUnmount() {
+        this.props.filter();
+    }
+
     render() {
         return (
             <div className={classes.contacts}>

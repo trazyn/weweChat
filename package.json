@@ -20,10 +20,14 @@
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\""
   },
   "author": "var.darling@gmail.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trazyn/weweChat.git"
+  },
   "license": "MIT",
   "build": {
     "productName": "wewechat",
-    "appId": "com.aloop.wewechat",
+    "appId": "gh.trazyn.wewechat",
     "compression": "maximum",
     "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
     "dmg": {
@@ -70,7 +74,6 @@
     "electron-context-menu": "^0.9.1",
     "electron-json-storage": "^3.0.6",
     "electron-window-state": "^4.1.1",
-    "eslint-loader": "^1.9.0",
     "han": "^0.0.7",
     "mobx": "^3.1.16",
     "mobx-react": "^4.2.1",
@@ -107,6 +110,7 @@
     "electron": "^1.6.11",
     "electron-builder": "^19.24.1",
     "eslint": "^4.1.1",
+    "eslint-loader": "^1.9.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-config-standard-react": "^5.0.0",
     "eslint-formatter-pretty": "^1.1.0",
