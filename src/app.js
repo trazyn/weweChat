@@ -37,13 +37,23 @@ class App extends Component {
             stores.newchat.toggle(true);
         });
 
+        ipcRenderer.on('show-conversation', () => {
+            if (this.refs.navigator.state.location.pathname === '/'
+                && stores.chat.user) {
+                stores.chat.toggleConversation();
+            }
+        });
+
         ipcRenderer.on('show-search', () => {
             this.refs.navigator.router.push('/');
+            stores.chat.toggleConversation(true);
+
             setTimeout(() => document.querySelector('#search').focus());
         });
 
         ipcRenderer.on('show-messages', () => {
             this.refs.navigator.router.push('/');
+            stores.chat.toggleConversation(true);
         });
 
         ipcRenderer.on('show-contacts', () => {
@@ -52,11 +62,13 @@ class App extends Component {
 
         ipcRenderer.on('show-next', () => {
             this.refs.navigator.router.push('/');
+            stores.chat.toggleConversation(true);
             setTimeout(stores.chat.chatToNext);
         });
 
         ipcRenderer.on('show-previous', () => {
             this.refs.navigator.router.push('/');
+            stores.chat.toggleConversation(true);
             setTimeout(stores.chat.chatToPrev);
         });
 

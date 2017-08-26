@@ -271,6 +271,17 @@ function createMenu() {
                     }
                 },
                 {
+                    label: 'Toggle Conversation',
+                    accelerator: 'Shift+Cmd+M',
+                    click() {
+                        mainWindow.show();
+                        mainWindow.webContents.send('show-conversation');
+                    }
+                },
+                {
+                    type: 'separator',
+                },
+                {
                     role: 'toggledevtools'
                 },
                 {

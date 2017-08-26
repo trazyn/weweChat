@@ -53,6 +53,13 @@
     }
 }
 
+.container.hideConversation {
+    & .signature,
+    & header p {
+        max-width: calc(100vw - 60px);
+    }
+}
+
 .inner {
     display: flex;
     justify-content: center;

@@ -4,6 +4,16 @@
     justify-content: space-between;
 }
 
+.inner.hideConversation {
+    & .left {
+        display: none;
+    }
+
+    & .right {
+        width: 100vw;
+    }
+}
+
 .left {
     position: relative;
     width: 311px;

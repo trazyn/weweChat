@@ -75,6 +75,8 @@ import { on, off } from 'utils/event';
     showAddFriend: (user) => stores.addfriend.toggle(true, user),
     recallMessage: stores.chat.recallMessage,
     downloads: stores.settings.downloads,
+    showConversation: stores.chat.showConversation,
+    toggleConversation: stores.chat.toggleConversation,
 }))
 @observer
 export default class ChatContent extends Component {
@@ -453,6 +455,15 @@ export default class ChatContent extends Component {
         var user = this.props.user;
         var menu = new remote.Menu.buildFromTemplate([
             {
+                label: 'Toggle the conversation',
+                click: () => {
+                    this.props.toggleConversation();
+                }
+            },
+            {
+                type: 'separator',
+            },
+            {
                 label: 'Empty Content',
                 click: () => {
                     this.props.empty(user);
@@ -548,14 +559,19 @@ export default class ChatContent extends Component {
     }
 
     render() {
-        var { loading, user, messages } = this.props;
+        var { loading, showConversation, user, messages } = this.props;
         var title = user.RemarkName || user.NickName;
         var signature = user.Signature;
 
         if (loading) return false;
 
         return (
-            <div className={clazz(classes.container, { [classes.notfound]: !user })} onClick={e => this.handleClick(e)}>
+            <div
+                className={clazz(classes.container, {
+                    [classes.notfound]: !user,
+                    [classes.hideConversation]: !showConversation,
+                })}
+                onClick={e => this.handleClick(e)}>
                 {
                     user ? (
                         <div>

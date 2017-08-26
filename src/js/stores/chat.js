@@ -175,6 +175,11 @@ class Chat {
     @observable sessions = [];
     @observable messages = new Map();
     @observable user = false;
+    @observable showConversation = true;
+
+    @action toggleConversation(show = !self.showConversation) {
+        self.showConversation = show;
+    }
 
     @action async loadChats(chatSet) {
         var list = contacts.memberList;
