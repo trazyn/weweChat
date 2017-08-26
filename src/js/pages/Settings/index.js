@@ -18,6 +18,8 @@ import helper from 'utils/helper';
     setStartup: stores.settings.setStartup,
     downloads: stores.settings.downloads,
     setDownloads: stores.settings.setDownloads,
+    confirmImagePaste: stores.settings.confirmImagePaste,
+    setConfirmImagePaste: stores.settings.setConfirmImagePaste,
     user: stores.session.user,
     logout: stores.session.logout,
 
@@ -68,6 +70,8 @@ export default class Settings extends Component {
             setStartup,
             downloads,
             setDownloads,
+            confirmImagePaste,
+            setConfirmImagePaste,
             plugins,
             user,
         } = this.props;
@@ -113,6 +117,13 @@ export default class Settings extends Component {
                             <label htmlFor="showNotification">
                                 <span>Send Desktop Notifications</span>
                                 <Switch id="showNotification" checked={showNotification} onChange={e => setShowNotification(e.target.checked)} />
+                            </label>
+                        </li>
+
+                        <li>
+                            <label htmlFor="confirmImagePaste">
+                                <span>Image paste Confirmation</span>
+                                <Switch id="confirmImagePaste" checked={confirmImagePaste} onChange={e => setConfirmImagePaste(e.target.checked)} />
                             </label>
                         </li>
 

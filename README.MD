@@ -10,6 +10,7 @@ API from [https://web.wechat.com/](https://web.wechat.com/)
 
 ## Feature
 - Work on desktop
+- Send image by paste
 - On macOS, window vibrancy effect
 - Desktop notifications
 

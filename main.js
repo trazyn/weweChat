@@ -125,7 +125,7 @@ async function autostart() {
     });
 
     if (settings.startup) {
-        if (isOsx) {
+        if (!isOsx) {
             mainWindow.webContents.send('show-errors', {
                 message: 'Currently only supports the OSX.'
             });
@@ -134,9 +134,6 @@ async function autostart() {
 
         launcher.enable()
             .catch(ex => {
-                mainWindow.webContents.send('show-errors', {
-                    message: 'Failed to set auto launch at login.'
-                });
                 console.error(ex);
             });
     } else {

@@ -13,6 +13,14 @@ import Emoji from './Emoji';
     upload: stores.chat.upload,
     showMessage: stores.snackbar.showMessage,
     isme: () => stores.chat.user.UserName === stores.session.user.User.UserName,
+    confirmSendImage: async(image) => {
+        if (!stores.settings.confirmImagePaste) {
+            return true;
+        }
+
+        var confirmed = await stores.confirmImagePaste.toggle(true, image);
+        return confirmed;
+    }
 }))
 export default class Input extends Component {
     async handleEnter(e) {
@@ -109,11 +117,15 @@ export default class Input extends Component {
         }
     }
 
-    handlePaste(e) {
+    async handlePaste(e) {
         var args = ipcRenderer.sendSync('file-paste');
 
         if (args.hasImage) {
             e.preventDefault();
+
+            if ((await this.props.confirmSendImage(args.filename)) === false) {
+                return;
+            }
 
             let parts = [
                 new window.Blob([new window.Uint8Array(args.raw.data)], { type: 'image/png' })

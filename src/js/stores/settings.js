@@ -9,6 +9,7 @@ class Settings {
     @observable alwaysOnTop = false;
     @observable showOnTray = false;
     @observable showNotification = true;
+    @observable confirmImagePaste = true;
     @observable startup = false;
     @observable downloads = '';
     @observable plugins = [{
@@ -27,6 +28,11 @@ class Settings {
 
     @action setShowOnTray(showOnTray) {
         self.showOnTray = showOnTray;
+        self.save();
+    }
+
+    @action setConfirmImagePaste(confirmImagePaste) {
+        self.confirmImagePaste = confirmImagePaste;
         self.save();
     }
 
@@ -50,11 +56,13 @@ class Settings {
         var { alwaysOnTop, showOnTray, showNotification, startup, downloads } = self;
 
         if (settings && Object.keys(settings).length) {
-            self.alwaysOnTop = settings.alwaysOnTop;
-            self.showOnTray = settings.showOnTray;
-            self.showNotification = settings.showNotification;
-            self.startup = settings.startup;
-            self.downloads = settings.downloads;
+            // Use !! force convert to a bool value
+            self.alwaysOnTop = !!settings.alwaysOnTop;
+            self.showOnTray = !!settings.showOnTray;
+            self.showNotification = !!settings.showNotification;
+            self.confirmImagePaste = !!settings.confirmImagePaste;
+            self.startup = !!settings.startup;
+            self.downloads = !!settings.downloads;
         } else {
             await storage.set('settings', {
                 alwaysOnTop,
@@ -79,12 +87,13 @@ class Settings {
     }
 
     save() {
-        var { alwaysOnTop, showOnTray, showNotification, startup, downloads } = self;
+        var { alwaysOnTop, showOnTray, showNotification, confirmImagePaste, startup, downloads } = self;
 
         storage.set('settings', {
             alwaysOnTop,
             showOnTray,
             showNotification,
+            confirmImagePaste,
             startup,
             downloads,
         });
@@ -94,6 +103,7 @@ class Settings {
                 alwaysOnTop,
                 showOnTray,
                 showNotification,
+                confirmImagePaste,
                 startup,
                 downloads,
             }

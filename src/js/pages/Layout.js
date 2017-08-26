@@ -13,6 +13,7 @@ import NewChat from './NewChat';
 import Members from './Members';
 import AddMember from './AddMember';
 import Forward from './Forward';
+import ConfirmImagePaste from './ConfirmImagePaste';
 import Loader from 'components/Loader';
 import Snackbar from 'components/Snackbar';
 
@@ -98,6 +99,7 @@ export default class Layout extends Component {
                 <NewChat />
                 <Members />
                 <AddMember />
+                <ConfirmImagePaste />
                 <Forward />
             </div>
         );

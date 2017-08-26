@@ -11,6 +11,7 @@ import contacts from './contacts';
 import search from './search';
 import settings from './settings';
 import snackbar from './snackbar';
+import confirmImagePaste from './confirmImagePaste';
 
 const stores = {
     session,
@@ -25,6 +26,7 @@ const stores = {
     members,
     forward,
     snackbar,
+    confirmImagePaste,
 };
 
 export default stores;
