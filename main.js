@@ -368,15 +368,15 @@ const createMainWindow = () => {
         shell.openItem(dir);
     });
 
-    ipcMain.on('open-map', (event, map) => {
+    ipcMain.on('open-map', (event, args) => {
         event.preventDefault();
-        shell.openExternal(map);
+        shell.openExternal(args.map);
     });
 
-    ipcMain.on('open-image', async(event, dataset, data) => {
-        var filename = `${imagesCacheDir}/img_${dataset.id}`;
+    ipcMain.on('open-image', async(event, args) => {
+        var filename = `${imagesCacheDir}/img_${args.dataset.id}`;
 
-        fs.writeFileSync(filename, data.replace(/^data:image\/png;base64,/, ''), 'base64');
+        fs.writeFileSync(filename, args.base64.replace(/^data:image\/png;base64,/, ''), 'base64');
         shell.openItem(filename);
     });
 

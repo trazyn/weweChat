@@ -303,7 +303,10 @@ export default class ChatContent extends Component {
             let response = await axios.get(target.src, { responseType: 'arraybuffer' });
             let base64 = new window.Buffer(response.data, 'binary').toString('base64');
 
-            ipcRenderer.send('open-image', target.dataset, base64);
+            ipcRenderer.send('open-image', {
+                dataset: target.dataset,
+                base64,
+            });
 
             return;
         }
@@ -323,7 +326,9 @@ export default class ChatContent extends Component {
         // Open the location
         if (target.tagName === 'IMG'
             && target.classList.contains('open-map')) {
-            ipcRenderer.send('open-map', target.dataset.map);
+            ipcRenderer.send('open-map', {
+                map: target.dataset.map,
+            });
         }
 
         // Show contact card
