@@ -89,7 +89,7 @@ class Settings {
             downloads,
         });
 
-        ipcRenderer.send('apply-settings', {
+        ipcRenderer.send('settings-apply', {
             settings: {
                 alwaysOnTop,
                 showOnTray,

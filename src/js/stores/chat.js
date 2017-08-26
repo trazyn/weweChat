@@ -166,7 +166,7 @@ function hasUnreadMessage(messages) {
         counter += (item.data.length - item.unread);
     });
 
-    ipcRenderer.send('unread-message', {
+    ipcRenderer.send('message-unread', {
         counter,
     });
 }
@@ -313,7 +313,7 @@ class Chat {
                     let response = await axios.get(user.HeadImgUrl, { responseType: 'arraybuffer' });
                     let base64 = new window.Buffer(response.data, 'binary').toString('base64');
 
-                    ipcRenderer.send('receive-message', {
+                    ipcRenderer.send('message-receive', {
                         icon: base64,
                         title: user.RemarkName || user.NickName,
                         message: helper.getMessageContent(message),
@@ -706,7 +706,7 @@ class Chat {
                 Object.assign(item, {
                     image: {
                         // Use the local path
-                        src: file.path,
+                        src: file.path || file.name,
                     },
                 });
                 break;

@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import { inject } from 'mobx-react';
+import { ipcRenderer } from 'electron';
 import clazz from 'classname';
 
 import classes from './style.css';
@@ -108,6 +109,24 @@ export default class Input extends Component {
         }
     }
 
+    handlePaste(e) {
+        var args = ipcRenderer.sendSync('file-paste');
+
+        if (args.hasImage) {
+            e.preventDefault();
+
+            let parts = [
+                new window.Blob([new window.Uint8Array(args.raw.data)], { type: 'image/png' })
+            ];
+            let file = new window.File(parts, args.filename, {
+                lastModified: new Date(),
+                type: 'image/png'
+            });
+
+            this.process(file);
+        }
+    }
+
     render() {
         var canisend = this.props.user;
 
@@ -125,6 +144,7 @@ export default class Input extends Component {
                     ref="input"
                     placeholder="Type someting to send..."
                     readOnly={!canisend}
+                    onPaste={e => this.handlePaste(e)}
                     onKeyPress={e => this.handleEnter(e)} />
 
                 <div className={classes.action}>

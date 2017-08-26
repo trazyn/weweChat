@@ -1,6 +1,7 @@
 
 import fs from 'fs';
-import { app, powerMonitor, BrowserWindow, Tray, Menu, ipcMain, shell } from 'electron';
+import tmp from 'tmp';
+import { app, powerMonitor, BrowserWindow, Tray, Menu, ipcMain, clipboard, shell } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import notifier from 'node-notifier';
 import AutoLaunch from 'auto-launch';
@@ -300,13 +301,7 @@ const createMainWindow = () => {
         }
     });
 
-    ipcMain.once('logined', event => {
-        mainWindow.setResizable(true);
-        mainWindow.setSize(mainWindowState.width, mainWindowState.height);
-        mainWindowState.manage(mainWindow);
-    });
-
-    ipcMain.on('apply-settings', (event, args) => {
+    ipcMain.on('settings-apply', (event, args) => {
         settings = args.settings;
         mainWindow.setAlwaysOnTop(!!settings.alwaysOnTop);
 
@@ -314,7 +309,7 @@ const createMainWindow = () => {
         autostart();
     });
 
-    ipcMain.on('unread-message', (event, args) => {
+    ipcMain.on('message-unread', (event, args) => {
         var counter = args.counter;
 
         if (settings.showOnTray) {
@@ -322,7 +317,7 @@ const createMainWindow = () => {
         }
     });
 
-    ipcMain.on('receive-message', (event, args) => {
+    ipcMain.on('message-receive', (event, args) => {
         var { icon, title, message } = args;
         var filename = `${imagesCacheDir}/notifier-icon.png`;
 
@@ -338,11 +333,23 @@ const createMainWindow = () => {
         }
     });
 
-    ipcMain.on('open-image', async(event, dataset, data) => {
-        var filename = `${imagesCacheDir}/img_${dataset.id}`;
+    ipcMain.on('file-paste', (event) => {
+        var image = clipboard.readImage();
+        var args = { hasImage: false };
 
-        fs.writeFileSync(filename, data.replace(/^data:image\/png;base64,/, ''), 'base64');
-        shell.openItem(filename);
+        if (!image.isEmpty()) {
+            let filename = tmp.tmpNameSync() + '.png';
+
+            args = {
+                hasImage: true,
+                filename,
+                raw: image.toPNG(),
+            };
+
+            fs.writeFileSync(filename, image.toPNG());
+        }
+
+        event.returnValue = args;
     });
 
     ipcMain.on('file-download', async(event, args) => {
@@ -367,6 +374,19 @@ const createMainWindow = () => {
     ipcMain.on('open-map', (event, map) => {
         event.preventDefault();
         shell.openExternal(map);
+    });
+
+    ipcMain.on('open-image', async(event, dataset, data) => {
+        var filename = `${imagesCacheDir}/img_${dataset.id}`;
+
+        fs.writeFileSync(filename, data.replace(/^data:image\/png;base64,/, ''), 'base64');
+        shell.openItem(filename);
+    });
+
+    ipcMain.once('logined', event => {
+        mainWindow.setResizable(true);
+        mainWindow.setSize(mainWindowState.width, mainWindowState.height);
+        mainWindowState.manage(mainWindow);
     });
 
     powerMonitor.on('resume', () => {

@@ -83,8 +83,8 @@ After that, you will see the binary in `./release` folder
 - [x] Logout
 - [x] Autosart at login
 - [ ] Theme
-- [ ] Send image from clipboard
-- [ ] ~~加入 Siri，像 Siri 学习撩妹~~
+- [x] Send image from clipboard
+- [ ] Chat bot
 
 ### License
 MIT License
