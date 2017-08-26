@@ -180,6 +180,14 @@ export default class ChatContent extends Component {
                     `;
                 }
 
+                if (!video) {
+                    console.error('Invalid video message: %o', message);
+
+                    return `
+                        Receive an invalid video message, please see the console output.
+                    `;
+                }
+
                 return `
                     <video preload="metadata" poster="${video.cover}" controls src="${video.src}" />
                 `;
