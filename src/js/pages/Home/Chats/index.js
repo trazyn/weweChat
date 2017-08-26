@@ -93,11 +93,12 @@ export default class Chats extends Component {
 
         if (active) {
             let rect4active = active.getBoundingClientRect();
-            let rect4container = container.getBoundingClientRect();
+            let rect4viewport = container.getBoundingClientRect();
 
-            if (rect4active.top > rect4container.bottom
-                || rect4active.bottom < rect4container.top) {
-                container.scrollTop = rect4active.top;
+            // Keep the conversation always in the viewport
+            if (!(rect4active.top >= rect4viewport.top
+                && rect4active.bottom <= rect4viewport.bottom)) {
+                active.scrollIntoViewIfNeeded();
             }
         }
     }
