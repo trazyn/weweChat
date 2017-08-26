@@ -41,7 +41,7 @@
 
     & img {
         max-width: 70vw;
-        min-width: 60vw;
+        max-height: 60vh;
         margin-top: 20px;
         margin-bottom: 30px;
         border: 12px solid #fff;
@@ -65,7 +65,6 @@
 
         & img {
             max-width: 54vw;
-            min-width: 44vw;
             margin-top: 14px;
             margin-bottom: 20px;
             border: 6px solid #fff;
