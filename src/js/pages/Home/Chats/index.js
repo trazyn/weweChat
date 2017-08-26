@@ -87,13 +87,21 @@ export default class Chats extends Component {
         menu.popup(remote.getCurrentWindow());
     }
 
+    componentDidUpdate() {
+        var active = this.refs.container.querySelector(`.${classes.chat}.${classes.active}`);
+
+        if (active) {
+            active.scrollIntoView();
+        }
+    }
+
     render() {
         var { loading, chats, selected, chatTo, searching } = this.props;
 
         if (loading) return false;
 
         return (
-            <div className={classes.container}>
+            <div className={classes.container} ref="container">
                 <div className={classes.chats}>
                     {
                         !searching && chats.map((e, index) => {
