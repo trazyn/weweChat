@@ -19,6 +19,10 @@ export default class Avatar extends Component {
         e.target.src = this.props.fallback;
     }
 
+    handleLoad(e) {
+        e.target.classList.remove('fadein');
+    }
+
     render() {
         if (!this.props.src) return false;
 
@@ -26,7 +30,7 @@ export default class Avatar extends Component {
             <img
                 {...blacklist(this.props, 'fallback', 'className', 'onLoad', 'onError')}
                 className={clazz('Avatar', 'fade fadein', this.props.className)}
-                onLoad={e => e.target.classList.remove('fadein')}
+                onLoad={e => this.handleLoad(e)}
                 onError={e => this.handleError(e)} />
         );
     }

@@ -6,7 +6,6 @@ import clazz from 'classname';
 import moment from 'moment';
 
 import classes from './style.css';
-import Avatar from 'components/Avatar';
 import helper from 'utils/helper';
 
 moment.updateLocale('en', {
@@ -116,7 +115,7 @@ export default class Chats extends Component {
                                             [classes.green]: !muted && this.hasUnreadMessage(e.UserName),
                                             [classes.red]: muted && this.hasUnreadMessage(e.UserName)
                                         })}>
-                                            <Avatar src={e.HeadImgUrl} />
+                                            <img src={e.HeadImgUrl} />
                                         </div>
 
                                         <div className={classes.info}>
