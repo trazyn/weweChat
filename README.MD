@@ -14,7 +14,7 @@ API from [https://web.wechat.com/](https://web.wechat.com/)
 - Block message recall(Default settings is not block)
 - Desktop notifications
 - Send image by paste
-![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/pasteconfirmation.png)
+  ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/pasteconfirmation.png)
 - Drag to send file
   ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/dragdrop.png)
 

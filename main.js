@@ -384,8 +384,12 @@ const createMainWindow = () => {
         settings = args.settings;
         mainWindow.setAlwaysOnTop(!!settings.alwaysOnTop);
 
-        updateTray();
-        autostart();
+        try {
+            updateTray();
+            autostart();
+        } catch (ex) {
+            console.error(ex);
+        }
     });
 
     ipcMain.on('message-unread', (event, args) => {
