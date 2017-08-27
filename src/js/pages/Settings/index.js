@@ -20,6 +20,8 @@ import helper from 'utils/helper';
     setDownloads: stores.settings.setDownloads,
     confirmImagePaste: stores.settings.confirmImagePaste,
     setConfirmImagePaste: stores.settings.setConfirmImagePaste,
+    blockRecall: stores.settings.blockRecall,
+    setBlockRecall: stores.settings.setBlockRecall,
     user: stores.session.user,
     logout: stores.session.logout,
 
@@ -72,6 +74,8 @@ export default class Settings extends Component {
             setDownloads,
             confirmImagePaste,
             setConfirmImagePaste,
+            blockRecall,
+            setBlockRecall,
             plugins,
             user,
         } = this.props;
@@ -117,6 +121,13 @@ export default class Settings extends Component {
                             <label htmlFor="showNotification">
                                 <span>Send Desktop Notifications</span>
                                 <Switch id="showNotification" checked={showNotification} onChange={e => setShowNotification(e.target.checked)} />
+                            </label>
+                        </li>
+
+                        <li>
+                            <label htmlFor="blockRecall">
+                                <span>Block Message Recall</span>
+                                <Switch id="blockRecall" checked={blockRecall} onChange={e => setBlockRecall(e.target.checked)} />
                             </label>
                         </li>
 

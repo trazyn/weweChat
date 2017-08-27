@@ -11,6 +11,7 @@ API from [https://web.wechat.com/](https://web.wechat.com/)
 ## Feature
 - Work on desktop
 - On macOS, window vibrancy effect
+- Block message recall
 - Desktop notifications
 - Send image by paste
 ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/pasteconfirmation.png)

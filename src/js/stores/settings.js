@@ -11,6 +11,7 @@ class Settings {
     @observable showNotification = true;
     @observable confirmImagePaste = true;
     @observable startup = false;
+    @observable blockRecall = false;
     @observable downloads = '';
     @observable plugins = [{
         name: 'Message Backup',
@@ -23,6 +24,11 @@ class Settings {
 
     @action setAlwaysOnTop(alwaysOnTop) {
         self.alwaysOnTop = alwaysOnTop;
+        self.save();
+    }
+
+    @action setBlockRecall(blockRecall) {
+        self.blockRecall = blockRecall;
         self.save();
     }
 
@@ -53,7 +59,7 @@ class Settings {
 
     @action async init() {
         var settings = await storage.get('settings');
-        var { alwaysOnTop, showOnTray, showNotification, startup, downloads } = self;
+        var { alwaysOnTop, showOnTray, showNotification, blockRecall, startup, downloads } = self;
 
         if (settings && Object.keys(settings).length) {
             // Use !! force convert to a bool value
@@ -62,7 +68,8 @@ class Settings {
             self.showNotification = !!settings.showNotification;
             self.confirmImagePaste = !!settings.confirmImagePaste;
             self.startup = !!settings.startup;
-            self.downloads = !!settings.downloads;
+            self.downloads = settings.downloads;
+            self.blockRecall = !!settings.blockRecall;
         } else {
             await storage.set('settings', {
                 alwaysOnTop,
@@ -70,6 +77,7 @@ class Settings {
                 showNotification,
                 startup,
                 downloads,
+                blockRecall,
             });
         }
 
@@ -87,7 +95,7 @@ class Settings {
     }
 
     save() {
-        var { alwaysOnTop, showOnTray, showNotification, confirmImagePaste, startup, downloads } = self;
+        var { alwaysOnTop, showOnTray, showNotification, confirmImagePaste, blockRecall, startup, downloads } = self;
 
         storage.set('settings', {
             alwaysOnTop,
@@ -96,6 +104,7 @@ class Settings {
             confirmImagePaste,
             startup,
             downloads,
+            blockRecall,
         });
 
         ipcRenderer.send('settings-apply', {
@@ -106,6 +115,7 @@ class Settings {
                 confirmImagePaste,
                 startup,
                 downloads,
+                blockRecall,
             }
         });
     }

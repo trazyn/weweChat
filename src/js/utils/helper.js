@@ -56,11 +56,13 @@ const helper = {
     parseXml: (text, tagName) => {
         var parser = new window.DOMParser();
         var xml = parser.parseFromString(text.replace(/&lt;/g, '<').replace(/&gt;/g, '>'), 'text/xml');
-        var value;
+        var value = {};
 
-        if (tagName) {
-            value = xml.getElementsByTagName(tagName)[0].childNodes[0].nodeValue;
-        }
+        tagName = Array.isArray(tagName) ? tagName : [tagName];
+
+        tagName.map(e => {
+            value[e] = xml.getElementsByTagName(e)[0].childNodes[0].nodeValue;
+        });
 
         return { xml, value };
     },

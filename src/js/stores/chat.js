@@ -6,6 +6,7 @@ import { ipcRenderer } from 'electron';
 import storage from 'utils/storage';
 import helper from 'utils/helper';
 import contacts from './contacts';
+import settings from './settings';
 import session from './session';
 import members from './members';
 import snackbar from './snackbar';
@@ -82,7 +83,7 @@ async function resolveMessage(message) {
 
                     message.MsgType += 2000;
                     message.transfer = {
-                        desc: value,
+                        desc: value.des,
                         money: +value.match(/[\d.]+元/)[0].slice(0, -1),
                     };
                     break;
@@ -122,9 +123,13 @@ async function resolveMessage(message) {
 
         case 10002:
             let text = isChatRoom ? message.Content.split(':<br/>').slice(-1).pop() : message.Content;
-            let { value } = helper.parseXml(text, 'replacemsg');
+            let { value } = helper.parseXml(text, ['replacemsg', 'msgid']);
 
-            message.Content = value;
+            if (!settings.blockRecall) {
+                self.deleteMessage(message.FromUserName, value.msgid);
+            }
+
+            message.Content = value.replacemsg;
             message.MsgType = 19999;
             break;
 
