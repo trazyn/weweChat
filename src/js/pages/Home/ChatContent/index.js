@@ -87,7 +87,7 @@ export default class ChatContent extends Component {
             case 1:
                 if (message.location) {
                     return `
-                        <img class="open-map unload disabledDrag" data-map="${message.location.href}" src="${message.location.image}" />
+                        <img class="open-map unload" data-map="${message.location.href}" src="${message.location.image}" />
                         <label>${message.location.label}</label>
                     `;
                 }
@@ -100,12 +100,12 @@ export default class ChatContent extends Component {
                 if (uploading) {
                     return `
                         <div>
-                            <img class="open-image unload disabledDrag" data-id="${message.MsgId}" src="${image.src}" />
+                            <img class="open-image unload" data-id="${message.MsgId}" src="${image.src}" />
                             <i class="icon-ion-android-arrow-up"></i>
                         </div>
                     `;
                 }
-                return `<img class="open-image unload disabledDrag" data-id="${message.MsgId}" src="${image.src}" />`;
+                return `<img class="open-image unload" data-id="${message.MsgId}" src="${image.src}" />`;
             case 34:
                 /* eslint-disable */
                 // Voice

@@ -487,6 +487,10 @@ app.setName(pkg.name);
 app.dock && app.dock.setIcon(`${__dirname}/src/assets/images/dock.png`);
 
 app.on('ready', createMainWindow);
+app.on('before-quit', () => {
+    // Fix issues #14
+    forceQuit = true;
+});
 app.on('activate', e => {
     if (!mainWindow.isVisible()) {
         mainWindow.show();
