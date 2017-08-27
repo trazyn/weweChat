@@ -13,6 +13,7 @@ API from [https://web.wechat.com/](https://web.wechat.com/)
 - On macOS, window vibrancy effect
 - Block message recall(Default settings is not block)
 - Desktop notifications
+- Keyboard shortcuts supported
 - Send image by paste
   ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/pasteconfirmation.png)
 - Drag to send file
@@ -46,6 +47,17 @@ $ npm run package-linux
 $ npm run package-mac
 ```
 After that, you will see the binary in `./release` folder
+
+## Keyboard shortcuts
+
+Description            | Keys
+-----------------------| -----------------------
+New conversation       | <kbd>Cmd</kbd> <kbd>N</kbd>
+Search conversations   | <kbd>Cmd</kbd> <kbd>F</kbd>
+Hide conversation      | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>M</kbd>
+Next conversation      | <kbd>Cmd</kbd> <kbd>J</kbd>
+Previous conversation  | <kbd>Cmd</kbd> <kbd>K</kbd>
+Preferences            | <kbd>Cmd</kbd> <kbd>,</kbd>
 
 ### TODO
 - [x] Windows support
