@@ -87,7 +87,7 @@ export default class ChatContent extends Component {
             case 1:
                 if (message.location) {
                     return `
-                        <img class="open-map unload" data-map="${message.location.href}" src="${message.location.image}" />
+                        <img class="open-map unload disabledDrag" data-map="${message.location.href}" src="${message.location.image}" />
                         <label>${message.location.label}</label>
                     `;
                 }
@@ -100,12 +100,12 @@ export default class ChatContent extends Component {
                 if (uploading) {
                     return `
                         <div>
-                            <img class="open-image unload" data-id="${message.MsgId}" src="${image.src}" />
+                            <img class="open-image unload disabledDrag" data-id="${message.MsgId}" src="${image.src}" />
                             <i class="icon-ion-android-arrow-up"></i>
                         </div>
                     `;
                 }
-                return `<img class="open-image unload" data-id="${message.MsgId}" src="${image.src}" />`;
+                return `<img class="open-image unload disabledDrag" data-id="${message.MsgId}" src="${image.src}" />`;
             case 34:
                 /* eslint-disable */
                 // Voice
@@ -136,7 +136,7 @@ export default class ChatContent extends Component {
                 let emoji = message.emoji;
 
                 if (emoji) {
-                    return `<img src="${emoji.src}" class="unload" />`;
+                    return `<img src="${emoji.src}" class="unload disabledDrag" />`;
                 }
                 return `
                     <div class="${classes.invalidEmoji}">
@@ -150,7 +150,7 @@ export default class ChatContent extends Component {
                 let contact = message.contact;
                 let html = `
                     <div class="${clazz(classes.contact, { 'is-friend': contact.isFriend })}" data-userid="${contact.UserName}">
-                        <img src="${contact.image}" class="unload" />
+                        <img src="${contact.image}" class="unload disabledDrag" />
 
                         <div>
                             <p>${contact.name}</p>
@@ -214,7 +214,7 @@ export default class ChatContent extends Component {
                 /* eslint-disable */
                 return `
                     <div class="${classes.file}" data-id="${message.MsgId}">
-                        <img src="assets/images/filetypes/${helper.getFiletypeIcon(file.extension)}" />
+                        <img src="assets/images/filetypes/${helper.getFiletypeIcon(file.extension)}" class="disabledDrag" />
 
                         <div>
                             <p>${file.name}</p>
@@ -597,7 +597,7 @@ export default class ChatContent extends Component {
                         </div>
                     ) : (
                         <div className={classes.inner}>
-                            <img src="assets/images/noselected.png" />
+                            <img src="assets/images/noselected.png" className="disabledDrag" />
                             <h1>No Chat selected.</h1>
                         </div>
                     )

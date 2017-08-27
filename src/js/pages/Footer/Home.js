@@ -10,7 +10,6 @@ import Emoji from './Emoji';
 @inject(stores => ({
     sendMessage: stores.chat.sendMessage,
     user: stores.chat.user,
-    upload: stores.chat.upload,
     showMessage: stores.snackbar.showMessage,
     isme: () => stores.chat.user.UserName === stores.session.user.User.UserName,
     confirmSendImage: async(image) => {
@@ -20,7 +19,8 @@ import Emoji from './Emoji';
 
         var confirmed = await stores.confirmImagePaste.toggle(true, image);
         return confirmed;
-    }
+    },
+    process: stores.chat.process,
 }))
 export default class Input extends Component {
     async handleEnter(e) {
@@ -59,66 +59,6 @@ export default class Input extends Component {
         this.refs.input.value += `[${emoji}]`;
     }
 
-    async process(file) {
-        if (!file) return;
-
-        this.refs.uploader.value = '';
-
-        if (file.size > 20 * 1024 * 1024) {
-            this.props.showMessage('Send file not allowed to exceed 20M.');
-            return;
-        }
-
-        var { mediaId, type, uploaderid } = await this.props.upload(file);
-        var res = await this.props.sendMessage(this.props.user, {
-            type,
-            file: {
-                name: file.name,
-                size: file.size,
-                mediaId,
-                extension: file.name.split('.').slice(-1).pop()
-            },
-        }, false, (to, messages, message) => {
-            // Sent success
-            var list = messages.get(to);
-            var item = list.data.find(e => e.uploaderid === uploaderid);
-
-            switch (type) {
-                case 3:
-                    // Image
-                    Object.assign(item, message, {
-                        uploading: false,
-
-                        // Avoid rerender
-                        image: item.image,
-                    });
-                    break;
-
-                case 43:
-                    // Video
-                    Object.assign(item, message, {
-                        uploading: false,
-                        video: {
-                            ...message.video,
-                            src: item.video.src,
-                        },
-                    });
-                    break;
-
-                default:
-                    Object.assign(item, message, {
-                        uploading: false,
-                    });
-            }
-
-            return list;
-        });
-
-        if (res === false) {
-            this.props.showMessage(`Failed to send ${file.name}.`);
-        }
-    }
-
     async handlePaste(e) {
         var args = ipcRenderer.sendSync('file-paste');
 
@@ -137,7 +77,7 @@ export default class Input extends Component {
                 type: 'image/png'
             });
 
-            this.process(file);
+            this.props.process(file);
         }
     }
 
@@ -173,7 +113,10 @@ export default class Input extends Component {
                     <input
                         type="file"
                         ref="uploader"
-                        onChange={e => this.process(e.target.files[0])}
+                        onChange={e => {
+                            this.props.process(e.target.files[0]);
+                            e.target.value = '';
+                        }}
                         style={{
                             display: 'none',
                         }} />

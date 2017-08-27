@@ -40,7 +40,11 @@ label {
     opacity: 0;
 }
 
-.Link {
+.disabledDrag {
+    pointer-events: none;
+}
+
+.link {
     padding: 0;
     margin: 0;
     text-decoration: none;

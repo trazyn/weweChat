@@ -8,6 +8,7 @@ import helper from 'utils/helper';
 import contacts from './contacts';
 import session from './session';
 import members from './members';
+import snackbar from './snackbar';
 
 async function resolveMessage(message) {
     var auth = await storage.get('auth');
@@ -663,6 +664,65 @@ class Chat {
         }
 
         return false;
+    }
+
+    @action async process(file) {
+        var showMessage = snackbar.showMessage;
+
+        if (!file
+            || file.size >= 50 * 1024 * 1024) {
+            showMessage('Send file not allowed to exceed 50M.');
+            return;
+        }
+
+        var { mediaId, type, uploaderid } = await self.upload(file);
+        var res = await self.sendMessage(self.user, {
+            type,
+            file: {
+                name: file.name,
+                size: file.size,
+                mediaId,
+                extension: file.name.split('.').slice(-1).pop()
+            },
+        }, false, (to, messages, message) => {
+            // Sent success
+            var list = messages.get(to);
+            var item = list.data.find(e => e.uploaderid === uploaderid);
+
+            switch (type) {
+                case 3:
+                    // Image
+                    Object.assign(item, message, {
+                        uploading: false,
+
+                        // Avoid rerender
+                        image: item.image,
+                    });
+                    break;
+
+                case 43:
+                    // Video
+                    Object.assign(item, message, {
+                        uploading: false,
+                        video: {
+                            ...message.video,
+                            src: item.video.src,
+                        },
+                    });
+                    break;
+
+                default:
+                    Object.assign(item, message, {
+                        uploading: false,
+                    });
+            }
+
+            return list;
+        });
+
+        if (res === false) {
+            showMessage(`Failed to send ${file.name}.`);
+        }
     }
 
     @action async upload(file) {

@@ -20,10 +20,11 @@ import Snackbar from 'components/Snackbar';
 @inject(stores => ({
     isLogin: () => !!stores.session.auth,
     loading: stores.session.loading,
-
     message: stores.snackbar.text,
     show: stores.snackbar.show,
+    process: stores.chat.process,
     close: () => stores.snackbar.toggle(false),
+    canidrag: () => !!stores.chat.user,
 }))
 @observer
 export default class Layout extends Component {
@@ -54,6 +55,7 @@ export default class Layout extends Component {
             },
         ];
         var menu = new remote.Menu.buildFromTemplate(templates);
+        var canidrag = this.props.canidrag;
 
         document.body.addEventListener('contextmenu', e => {
             e.preventDefault();
@@ -72,6 +74,42 @@ export default class Layout extends Component {
         if (window.process.platform === 'win32') {
             document.body.classList.add('isWin');
         }
+
+        window.ondragover = e => {
+            if (canidrag()) {
+                this.refs.holder.classList.add(classes.show);
+                this.refs.viewport.classList.add(classes.blur);
+            }
+
+            // If not st as 'copy', electron will open the drop file
+            e.dataTransfer.dropEffect = 'copy';
+            return false;
+        };
+
+        window.ondragleave = () => {
+            if (!canidrag()) return false;
+
+            this.refs.holder.classList.remove(classes.show);
+            this.refs.viewport.classList.remove(classes.blur);
+        };
+
+        window.ondragend = e => {
+            return false;
+        };
+
+        window.ondrop = e => {
+            var file = e.dataTransfer.files[0];
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (file && canidrag()) {
+                this.props.process(file);
+            }
+
+            this.refs.holder.classList.remove(classes.show);
+            this.refs.viewport.classList.remove(classes.blur);
+            return false;
+        };
     }
 
     render() {
@@ -90,10 +128,10 @@ export default class Layout extends Component {
 
                 <Loader show={this.props.loading} />
                 <Header location={this.props.location} />
-                <div className={classes.container}>
+                <div className={classes.container} ref="viewport">
                     {this.props.children}
                 </div>
-                <Footer location={this.props.location} />
+                <Footer location={this.props.location} ref="footer" />
                 <UserInfo />
                 <AddFriend />
                 <NewChat />
@@ -101,6 +139,23 @@ export default class Layout extends Component {
                 <AddMember />
                 <ConfirmImagePaste />
                 <Forward />
+
+                <div className={classes.dragDropHolder} ref="holder">
+                    <div className={classes.inner}>
+                        <div>
+                            <img src="assets/images/filetypes/image.png" />
+                            <img src="assets/images/filetypes/word.png" />
+                            <img src="assets/images/filetypes/pdf.png" />
+                            <img src="assets/images/filetypes/archive.png" />
+                            <img src="assets/images/filetypes/video.png" />
+                            <img src="assets/images/filetypes/audio.png" />
+                        </div>
+
+                        <i className="icon-ion-ios-cloud-upload-outline" />
+
+                        <h2>Drop your file here</h2>
+                    </div>
+                </div>
             </div>
         );
     }

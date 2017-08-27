@@ -131,7 +131,7 @@ export default class Chats extends Component {
                                             [classes.green]: !muted && this.hasUnreadMessage(e.UserName),
                                             [classes.red]: muted && this.hasUnreadMessage(e.UserName)
                                         })}>
-                                            <img src={e.HeadImgUrl} />
+                                            <img src={e.HeadImgUrl} className="disabledDrag" />
                                         </div>
 
                                         <div className={classes.info}>

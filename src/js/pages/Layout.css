@@ -4,6 +4,60 @@
     overflow: hidden;
     overflow-y: auto;
     background: rgba(255, 255, 255, .8);
+    filter: blur(0);
+    transition: .2s;
+
+    &.blur {
+        filter: blur(6px);
+    }
+}
+
+.dragDropHolder {
+    position: fixed;
+    display: flex;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, .7);
+    font-family: 'Roboto';
+    color: #777;
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: .2s;
+    pointer-events: none;
+
+    &.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    & i {
+        margin-top: 24px;
+        font-size: 48px;
+    }
+
+    & h2 {
+        font-weight: 100;
+    }
+
+    & img {
+        margin: 12px;
+    }
+
+    & .inner {
+        display: flex;
+        width: 60vw;
+        height: 56vh;
+        padding-top: 14px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 @media (width <= 800px) {
