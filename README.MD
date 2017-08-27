@@ -10,9 +10,12 @@ API from [https://web.wechat.com/](https://web.wechat.com/)
 
 ## Feature
 - Work on desktop
-- Send image by paste
 - On macOS, window vibrancy effect
 - Desktop notifications
+- Send image by paste
+![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/pasteconfirmation.png)
+- Drag to send file
+  ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/dragdrop.png)
 
 ## Downloads
 - [Mac](https://github.com/trazyn/weweChat/releases/download/1.0.0/wewechat-1.0.0-mac.dmg)
@@ -85,6 +88,7 @@ After that, you will see the binary in `./release` folder
 - [x] Autosart at login
 - [ ] Theme
 - [x] Send image from clipboard
+- [x] Drag to send file
 - [ ] Chat bot
 
 ### License
