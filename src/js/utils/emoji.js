@@ -1,535 +1,449 @@
 
-export default [
+// Big thanks https://github.com/qiuyinghua/wechat-emoticons
+
+const emoji = [
     // Row 1
     {
-        'Smile': {
-            text: '',
-        },
+        key: 'Smile',
+        text: '',
     },
     {
-        'Grimace': {
-            text: '',
-        },
+        key: 'Grimace',
+        text: '',
     },
     {
-        'Drool': {
-            text: '',
-        },
+        key: 'Drool',
+        text: '',
     },
     {
-        'Scowl': {
-            text: '',
-        },
+        key: 'Scowl',
+        text: '',
     },
     {
-        'CoolGuy': {
-            text: '',
-        },
+        key: 'CoolGuy',
+        text: '',
     },
     {
-        'Sob': {
-            text: '',
-        },
+        key: 'Sob',
+        text: '',
     },
     {
-        'Shy': {
-            text: '',
-        },
+        key: 'Shy',
+        text: '',
     },
     {
-        'Silent': {
-            text: '',
-        },
+        key: 'Silent',
+        text: '',
     },
     {
-        'Sleep': {
-            text: '',
-        },
+        key: 'Sleep',
+        text: '',
     },
     {
-        'Cry': {
-            text: '',
-        },
+        key: 'Cry',
+        text: '',
     },
     {
-        'Awkward': {
-            text: '',
-        },
+        key: 'Awkward',
+        text: '',
     },
     {
-        'Angry': {
-            text: '',
-        },
+        key: 'Angry',
+        text: '',
     },
     {
-        'Tongue': {
-            text: '',
-        },
+        key: 'Tongue',
+        text: '',
     },
     {
-        'Grin': {
-            text: '',
-        },
+        key: 'Grin',
+        text: '',
     },
     {
-        'Surprise': {
-            text: '',
-        },
+        key: 'Surprise',
+        text: '',
     },
     // Row 2
     {
-        'Frown': {
-            text: '',
-        },
+        key: 'Frown',
+        text: '',
     },
     {
-        'Ruthless': {
-            text: '',
-        },
+        key: 'Ruthless',
+        text: '',
     },
     {
-        'Blush': {
-            text: '',
-        },
+        key: 'Blush',
+        text: '',
     },
     {
-        'Scream': {
-            text: '',
-        },
+        key: 'Scream',
+        text: '',
     },
     {
-        'Puke': {
-            text: '',
-        },
+        key: 'Puke',
+        text: '',
     },
     {
-        'Chuckle': {
-            text: '',
-        },
+        key: 'Chuckle',
+        text: '',
     },
     {
-        'Joyful': {
-            text: '',
-        },
+        key: 'Joyful',
+        text: '',
     },
     {
-        'Slight': {
-            text: '',
-        },
+        key: 'Slight',
+        text: '',
     },
     {
-        'Smug': {
-            text: '',
-        },
+        key: 'Smug',
+        text: '',
     },
     {
-        'Hungry': {
-            text: '',
-        },
+        key: 'Hungry',
+        text: '',
     },
     {
-        'Drowsy': {
-            text: '',
-        },
+        key: 'Drowsy',
+        text: '',
     },
     {
-        'Panic': {
-            text: '',
-        },
+        key: 'Panic',
+        text: '',
     },
     {
-        'Sweat': {
-            text: '',
-        },
+        key: 'Sweat',
+        text: '',
     },
     {
-        'Laugh': {
-            text: '',
-        },
+        key: 'Laugh',
+        text: '',
     },
     {
-        'Commando': {
-            text: '',
-        },
+        key: 'Commando',
+        text: '',
     },
     // Row 3
     {
-        'Determined': {
-            text: '',
-        },
+        key: 'Determined',
+        text: '',
     },
     {
-        'Scold': {
-            text: '',
-        },
+        key: 'Scold',
+        text: '',
     },
     {
-        'Shocked': {
-            text: '',
-        },
+        key: 'Shocked',
+        text: '',
     },
     {
-        'Shhh': {
-            text: '',
-        },
+        key: 'Shhh',
+        text: '',
     },
     {
-        'Dizzy': {
-            text: '',
-        },
+        key: 'Dizzy',
+        text: '',
     },
     {
-        'Tormented': {
-            text: '',
-        },
+        key: 'Tormented',
+        text: '',
     },
     {
-        'Toasted': {
-            text: '',
-        },
+        key: 'Toasted',
+        text: '',
     },
     {
-        'Skull': {
-            text: '',
-        },
+        key: 'Skull',
+        text: '',
     },
     {
-        'Hammer': {
-            text: '',
-        },
+        key: 'Hammer',
+        text: '',
     },
     {
-        'Wave': {
-            text: '',
-        },
+        key: 'Wave',
+        text: '',
     },
     {
-        'Speechless': {
-            text: '',
-        },
+        key: 'Speechless',
+        text: '',
     },
     {
-        'NosePick': {
-            text: '',
-        },
+        key: 'NosePick',
+        text: '',
     },
     {
-        'Clap': {
-            text: '',
-        },
+        key: 'Clap',
+        text: '',
     },
     {
-        'Shame': {
-            text: '',
-        },
+        key: 'Shame',
+        text: '',
     },
     {
-        'Trick': {
-            text: '',
-        },
+        key: 'Trick',
+        text: '',
     },
     // Row 4
     {
-        'Bah! L': {
-            text: '',
-        },
+        key: 'Bah! L',
+        text: '',
     },
     {
-        'Bah! R': {
-            text: '',
-        },
+        key: 'Bah! R',
+        text: '',
     },
     {
-        'Yawn': {
-            text: '',
-        },
+        key: 'Yawn',
+        text: '',
     },
     {
-        'Pooh-pooh': {
-            text: '',
-        },
+        key: 'Pooh-pooh',
+        text: '',
     },
     {
-        'Shrunken': {
-            text: '',
-        },
+        key: 'Shrunken',
+        text: '',
     },
     {
-        'TearingUp': {
-            text: '',
-        },
+        key: 'TearingUp',
+        text: '',
     },
     {
-        'Sly': {
-            text: '',
-        },
+        key: 'Sly',
+        text: '',
     },
     {
-        'Kiss': {
-            text: '',
-        },
+        key: 'Kiss',
+        text: '',
     },
     {
-        'Wrath': {
-            text: '',
-        },
+        key: 'Wrath',
+        text: '',
     },
     {
-        'Whimper': {
-            text: '',
-        },
+        key: 'Whimper',
+        text: '',
     },
     {
-        'Cleaver': {
-            text: '',
-        },
+        key: 'Cleaver',
+        text: '',
     },
     {
-        'Watermelon': {
-            text: '',
-        },
+        key: 'Watermelon',
+        text: '',
     },
     {
-        'Beer': {
-            text: '',
-        },
+        key: 'Beer',
+        text: '',
     },
     {
-        'Basketball': {
-            text: '',
-        },
+        key: 'Basketball',
+        text: '',
     },
     {
-        'PingPong': {
-            text: '',
-        },
+        key: 'PingPong',
+        text: '',
     },
     // Row 5
     {
-        'Coffee': {
-            text: '',
-        },
+        key: 'Coffee',
+        text: '',
     },
     {
-        'Rice': {
-            text: '',
-        },
+        key: 'Rice',
+        text: '',
     },
     {
-        'Pig': {
-            text: '',
-        },
+        key: 'Pig',
+        text: '',
     },
     {
-        'Rose': {
-            text: '',
-        },
+        key: 'Rose',
+        text: '',
     },
     {
-        'Wilt': {
-            text: '',
-        },
+        key: 'Wilt',
+        text: '',
     },
     {
-        'Lips': {
-            text: '',
-        },
+        key: 'Lips',
+        text: '',
     },
     {
-        'Heart': {
-            text: '',
-        },
+        key: 'Heart',
+        text: '',
     },
     {
-        'BrokenHeart': {
-            text: '',
-        },
+        key: 'BrokenHeart',
+        text: '',
     },
     {
-        'Cake': {
-            text: '',
-        },
+        key: 'Cake',
+        text: '',
     },
     {
-        'Lightning': {
-            text: '',
-        },
+        key: 'Lightning',
+        text: '',
     },
     {
-        'Bomb': {
-            text: '',
-        },
+        key: 'Bomb',
+        text: '',
     },
     {
-        'Dagger': {
-            text: '',
-        },
+        key: 'Dagger',
+        text: '',
     },
     {
-        'Soccer': {
-            text: '',
-        },
+        key: 'Soccer',
+        text: '',
     },
     {
-        'Ladybug': {
-            text: '',
-        },
+        key: 'Ladybug',
+        text: '',
     },
     {
-        'Poop': {
-            text: '',
-        },
+        key: 'Poop',
+        text: '',
     },
     // Row 6
     {
-        'Moon': {
-            text: '',
-        },
+        key: 'Moon',
+        text: '',
     },
     {
-        'Sun': {
-            text: '',
-        },
+        key: 'Sun',
+        text: '',
     },
     {
-        'Gift': {
-            text: '',
-        },
+        key: 'Gift',
+        text: '',
     },
     {
-        'Hug': {
-            text: '',
-        },
+        key: 'Hug',
+        text: '',
     },
     {
-        'ThumbsUp': {
-            text: '',
-        },
+        key: 'ThumbsUp',
+        text: '',
     },
     {
-        'ThumbsDown': {
-            text: '',
-        },
+        key: 'ThumbsDown',
+        text: '',
     },
     {
-        'Shake': {
-            text: '',
-        },
+        key: 'Shake',
+        text: '',
     },
     {
-        'Peace': {
-            text: '',
-        },
+        key: 'Peace',
+        text: '',
     },
     {
-        'Fight': {
-            text: '',
-        },
+        key: 'Fight',
+        text: '',
     },
     {
-        'Beckon': {
-            text: '',
-        },
+        key: 'Beckon',
+        text: '',
     },
     {
-        'Fist': {
-            text: '',
-        },
+        key: 'Fist',
+        text: '',
     },
     {
-        'Pinky': {
-            text: '',
-        },
+        key: 'Pinky',
+        text: '',
     },
     {
-        'RockOn': {
-            text: '',
-        },
+        key: 'RockOn',
+        text: '',
     },
     {
-        'Nuh-uh': {
-            text: '',
-        },
+        key: 'Nuh-uh',
+        text: '',
     },
     {
-        'OK': {
-            text: '',
-        },
+        key: 'OK',
+        text: '',
     },
     // Row 7
     {
-        'InLove': {
-            text: '',
-        },
+        key: 'InLove',
+        text: '',
     },
     {
-        'Blowkiss': {
-            text: '',
-        },
+        key: 'Blowkiss',
+        text: '',
     },
     {
-        'Waddle': {
-            text: '',
-        },
+        key: 'Waddle',
+        text: '',
     },
     {
-        'Tremble': {
-            text: '',
-        },
+        key: 'Tremble',
+        text: '',
     },
     {
-        'Aaagh!': {
-            text: '',
-        },
+        key: 'Aaagh!',
+        text: '',
     },
     {
-        'Twirl': {
-            text: '',
-        },
+        key: 'Twirl',
+        text: '',
     },
     {
-        'Kotow': {
-            text: '',
-        },
+        key: 'Kotow',
+        text: '',
     },
     {
-        'Dramatic': {
-            text: '',
-        },
+        key: 'Dramatic',
+        text: '',
     },
     {
-        'JumpRope': {
-            text: '',
-        },
+        key: 'JumpRope',
+        text: '',
     },
     {
-        'Surrender': {
-            text: '',
-        },
+        key: 'Surrender',
+        text: '',
     },
     {
-        'Hooray': {
-            text: '',
-        },
+        key: 'Hooray',
+        text: '',
     },
     {
-        'Meditate': {
-            text: '',
-        },
+        key: 'Meditate',
+        text: '',
     },
     {
-        'Smooch': {
-            text: '',
-        },
+        key: 'Smooch',
+        text: '',
     },
     {
-        'TaiChi L': {
-            text: '',
-        },
+        key: 'TaiChi L',
+        text: '',
     },
     {
-        'TaiChi R': {
-            text: '',
-        },
+        key: 'TaiChi R',
+        text: '',
     }
 ];
+
+function parser(text) {
+    var decodeText = '';
+
+    emoji.map(e => {
+        var { key, className } = e;
+        text = decodeText = text.replace(`[${key}]`, `<a title="${key}" class="${className}">${key}</a>`);
+    });
+
+    return decodeText;
+}
+
+emoji.map((e, index) => {
+    e.className = `face qqface${index}`;
+});
+
+export { emoji, parser };

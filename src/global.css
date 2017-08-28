@@ -31,6 +31,19 @@ label {
     border: thin solid #ddd;
 }
 
+.clearfix::after {
+    content: ' ';
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    clear: both;
+    height: 0;
+}
+
+.clearfix {
+    display: inline-block;
+}
+
 .fade {
     transition: .2s;
     opacity: 1;
@@ -3349,7 +3362,7 @@ label {
 }
 
 .qq_face a {
-    float: left;
+    display: inline-block;
     width: 28px;
     height: 28px;
     margin: 4px;

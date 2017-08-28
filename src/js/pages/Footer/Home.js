@@ -56,7 +56,10 @@ export default class Input extends Component {
     }
 
     writeEmoji(emoji) {
-        this.refs.input.value += `[${emoji}]`;
+        var input = this.refs.input;
+
+        input.value += `[${emoji}]`;
+        input.focus();
     }
 
     async handlePaste(e) {

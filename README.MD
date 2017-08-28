@@ -92,7 +92,7 @@ Preferences            | <kbd>Cmd</kbd> <kbd>,</kbd>
 - [x] Forward image
 - [x] Forward file
 - [x] Forward video
-- [ ] Show QQ emoji
+- [x] Show QQ emoji
 - [x] Search chat set
 - [x] Search and create chat room
 - [x] Desktop notification

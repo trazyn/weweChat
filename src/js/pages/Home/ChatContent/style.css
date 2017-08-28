@@ -527,6 +527,12 @@
     & .times {
         color: #fff !important;
     }
+
+    & :global(.face) {
+        zoom: .8;
+        margin: 0 2px;
+        transform: translateY(-4px);
+    }
 }
 
 .message.isme.isVideo {
@@ -715,6 +721,12 @@
         & .times {
             margin-left: 26px;
             margin-bottom: 4px;
+        }
+
+        & :global(.face) {
+            zoom: .7 !important;
+            margin: 0 1px !important;
+            transform: translateY(-7px) !important;
         }
     }
 

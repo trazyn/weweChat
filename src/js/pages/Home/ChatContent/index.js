@@ -9,6 +9,7 @@ import axios from 'axios';
 import classes from './style.css';
 import Avatar from 'components/Avatar';
 import helper from 'utils/helper';
+import { parser as emojiParse } from 'utils/emoji';
 import { on, off } from 'utils/event';
 
 @inject(stores => ({
@@ -92,7 +93,7 @@ export default class ChatContent extends Component {
                     `;
                 }
                 // Text message
-                return message.Content;
+                return emojiParse(message.Content);
             case 3:
                 // Image
                 let image = message.image;
@@ -266,6 +267,8 @@ export default class ChatContent extends Component {
 
             return (
                 <div className={clazz('unread', classes.message, {
+                    'qq_face': type === 1,
+
                     // File is uploading
                     [classes.uploading]: message.uploading === true,
 
