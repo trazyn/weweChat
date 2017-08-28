@@ -436,7 +436,7 @@ function parser(text) {
 
     emoji.map(e => {
         var { key, className } = e;
-        text = decodeText = text.replace(`[${key}]`, `<a title="${key}" class="${className}">${key}</a>`);
+        text = decodeText = text.split(`[${key}]`).join(`<a title="${key}" class="${className}">${key}</a>`);
     });
 
     return decodeText;
