@@ -165,6 +165,12 @@
         font-size: 12px !important;
         color: #f65431 !important;
     }
+
+    & :global(.face) {
+        zoom: .8;
+        margin: 0 2px;
+        transform: translateY(-6px);
+    }
 }
 
 .message.isEmoji {
@@ -526,12 +532,6 @@
     & p,
     & .times {
         color: #fff !important;
-    }
-
-    & :global(.face) {
-        zoom: .8;
-        margin: 0 2px;
-        transform: translateY(-4px);
     }
 }
 
