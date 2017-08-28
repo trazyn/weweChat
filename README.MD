@@ -57,6 +57,7 @@ Search conversations   | <kbd>Cmd</kbd> <kbd>F</kbd>
 Hide conversation      | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>M</kbd>
 Next conversation      | <kbd>Cmd</kbd> <kbd>J</kbd>
 Previous conversation  | <kbd>Cmd</kbd> <kbd>K</kbd>
+Insert QQ emoji        | <kbd>Cmd</kbd> <kbd>I</kbd>
 Preferences            | <kbd>Cmd</kbd> <kbd>,</kbd>
 
 ### TODO

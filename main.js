@@ -211,6 +211,17 @@ function createMenu() {
                     type: 'separator',
                 },
                 {
+                    label: 'Insert emoji',
+                    accelerator: 'Cmd+I',
+                    click() {
+                        mainWindow.show();
+                        mainWindow.webContents.send('show-emoji');
+                    }
+                },
+                {
+                    type: 'separator',
+                },
+                {
                     label: 'Next conversation',
                     accelerator: 'Cmd+J',
                     click() {

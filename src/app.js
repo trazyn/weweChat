@@ -23,27 +23,36 @@ class App extends Component {
         await stores.search.getHistory();
     }
 
+    canisend() {
+        return this.refs.navigator.state.location.pathname === '/'
+            && stores.chat.user;
+    }
+
     componentDidMount() {
+        // Hide the tray icon
         ipcRenderer.on('hide-tray', () => {
             stores.settings.setShowOnTray(false);
         });
 
+        // Shwo the settings page
         ipcRenderer.on('show-settings', () => {
             this.refs.navigator.router.push('/settings');
         });
 
+        // Show a modal to create a new conversation
         ipcRenderer.on('show-newchat', () => {
             this.refs.navigator.router.push('/');
             stores.newchat.toggle(true);
         });
 
+        // Show the conversation pane
         ipcRenderer.on('show-conversation', () => {
-            if (this.refs.navigator.state.location.pathname === '/'
-                && stores.chat.user) {
+            if (this.canisend()) {
                 stores.chat.toggleConversation();
             }
         });
 
+        // Search in currently conversation list
         ipcRenderer.on('show-search', () => {
             this.refs.navigator.router.push('/');
             stores.chat.toggleConversation(true);
@@ -51,27 +60,39 @@ class App extends Component {
             setTimeout(() => document.querySelector('#search').focus());
         });
 
+        // Show the home page
         ipcRenderer.on('show-messages', () => {
             this.refs.navigator.router.push('/');
             stores.chat.toggleConversation(true);
         });
 
+        // Insert the qq emoji
+        ipcRenderer.on('show-emoji', () => {
+            if (this.canisend()) {
+                document.querySelector('#showEmoji').click();
+            }
+        });
+
+        // Show contacts page
         ipcRenderer.on('show-contacts', () => {
             this.refs.navigator.router.push('/contacts');
         });
 
+        // Go to next conversation
         ipcRenderer.on('show-next', () => {
             this.refs.navigator.router.push('/');
             stores.chat.toggleConversation(true);
             setTimeout(stores.chat.chatToNext);
         });
 
+        // Go to the previous conversation
         ipcRenderer.on('show-previous', () => {
             this.refs.navigator.router.push('/');
             stores.chat.toggleConversation(true);
             setTimeout(stores.chat.chatToPrev);
         });
 
+        // When the system resume reconnet to WeChat
         ipcRenderer.on('os-resume', async() => {
             var session = stores.session;
 
@@ -79,6 +100,7 @@ class App extends Component {
                 .catch(ex => session.logout());
         });
 
+        // Show the daemon error
         ipcRenderer.on('show-errors', (event, args) => {
             stores.snackbar.showMessage(args.message);
         });
