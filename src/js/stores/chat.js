@@ -674,6 +674,10 @@ class Chat {
     @action async process(file) {
         var showMessage = snackbar.showMessage;
 
+        if (!file || file.size === 0) {
+            return showMessage('You can\'t send an empty file.');
+        }
+
         if (!file
             || file.size >= 50 * 1024 * 1024) {
             showMessage('Send file not allowed to exceed 50M.');
