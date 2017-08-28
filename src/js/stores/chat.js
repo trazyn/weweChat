@@ -136,9 +136,6 @@ async function resolveMessage(message) {
         case 10000:
             let userid = message.FromUserName;
 
-            // Chat room has been changed
-            await contacts.batch([userid]);
-
             // Refresh the current chat room info
             if (helper.isChatRoom(userid)) {
                 let user = await contacts.getUser(userid);

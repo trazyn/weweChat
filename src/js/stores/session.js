@@ -141,9 +141,17 @@ class Session {
         self.user.SyncKey = response.data.SyncCheckKey;
         self.genSyncKey(response.data.SyncCheckKey.List);
 
-        // Get the new friend
+        // Get the new friend, or chat room has change
         response.data.ModContactList.map(e => {
-            mods.push(e.UserName);
+            var hasUser = contacts.memberList.find(user => user.UserName === e.UserName);
+
+            if (hasUser) {
+                // Just update the user
+                contacts.updateUser(e);
+            } else {
+                // If user not exists put it in batch list
+                mods.push(e.UserName);
+            }
         });
 
         if (mods.length) {

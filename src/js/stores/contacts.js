@@ -4,6 +4,7 @@ import axios from 'axios';
 import pinyin from 'han';
 
 import session from './session';
+import chat from './chat';
 import storage from 'utils/storage';
 import helper from 'utils/helper';
 
@@ -25,7 +26,7 @@ class Contacts {
                 return;
             }
 
-            var prefix = ((e.RemarkPYInitial || e.PYInitial).toString()[0] + '').replace('?', '#');
+            var prefix = ((e.RemarkPYInitial || e.PYInitial || pinyin.letter(e.NickName)).toString()[0] + '').replace('?', '#');
             var group = mappings[prefix];
 
             if (!group) {
@@ -83,8 +84,44 @@ class Contacts {
         return (window.list = self.memberList);
     }
 
+    resolveUser(auth, user, inContacts = false) {
+        if (helper.isOfficial(user)) {
+            // Skip the official account
+            return;
+        }
+
+        if (helper.isBrand(user)) {
+            // Skip the brand account, eg: JD.COM
+            return;
+        }
+
+        if (helper.isChatRoomRemoved(user)) {
+            // Chat room has removed
+            return;
+        }
+
+        if (helper.isChatRoom(user.UserName)) {
+            let placeholder = user.MemberList.map(e => e.NickName).join(',');
+
+            if (user.NickName) {
+                user.Signature = placeholder;
+            } else {
+                user.NickName = placeholder;
+                user.Signature = placeholder;
+            }
+        }
+
+        user.isFriend = inContacts;
+        user.HeadImgUrl = `${axios.defaults.baseURL}${user.HeadImgUrl.substr(1)}`;
+        user.MemberList.map(e => {
+            e.HeadImgUrl = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgeticon?username=${e.UserName}&chatroomid=${user.EncryChatRoomId}&skey=${auth.skey}&seq=0`;
+        });
+
+        return user;
+    }
+
     // Batch get the contacts
-    async batch(list, isFriend = false) {
+    async batch(list, inContacts = false) {
         var auth = await storage.get('auth');
         var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxbatchgetcontact?type=ex&r=${+new Date()}`, {
             BaseRequest: {
@@ -102,44 +139,15 @@ class Contacts {
         if (response.data.BaseResponse.Ret === 0) {
             response.data.ContactList.map(e => {
                 var index = self.memberList.findIndex(user => user.UserName === e.UserName);
+                var user = self.resolveUser(auth, e, inContacts);
 
-                if (helper.isOfficial(e)) {
-                    // Skip the official account
-                    return;
-                }
-
-                if (helper.isBrand(e)) {
-                    // Skip the brand account, eg: JD.COM
-                    return;
-                }
-
-                if (helper.isChatRoomRemoved(e)) {
-                    // Chat room has removed
-                    return;
-                }
-
-                if (helper.isChatRoom(e.UserName)) {
-                    let placeholder = e.MemberList.map(e => e.NickName).join(',');
-
-                    if (e.NickName) {
-                        e.Signature = placeholder;
-                    } else {
-                        e.NickName = placeholder;
-                        e.Signature = placeholder;
-                    }
-                }
-
-                e.isFriend = isFriend;
-                e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
-                e.MemberList.map(user => {
-                    user.HeadImgUrl = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgeticon?username=${user.UserName}&chatroomid=${e.EncryChatRoomId}&skey=${auth.skey}&seq=0`;
-                });
+                if (!user) return;
 
                 if (index !== -1) {
-                    self.memberList[index] = e;
+                    self.memberList[index] = user;
                 } else {
                     // This contact is not in your contact list, eg: Temprary chat room
-                    self.memberList.push(e);
+                    self.memberList.push(user);
                 }
             });
         } else {
@@ -178,11 +186,25 @@ class Contacts {
         self.showGroup = showGroup;
     }
 
-    @action updateUser(user) {
-        var result = self.memberList.find(e => e.UserName === user.UserName);
+    @action async updateUser(user) {
+        var auth = await storage.get('auth');
+        var list = self.memberList;
+        var index = list.findIndex(e => e.UserName === user.UserName);
+        var chating = chat.user;
 
-        if (result) {
-            Object.assign(result, user);
+        user = self.resolveUser(auth, user);
+
+        // Prevent avatar cache
+        user.HeadImgUrl = user.HeadImgUrl.replace(/\?\d{13}$/, '') + `?${+new Date()}`;
+
+        if (index !== -1) {
+            if (chating
+                && user.UserName === chating.UserName) {
+                Object.assign(chating, user);
+            }
+
+            list[index] = user;
+            self.memberList.replace(list);
         }
     }
 }
