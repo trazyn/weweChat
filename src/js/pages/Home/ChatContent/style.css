@@ -122,6 +122,27 @@
     & p {
         user-select: initial;
     }
+
+    & img + p.username {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 32px;
+        line-height: 32px;
+        padding: 0 12px;
+        color: #fff;
+        background: #323232;
+        border-radius: 1px;
+        transition: .15s cubic-bezier(0, 0, .2, 1);
+        transform: translateX(32px) scale(.8);
+        z-index: 99;
+        opacity: 0;
+    }
+
+    &:not(.isme) img:hover + p.username {
+        opacity: 1;
+        transform: translateX(44px) scale(1);
+    }
 }
 
 .message.system {
@@ -708,6 +729,18 @@
         & .avatar {
             height: 24px;
             width: 24px;
+        }
+
+        & img + p.username {
+            height: 24px;
+            line-height: 24px;
+            padding: 0 9px;
+            font-size: 12px;
+            transform: translateX(24px) scale(.8);
+        }
+
+        &:not(.isme) img:hover + p.username {
+            transform: translateX(36px) scale(1);
         }
     }
 

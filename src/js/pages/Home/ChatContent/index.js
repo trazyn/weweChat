@@ -302,6 +302,8 @@ export default class ChatContent extends Component {
                             className={classes.avatar}
                             onClick={ev => this.props.showUserinfo(message.isme, user)} />
 
+                        <p className={classes.username} dangerouslySetInnerHTML={{__html: user.NickName}} />
+
                         <div className={classes.content}>
                             <p
                                 onContextMenu={e => this.showMessageAction(message)}
