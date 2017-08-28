@@ -137,6 +137,14 @@ export default class ChatContent extends Component {
                 let emoji = message.emoji;
 
                 if (emoji) {
+                    if (uploading) {
+                        return `
+                            <div>
+                                <img class="unload disabledDrag" src="${emoji.src}" />
+                                <i class="icon-ion-android-arrow-up"></i>
+                            </div>
+                        `;
+                    }
                     return `<img src="${emoji.src}" class="unload disabledDrag" />`;
                 }
                 return `

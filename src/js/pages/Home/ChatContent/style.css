@@ -591,6 +591,7 @@
 }
 
 .message.uploading {
+    &.isEmoji i,
     &.isFile i,
     &.isVideo i,
     &.isImage i {
@@ -887,6 +888,7 @@
     }
 
     .message.uploading {
+        &.isEmoji i,
         &.isFile i,
         &.isVideo i,
         &.isImage i {

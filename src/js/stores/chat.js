@@ -435,14 +435,13 @@ class Chat {
                 Uin: auth.wxuin,
                 Skey: auth.skey,
             },
-            Msg: {
+            Msg: Object.assign({
                 FromUserName: message.from,
                 ToUserName: message.to,
                 ClientMsgId: message.ClientMsgId,
                 LocalID: message.LocalID,
                 Type: 47,
-                EMoticonMd5: message.emoji.md5,
-            },
+            }, message.file ? { MediaId: message.file.mediaId } : { EMoticonMd5: message.emoji.md5 }),
             Scene: 2,
         });
         var res = {
@@ -451,8 +450,14 @@ class Chat {
             item: Object.assign({}, message, {
                 isme: true,
                 MsgId: response.data.MsgID,
+                MsgType: 47,
                 CreateTime: +new Date() / 1000,
                 HeadImgUrl: session.user.User.HeadImgUrl,
+
+                emoji: {
+                    // Update the image src
+                    src: `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${response.data.MsgID}&skey=${auth.skey}`
+                }
             }),
         };
 
@@ -709,6 +714,15 @@ class Chat {
                     });
                     break;
 
+                case 47:
+                    // Emoji
+                    Object.assign(item, message, {
+                        uploading: false,
+
+                        emoji: item.emoji,
+                    });
+                    break;
+
                 case 43:
                     // Video
                     Object.assign(item, message, {
@@ -750,6 +764,8 @@ class Chat {
         // Increase the counter
         self.upload.count = self.upload.count ? 0 : self.upload.count + 1;
 
+        type = file.name.toLowerCase().endsWith('.gif') ? 47 : type;
+
         formdata.append('id', `WU_FILE_${self.upload.counter}`);
         formdata.append('name', file.name);
         formdata.append('type', file.type);
@@ -779,8 +795,8 @@ class Chat {
 
         if (response.data.BaseResponse.Ret === 0) {
             return {
-                mediaId: response.data.MediaId,
                 type,
+                mediaId: response.data.MediaId,
                 uploaderid,
             };
         }
@@ -805,6 +821,15 @@ class Chat {
             case 3:
                 Object.assign(item, {
                     image: {
+                        // Use the local path
+                        src: file.path || file.name,
+                    },
+                });
+                break;
+
+            case 47:
+                Object.assign(item, {
+                    emoji: {
                         // Use the local path
                         src: file.path || file.name,
                     },

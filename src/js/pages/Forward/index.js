@@ -59,7 +59,7 @@ export default class Forward extends Component {
 
                 search,
                 getList,
-                searching: !!searching,
+                searching,
                 max: -1,
 
                 onChange(selected) {
