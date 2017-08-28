@@ -139,6 +139,10 @@
         opacity: 0;
     }
 
+    & p.username :global(.emoji) {
+        transform: translateY(9px);
+    }
+
     &:not(.isme) img:hover + p.username {
         opacity: 1;
         transform: translateX(44px) scale(1);
@@ -737,6 +741,10 @@
             padding: 0 9px;
             font-size: 12px;
             transform: translateX(24px) scale(.8);
+        }
+
+        & p.username :global(.emoji) {
+            transform: translateY(4px);
         }
 
         &:not(.isme) img:hover + p.username {
