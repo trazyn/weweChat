@@ -76,6 +76,7 @@ import { on, off } from 'utils/event';
     showAddFriend: (user) => stores.addfriend.toggle(true, user),
     recallMessage: stores.chat.recallMessage,
     downloads: stores.settings.downloads,
+    remeberConversation: stores.settings.remeberConversation,
     showConversation: stores.chat.showConversation,
     toggleConversation: stores.chat.toggleConversation,
 }))
@@ -524,7 +525,7 @@ export default class ChatContent extends Component {
     }
 
     componentWillUnmount() {
-        this.props.reset();
+        !this.props.remeberConversation && this.props.reset();
     }
 
     componentDidUpdate() {

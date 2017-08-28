@@ -22,9 +22,11 @@ import helper from 'utils/helper';
     setConfirmImagePaste: stores.settings.setConfirmImagePaste,
     blockRecall: stores.settings.blockRecall,
     setBlockRecall: stores.settings.setBlockRecall,
+    remeberConversation: stores.settings.remeberConversation,
+    setRemeberConversation: stores.settings.setRemeberConversation,
+
     user: stores.session.user,
     logout: stores.session.logout,
-
     plugins: stores.settings.plugins,
 }))
 @observer
@@ -76,6 +78,8 @@ export default class Settings extends Component {
             setConfirmImagePaste,
             blockRecall,
             setBlockRecall,
+            remeberConversation,
+            setRemeberConversation,
             plugins,
             user,
         } = this.props;
@@ -128,6 +132,13 @@ export default class Settings extends Component {
                             <label htmlFor="blockRecall">
                                 <span>Block Message Recall</span>
                                 <Switch id="blockRecall" checked={blockRecall} onChange={e => setBlockRecall(e.target.checked)} />
+                            </label>
+                        </li>
+
+                        <li>
+                            <label htmlFor="remeberConversation">
+                                <span>Remeber the last Conversation</span>
+                                <Switch id="remeberConversation" checked={remeberConversation} onChange={e => setRemeberConversation(e.target.checked)} />
                             </label>
                         </li>
 
