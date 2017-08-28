@@ -143,7 +143,7 @@ class Contacts {
                 }
             });
         } else {
-            throw new Error('Failed to get chat room member');
+            console.error('Failed to get chat room member');
         }
 
         return response.data.ContactList;
