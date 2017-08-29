@@ -12,11 +12,243 @@ let forceQuit = false;
 let mainWindow;
 let tray;
 let settings;
+let isFullScreen = false;
 let isWin = process.platform === 'win32';
 let isOsx = process.platform === 'darwin';
 let userData = app.getPath('userData');
 let imagesCacheDir = `${userData}/images`;
 let voicesCacheDir = `${userData}/voices`;
+let mainMenu = [
+    {
+        label: pkg.name,
+        submenu: [
+            {
+                label: `About ${pkg.name}`,
+                click() {
+                    shell.openExternal('https://github.com/trazyn/weweChat');
+                }
+            },
+            {
+                label: 'Preferences...',
+                accelerator: 'Cmd+,',
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('show-settings');
+                }
+            },
+            {
+                type: 'separator'
+            },
+            {
+                role: 'hide'
+            },
+            {
+                role: 'hideothers'
+            },
+            {
+                role: 'unhide'
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: 'Quit weweChat',
+                accelerator: 'Command+Q',
+                selector: 'terminate:',
+                click() {
+                    forceQuit = true;
+                    mainWindow = null;
+                    app.quit();
+                }
+            }
+        ]
+    },
+    {
+        label: 'File',
+        submenu: [
+            {
+                label: 'New Chat',
+                accelerator: 'Cmd+N',
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('show-newchat');
+                }
+            },
+            {
+                label: 'Search...',
+                accelerator: 'Cmd+F',
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('show-search');
+                }
+            },
+            {
+                type: 'separator',
+            },
+            {
+                label: 'Insert emoji',
+                accelerator: 'Cmd+I',
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('show-emoji');
+                }
+            },
+            {
+                label: 'Insert file',
+                accelerator: 'Cmd+O',
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('show-uploader');
+                }
+            },
+            {
+                type: 'separator',
+            },
+            {
+                label: 'Next conversation',
+                accelerator: 'Cmd+J',
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('show-next');
+                }
+            },
+            {
+                label: 'Previous conversation',
+                accelerator: 'Cmd+K',
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('show-previous');
+                }
+            },
+        ]
+    },
+    {
+        label: 'Conversations',
+        submenu: [
+            {
+                label: 'Loading...',
+            }
+        ],
+    },
+    {
+        label: 'Contacts',
+        submenu: [
+            {
+                label: 'Loading...',
+            }
+        ],
+    },
+    {
+
+    },
+    {
+        label: 'Edit',
+        submenu: [
+            {
+                role: 'undo'
+            },
+            {
+                role: 'redo'
+            },
+            {
+                type: 'separator'
+            },
+            {
+                role: 'cut'
+            },
+            {
+                role: 'copy'
+            },
+            {
+                role: 'paste'
+            },
+            {
+                role: 'pasteandmatchstyle'
+            },
+            {
+                role: 'delete'
+            },
+            {
+                role: 'selectall'
+            }
+        ]
+    },
+    {
+        label: 'View',
+        submenu: [
+            {
+                label: isFullScreen ? 'Exit Full Screen' : 'Enter Full Screen',
+                accelerator: 'Shift+Cmd+F',
+                click() {
+                    isFullScreen = !isFullScreen;
+
+                    mainWindow.show();
+                    mainWindow.setFullScreen(isFullScreen);
+                }
+            },
+            {
+                label: 'Toggle Conversations',
+                accelerator: 'Shift+Cmd+M',
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('show-conversations');
+                }
+            },
+            {
+                type: 'separator',
+            },
+            {
+                label: ''
+            },
+            {
+                type: 'separator',
+            },
+            {
+                role: 'toggledevtools'
+            },
+            {
+                role: 'togglefullscreen'
+            }
+        ]
+    },
+    {
+        role: 'window',
+        submenu: [
+            {
+                role: 'minimize'
+            },
+            {
+                role: 'close'
+            }
+        ]
+    },
+    {
+        role: 'help',
+        submenu: [
+            {
+                label: 'Feedback',
+                click() {
+                    shell.openExternal('https://github.com/trazyn/weweChat/issues');
+                }
+            },
+            {
+                label: 'Fork me on Github',
+                click() {
+                    shell.openExternal('https://github.com/trazyn/weweChat');
+                }
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: '💕 Follow me on Twitter 👏',
+                click() {
+                    shell.openExternal('https://github.com/trazyn/weweChat/issues');
+                }
+            }
+        ]
+    }
+];
 
 function updateTray(unread = 0) {
     if (!isOsx) {
@@ -143,202 +375,7 @@ async function autostart() {
 }
 
 function createMenu() {
-    var menu = Menu.buildFromTemplate([
-        {
-            label: pkg.name,
-            submenu: [
-                {
-                    label: `About ${pkg.name}`,
-                    click() {
-                        shell.openExternal('https://github.com/trazyn/weweChat');
-                    }
-                },
-                {
-                    label: 'Preferences...',
-                    accelerator: 'Cmd+,',
-                    click() {
-                        mainWindow.show();
-                        mainWindow.webContents.send('show-settings');
-                    }
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    role: 'hide'
-                },
-                {
-                    role: 'hideothers'
-                },
-                {
-                    role: 'unhide'
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    label: 'Quit weweChat',
-                    accelerator: 'Command+Q',
-                    selector: 'terminate:',
-                    click() {
-                        forceQuit = true;
-                        mainWindow = null;
-                        app.quit();
-                    }
-                }
-            ]
-        },
-        {
-            label: 'File',
-            submenu: [
-                {
-                    label: 'New Chat',
-                    accelerator: 'Cmd+N',
-                    click() {
-                        mainWindow.show();
-                        mainWindow.webContents.send('show-newchat');
-                    }
-                },
-                {
-                    label: 'Search...',
-                    accelerator: 'Cmd+F',
-                    click() {
-                        mainWindow.show();
-                        mainWindow.webContents.send('show-search');
-                    }
-                },
-                {
-                    type: 'separator',
-                },
-                {
-                    label: 'Insert emoji',
-                    accelerator: 'Cmd+I',
-                    click() {
-                        mainWindow.show();
-                        mainWindow.webContents.send('show-emoji');
-                    }
-                },
-                {
-                    type: 'separator',
-                },
-                {
-                    label: 'Next conversation',
-                    accelerator: 'Cmd+J',
-                    click() {
-                        mainWindow.show();
-                        mainWindow.webContents.send('show-next');
-                    }
-                },
-                {
-                    label: 'Previous conversation',
-                    accelerator: 'Cmd+K',
-                    click() {
-                        mainWindow.show();
-                        mainWindow.webContents.send('show-previous');
-                    }
-                },
-            ]
-        },
-        {
-            label: 'Edit',
-            submenu: [
-                {
-                    role: 'undo'
-                },
-                {
-                    role: 'redo'
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    role: 'cut'
-                },
-                {
-                    role: 'copy'
-                },
-                {
-                    role: 'paste'
-                },
-                {
-                    role: 'pasteandmatchstyle'
-                },
-                {
-                    role: 'delete'
-                },
-                {
-                    role: 'selectall'
-                }
-            ]
-        },
-        {
-            label: 'View',
-            submenu: [
-                {
-                    label: 'Show Contacts',
-                    click() {
-                        mainWindow.show();
-                        mainWindow.webContents.send('show-contacts');
-                    }
-                },
-                {
-                    label: 'Toggle Conversation',
-                    accelerator: 'Shift+Cmd+M',
-                    click() {
-                        mainWindow.show();
-                        mainWindow.webContents.send('show-conversation');
-                    }
-                },
-                {
-                    type: 'separator',
-                },
-                {
-                    role: 'toggledevtools'
-                },
-                {
-                    role: 'togglefullscreen'
-                }
-            ]
-        },
-        {
-            role: 'window',
-            submenu: [
-                {
-                    role: 'minimize'
-                },
-                {
-                    role: 'close'
-                }
-            ]
-        },
-        {
-            role: 'help',
-            submenu: [
-                {
-                    label: 'Feedback',
-                    click() {
-                        shell.openExternal('https://github.com/trazyn/weweChat/issues');
-                    }
-                },
-                {
-                    label: 'Fork me on Github',
-                    click() {
-                        shell.openExternal('https://github.com/trazyn/weweChat');
-                    }
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    label: '💕 Follow me on Twitter 👏',
-                    click() {
-                        shell.openExternal('https://github.com/trazyn/weweChat/issues');
-                    }
-                }
-            ]
-        }
-    ]);
-
+    var menu = Menu.buildFromTemplate(mainMenu);
     Menu.setApplicationMenu(menu);
 }
 
@@ -401,6 +438,43 @@ const createMainWindow = () => {
         } catch (ex) {
             console.error(ex);
         }
+    });
+
+    ipcMain.on('menu-update', (event, args) => {
+        var { contacts, conversations } = args;
+
+        contacts = JSON.parse(contacts);
+        conversations = JSON.parse(conversations);
+
+        conversations = conversations.slice(0, 10).map((e, index) => {
+            return {
+                label: e.NickName,
+                accelerator: `Cmd+${index}`,
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('message-chatto', {
+                        id: e.UserName,
+                    });
+                }
+            };
+        });
+
+        contacts = contacts.map(e => {
+            return {
+                label: e.NickName,
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('show-userinfo', {
+                        id: e.UserName,
+                    });
+                }
+            };
+        });
+
+        mainMenu.find(e => e.label === 'Conversations').submenu = conversations;
+        mainMenu.find(e => e.label === 'Contacts').submenu = contacts;
+
+        createMenu();
     });
 
     ipcMain.on('message-unread', (event, args) => {

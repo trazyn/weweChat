@@ -34,6 +34,20 @@ class App extends Component {
             stores.settings.setShowOnTray(false);
         });
 
+        // Chat with user
+        ipcRenderer.on('message-chatto', (event, args) => {
+            var user = stores.contacts.memberList.find(e => e.UserName === args.id);
+
+            this.refs.navigator.router.push('/');
+            setTimeout(stores.chat.chatTo(user));
+        });
+
+        // Show the user info
+        ipcRenderer.on('show-userinfo', (event, args) => {
+            var user = stores.contacts.memberList.find(e => e.UserName === args.id);
+            stores.userinfo.toggle(true, user);
+        });
+
         // Shwo the settings page
         ipcRenderer.on('show-settings', () => {
             this.refs.navigator.router.push('/settings');
@@ -46,7 +60,7 @@ class App extends Component {
         });
 
         // Show the conversation pane
-        ipcRenderer.on('show-conversation', () => {
+        ipcRenderer.on('show-conversations', () => {
             if (this.canisend()) {
                 stores.chat.toggleConversation();
             }
@@ -70,6 +84,12 @@ class App extends Component {
         ipcRenderer.on('show-emoji', () => {
             if (this.canisend()) {
                 document.querySelector('#showEmoji').click();
+            }
+        });
+
+        ipcRenderer.on('show-uploader', () => {
+            if (this.canisend()) {
+                document.querySelector('#uploader').click();
             }
         });
 

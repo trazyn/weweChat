@@ -174,6 +174,13 @@ function hasUnreadMessage(messages) {
     });
 }
 
+function updateMenus(sessions) {
+    ipcRenderer.send('menu-update', {
+        conversations: JSON.stringify(sessions),
+        contacts: JSON.stringify(contacts.memberList),
+    });
+}
+
 class Chat {
     @observable sessions = [];
     @observable messages = new Map();
@@ -233,6 +240,7 @@ class Chat {
         });
 
         self.sessions.replace(sorted);
+        updateMenus(self.sessions);
         return res;
     }
 
@@ -385,6 +393,7 @@ class Chat {
         self.messages.set(from, list);
 
         hasUnreadMessage(self.messages);
+        updateMenus(self.sessions);
     }
 
     @action async sendTextMessage(auth, message, isForward) {
@@ -911,6 +920,7 @@ class Chat {
         }
 
         self.messages.set(userid, list);
+        updateMenus(self.sessions);
     }
 
     @action async sticky(user) {
