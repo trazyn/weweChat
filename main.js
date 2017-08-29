@@ -3,7 +3,6 @@ import fs from 'fs';
 import tmp from 'tmp';
 import { app, powerMonitor, BrowserWindow, Tray, Menu, ipcMain, clipboard, shell } from 'electron';
 import windowStateKeeper from 'electron-window-state';
-import notifier from 'node-notifier';
 import AutoLaunch from 'auto-launch';
 
 import pkg from './package.json';
@@ -482,22 +481,6 @@ const createMainWindow = () => {
 
         if (settings.showOnTray) {
             updateTray(counter);
-        }
-    });
-
-    ipcMain.on('message-receive', (event, args) => {
-        var { icon, title, message } = args;
-        var filename = `${imagesCacheDir}/notifier-icon.png`;
-
-        if (settings.showNotification) {
-            fs.writeFileSync(filename, icon.replace(/^data:image\/png;base64,/, ''), 'base64');
-
-            notifier.notify({
-                title,
-                sound: 'Blow',
-                contentImage: filename,
-                message,
-            });
         }
     });
 

@@ -348,18 +348,19 @@ class Chat {
 
             // Drop the duplicate message
             if (!list.data.find(e => e.NewMsgId === message.NewMsgId)) {
+                let title = user.RemarkName || user.NickName;
+
                 message = await resolveMessage(message);
 
-                if (!helper.isMuted(user)) {
-                    // Get the user avatar and use it as notifier icon
-                    let response = await axios.get(user.HeadImgUrl, { responseType: 'arraybuffer' });
-                    let base64 = new window.Buffer(response.data, 'binary').toString('base64');
-
-                    ipcRenderer.send('message-receive', {
-                        icon: base64,
-                        title: user.RemarkName || user.NickName,
-                        message: helper.getMessageContent(message),
+                if (!helper.isMuted(user)
+                    && settings.showNotification) {
+                    /* eslint-disable */
+                    new Notification(title, {
+                        icon: user.HeadImgUrl,
+                        body: helper.getMessageContent(message),
+                        vibrate: [200, 100, 200],
                     });
+                    /* eslint-enable */
                 }
                 list.data.push(message);
             }

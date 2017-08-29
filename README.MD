@@ -55,10 +55,10 @@ Description            | Keys
 New conversation       | <kbd>Cmd</kbd> <kbd>N</kbd>
 Search conversations   | <kbd>Cmd</kbd> <kbd>F</kbd>
 Hide conversation      | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>M</kbd>
-Jump to conversation   | <kbd>Cmd</kbd> <kbd>0</kbd> ... <kdb>9</kdb>
+Jump to conversation   | <kbd>Cmd</kbd> <kbd>0</kbd> ... <kbd>9</kbd>
 Next conversation      | <kbd>Cmd</kbd> <kbd>J</kbd>
 Previous conversation  | <kbd>Cmd</kbd> <kbd>K</kbd>
-Toggle Full Screen     | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kdb>F</kdb>
+Toggle Full Screen     | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>F</kbd>
 Insert QQ emoji        | <kbd>Cmd</kbd> <kbd>I</kbd>
 Preferences            | <kbd>Cmd</kbd> <kbd>,</kbd>
 
@@ -105,6 +105,7 @@ Preferences            | <kbd>Cmd</kbd> <kbd>,</kbd>
 - [ ] Theme
 - [x] Send image from clipboard
 - [x] Drag to send file
+- [ ] Mention a user
 - [ ] Chat bot
 
 ### License
