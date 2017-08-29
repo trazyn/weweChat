@@ -22,7 +22,7 @@ import Emoji from './Emoji';
     },
     process: stores.chat.process,
 }))
-export default class Input extends Component {
+export default class Home extends Component {
     async handleEnter(e) {
         var message = this.refs.input.value.trim();
 

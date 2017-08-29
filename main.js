@@ -93,14 +93,6 @@ let mainMenu = [
                 }
             },
             {
-                label: 'Insert file',
-                accelerator: 'Cmd+O',
-                click() {
-                    mainWindow.show();
-                    mainWindow.webContents.send('show-uploader');
-                }
-            },
-            {
                 type: 'separator',
             },
             {

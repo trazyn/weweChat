@@ -87,12 +87,6 @@ class App extends Component {
             }
         });
 
-        ipcRenderer.on('show-uploader', () => {
-            if (this.canisend()) {
-                document.querySelector('#uploader').click();
-            }
-        });
-
         // Show contacts page
         ipcRenderer.on('show-contacts', () => {
             this.refs.navigator.router.push('/contacts');

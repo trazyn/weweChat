@@ -1,0 +1,125 @@
+
+.Suggestion {
+    position: fixed;
+    bottom: 60px;
+    left: 311px;
+    height: calc(100vh - 200px);
+    background: #fff;
+    box-shadow: 0 0 24px 0 rgba(0, 0, 0, .2);
+    border-radius: 1px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.Suggestion-item {
+    display: flex;
+    padding: 6px 12px;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: pointer;
+}
+
+.Suggestion--selected,
+.Suggestion-item:hover {
+    background: #405de6;
+}
+
+.Suggestion--selected .Suggestion-username,
+.Suggestion-item:hover .Suggestion-username {
+    color: #fff;
+}
+
+.Suggestion-item img {
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+}
+
+.Suggestion-username {
+    padding: 0;
+    margin: 0;
+}
+
+.Suggestion-username {
+    color: #777;
+    margin-bottom: 2px;
+}
+
+.Suggestion-enter {
+    transform: translateY(24px);
+    opacity: 0;
+    transition: .2s cubic-bezier(.5, -.55, .4, 1.55);
+}
+
+.Suggestion-enter.Suggestion-enter-active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.Suggestion-leave {
+    opacity: 1;
+    transition: .14s;
+}
+
+.Suggestion-leave.Suggestion-leave-active {
+    transform: translateY(-24px);
+    opacity: 0;
+}
+
+.Suggestion-input-user {
+    display: flex;
+    padding: 0 23px;
+    margin: 0 2px;
+    height: 32px;
+    align-items: center;
+    background: rgba(230, 230, 230, 1);
+    color: #777;
+    border-radius: 32px;
+    white-space: nowrap;
+}
+
+.Suggestion-input-user img {
+    height: 20px;
+    width: 20px;
+    margin-right: 2px;
+}
+
+.Suggestion-input-user * {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+@media (width <= 800px) {
+    .Suggestion {
+        bottom: 48px;
+        left: 280px;
+    }
+
+    .Suggestion-item {
+        display: flex;
+        padding: 6px 12px;
+    }
+
+    .Suggestion-item img {
+        width: 24px;
+        height: 24px;
+        margin-right: 12px;
+    }
+
+    .Suggestion-username {
+        margin-bottom: 2px;
+    }
+
+    .Suggestion-input-user {
+        padding: 0 23px;
+        margin: 0 2px;
+        height: 32px;
+        border-radius: 32px;
+    }
+
+    .Suggestion-input-user img {
+        height: 20px;
+        width: 20px;
+        margin-right: 2px;
+    }
+}
