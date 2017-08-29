@@ -18,8 +18,7 @@
 
     & img {
         display: block;
-        width: 300px;
-        height: 300px;
+        width: 100%;
     }
 
     & p {
@@ -31,5 +30,26 @@
         margin-top: 20px;
         color: #888;
         font-size: 16px;
+    }
+
+    & a {
+        text-decoration: none;
+        border-bottom: 1px solid #ddd;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+    & a:hover {
+        border-bottom-color: #777;
+    }
+}
+
+@media (width <= 800px) {
+    .inner {
+        width: 260px;
+
+        & p:last-child {
+            font-size: 14px;
+        }
     }
 }
