@@ -716,6 +716,9 @@ class Chat {
 
             switch (type) {
                 case 3:
+                    // When the locale file has been deleted fallback to get from server
+                    item.image.fallback = message.image.src;
+
                     // Image
                     Object.assign(item, message, {
                         uploading: false,
@@ -726,6 +729,9 @@ class Chat {
                     break;
 
                 case 47:
+                    // Set the fallback image
+                    item.emoji.fallback = message.emoji.src;
+
                     // Emoji
                     Object.assign(item, message, {
                         uploading: false,

@@ -21,8 +21,19 @@ class UserInfo {
         self.show = show;
         self.user = user;
 
+        // Try to get from cache
+        var pallet = user.pallet;
+
         if (show) {
-            self.pallet = await helper.getPallet(user.HeadImgUrl);
+            if (pallet) {
+                self.pallet = user.pallet;
+            } else {
+                pallet = await helper.getPallet(user.HeadImgUrl);
+
+                // Cache the pallet
+                self.user.pallet = pallet;
+                self.pallet = pallet;
+            }
         }
     }
 

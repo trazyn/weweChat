@@ -102,12 +102,12 @@ export default class ChatContent extends Component {
                 if (uploading) {
                     return `
                         <div>
-                            <img class="open-image unload" data-id="${message.MsgId}" src="${image.src}" />
+                            <img class="open-image unload" data-id="${message.MsgId}" src="${image.src}" onerror="this.src='${image.fallback}'" />
                             <i class="icon-ion-android-arrow-up"></i>
                         </div>
                     `;
                 }
-                return `<img class="open-image unload" data-id="${message.MsgId}" src="${image.src}" />`;
+                return `<img class="open-image unload" data-id="${message.MsgId}" src="${image.src}" onerror="this.src='${image.fallback}'" />`;
             case 34:
                 /* eslint-disable */
                 // Voice
@@ -141,12 +141,12 @@ export default class ChatContent extends Component {
                     if (uploading) {
                         return `
                             <div>
-                                <img class="unload disabledDrag" src="${emoji.src}" />
+                                <img class="unload disabledDrag" src="${emoji.src}" onerror="this.src='${emoji.fallback}'" />
                                 <i class="icon-ion-android-arrow-up"></i>
                             </div>
                         `;
                     }
-                    return `<img src="${emoji.src}" class="unload disabledDrag" />`;
+                    return `<img src="${emoji.src}" class="unload disabledDrag" onerror="this.src='${emoji.fallback}'" />`;
                 }
                 return `
                     <div class="${classes.invalidEmoji}">
