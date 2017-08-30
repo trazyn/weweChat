@@ -151,7 +151,7 @@ class Contacts {
                 }
             });
         } else {
-            console.error('Failed to get chat room member');
+            throw new Error(`Failed to get user: ${list}`);
         }
 
         return response.data.ContactList;

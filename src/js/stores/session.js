@@ -247,21 +247,14 @@ class Session {
             eval(response.data);
 
             if (+window.synccheck.retcode === 0) {
-                if ([
-                    // Normal synccheck
-                    0,
-                    // Has new message need sync
-                    2,
-                    // You got a new friend
-                    6,
-                    // Unknow
-                    4,
-                ].includes(+window.synccheck.selector)) {
-                    var selector = +window.synccheck.selector;
+                // 2, Has new message
+                // 6, New friend
+                // 4, Conversation refresh ?
+                // 7, Exit or enter
+                let selector = +window.synccheck.selector;
 
-                    if (selector !== 0) {
-                        await self.getNewMessage();
-                    }
+                if (selector !== 0) {
+                    await self.getNewMessage();
                 }
 
                 // Do next sync keep your wechat alive

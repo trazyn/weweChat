@@ -319,6 +319,10 @@ class Chat {
         var normaled = [];
         /* eslint-enable */
 
+        if (!user) {
+            return console.error('Got an invalid message: %o', message);
+        }
+
         // Add the messages of your sent on phone to the chat sets
         if (sync) {
             list = self.messages.get(message.ToUserName);
