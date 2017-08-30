@@ -1,5 +1,5 @@
 
-import { remote } from 'electron';
+import { remote, ipcRenderer } from 'electron';
 
 const CHATROOM_NOTIFY_CLOSE = 0;
 const CONTACTFLAG_NOTIFYCLOSECONTACT = 512;
@@ -232,7 +232,11 @@ const helper = {
         }
     },
 
-    isOsx: window.process.platform === 'darwin'
+    isOsx: window.process.platform === 'darwin',
+
+    isSuspend: () => {
+        return ipcRenderer.sendSync('is-suspend');
+    },
 };
 
 export default helper;

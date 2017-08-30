@@ -74,9 +74,9 @@ class Settings {
             self.showNotification = !!settings.showNotification;
             self.confirmImagePaste = !!settings.confirmImagePaste;
             self.startup = !!settings.startup;
-            self.downloads = settings.downloads;
             self.blockRecall = !!settings.blockRecall;
             self.remeberConversation = !!settings.remeberConversation;
+            self.downloads = settings.downloads;
         } else {
             await storage.set('settings', {
                 alwaysOnTop,
@@ -94,7 +94,8 @@ class Settings {
             self.showOnTray = true;
         }
 
-        if (!self.downloads) {
+        if (!self.downloads
+            || typeof self.downloads !== 'string') {
             self.downloads = remote.app.getPath('downloads');
         }
 

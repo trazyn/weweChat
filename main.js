@@ -14,6 +14,7 @@ let settings;
 let isFullScreen = false;
 let isWin = process.platform === 'win32';
 let isOsx = process.platform === 'darwin';
+let isSuspend = false;
 let userData = app.getPath('userData');
 let imagesCacheDir = `${userData}/images`;
 let voicesCacheDir = `${userData}/voices`;
@@ -526,6 +527,10 @@ const createMainWindow = () => {
         shell.openItem(filename);
     });
 
+    ipcMain.on('is-suspend', (event, args) => {
+        event.returnValue = isSuspend;
+    });
+
     ipcMain.once('logined', event => {
         mainWindow.setResizable(true);
         mainWindow.setSize(mainWindowState.width, mainWindowState.height);
@@ -533,7 +538,12 @@ const createMainWindow = () => {
     });
 
     powerMonitor.on('resume', () => {
+        isSuspend = false;
         mainWindow.webContents.send('os-resume');
+    });
+
+    powerMonitor.on('suspend', () => {
+        isSuspend = true;
     });
 
     if (isOsx) {

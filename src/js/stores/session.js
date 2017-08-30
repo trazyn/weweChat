@@ -3,9 +3,12 @@
 import axios from 'axios';
 import { observable, action } from 'mobx';
 
+import helper from 'utils/helper';
 import storage from 'utils/storage';
 import chat from './chat';
 import contacts from './contacts';
+
+const CancelToken = axios.CancelToken;
 
 class Session {
     @observable loading = true;
@@ -73,7 +76,7 @@ class Session {
                 self.auth = auth;
                 await storage.set('auth', auth);
                 await self.initUser();
-                self.keepalive();
+                self.keepalive().catch(ex => self.logout());
                 break;
 
             case 201:
@@ -183,6 +186,23 @@ class Session {
         return response.data;
     }
 
+    // A callback for cancel the sync request
+    syncTimeout = window.Function;
+
+    checkTimeout(weakup) {
+        // Kill the zombie request or duplicate request
+        self.syncTimeout();
+        clearTimeout(self.checkTimeout.timer);
+
+        if (helper.isSuspend() || weakup) {
+            return;
+        }
+
+        self.checkTimeout.timer = setTimeout(() => {
+            self.syncTimeout();
+        }, 30 * 1000);
+    }
+
     async keepalive() {
         var auth = self.auth;
         var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxsync?sid=${auth.wxsid}&skey=${auth.skey}&lang=en_US&pass_ticket=${auth.passTicket}`, {
@@ -196,7 +216,14 @@ class Session {
         });
         var host = axios.defaults.baseURL.replace('//', '//webpush.');
         var loop = async() => {
+            // Start detect timeout
+            self.checkTimeout();
+
             var response = await axios.get(`${host}cgi-bin/mmwebwx-bin/synccheck`, {
+                cancelToken: new CancelToken(exe => {
+                    // An executor function receives a cancel function as a parameter
+                    this.syncTimeout = exe;
+                }),
                 params: {
                     r: +new Date(),
                     sid: auth.wxsid,
@@ -204,7 +231,18 @@ class Session {
                     skey: auth.skey,
                     synckey: self.syncKey,
                 }
+            }).catch(ex => {
+                if (axios.isCancel(ex)) {
+                    loop();
+                } else {
+                    self.logout();
+                }
             });
+
+            if (!response) {
+                // Request has been canceled
+                return;
+            }
 
             eval(response.data);
 
@@ -227,17 +265,9 @@ class Session {
                 }
 
                 // Do next sync keep your wechat alive
-                try {
-                    if (await loop() === false) {
-                        self.relogin();
-                    }
-                } catch (ex) {
-                    self.relogin();
-                }
-
-                return true;
+                return loop();
             } else {
-                return false;
+                throw window.synccheck;
             }
         };
 
@@ -248,9 +278,7 @@ class Session {
         self.loading = false;
         self.genSyncKey(response.data.SyncCheckKey.List);
 
-        if (await loop() === false) {
-            throw window.synccheck;
-        }
+        return loop();
     }
 
     @action async hasLogin() {
@@ -261,8 +289,8 @@ class Session {
         self.auth = auth && Object.keys(auth).length ? auth : void 0;
 
         if (self.auth) {
-            await self.initUser().catch(ex => self.relogin());
-            self.keepalive().catch(ex => self.relogin());
+            await self.initUser().catch(ex => self.logout());
+            self.keepalive().catch(ex => self.logout());
         }
 
         return auth;
@@ -275,10 +303,6 @@ class Session {
             sid: auth.sid,
             uin: auth.uid,
         });
-        self.relogin();
-    }
-
-    async relogin() {
         await storage.remove('auth');
         window.location.reload();
     }

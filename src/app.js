@@ -110,8 +110,10 @@ class App extends Component {
         ipcRenderer.on('os-resume', async() => {
             var session = stores.session;
 
-            session.keepalive()
-                .catch(ex => session.logout());
+            console.log('os-resume');
+            setTimeout(() => {
+                session.checkTimeout(true);
+            }, 3000);
         });
 
         // Show the daemon error
