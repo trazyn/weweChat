@@ -18,6 +18,8 @@ API from [https://web.wechat.com/](https://web.wechat.com/)
   ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/pasteconfirmation.png)
 - Drag to send file
   ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/dragdrop.png)
+- Send GIF emoji
+  ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/sendgif.gif)
 
 ## Downloads
 - [Mac](https://github.com/trazyn/weweChat/releases/download/1.0.0/wewechat-1.0.0-mac.dmg)
@@ -105,6 +107,7 @@ Preferences            | <kbd>Cmd</kbd> <kbd>,</kbd>
 - [ ] Theme
 - [x] Send image from clipboard
 - [x] Drag to send file
+- [ ] Batch send message
 - [ ] Mention a user
 - [ ] Chat bot
 
