@@ -260,7 +260,7 @@ class Session {
                 // Do next sync keep your wechat alive
                 return loop();
             } else {
-                throw window.synccheck;
+                self.logout();
             }
         };
 
