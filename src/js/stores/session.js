@@ -65,13 +65,20 @@ class Session {
                         version: 'v2',
                     }
                 });
-                let auth = {
-                    baseURL: axios.defaults.baseURL,
-                    skey: response.data.match(/<skey>(.*?)<\/skey>/)[1],
-                    passTicket: response.data.match(/<pass_ticket>(.*?)<\/pass_ticket>/)[1],
-                    wxsid: response.data.match(/<wxsid>(.*?)<\/wxsid>/)[1],
-                    wxuin: response.data.match(/<wxuin>(.*?)<\/wxuin>/)[1],
-                };
+                let auth = {};
+
+                try {
+                    auth = {
+                        baseURL: axios.defaults.baseURL,
+                        skey: response.data.match(/<skey>(.*?)<\/skey>/)[1],
+                        passTicket: response.data.match(/<pass_ticket>(.*?)<\/pass_ticket>/)[1],
+                        wxsid: response.data.match(/<wxsid>(.*?)<\/wxsid>/)[1],
+                        wxuin: response.data.match(/<wxuin>(.*?)<\/wxuin>/)[1],
+                    };
+                } catch (ex) {
+                    window.alert('Your login may be compromised. For account security, you cannot log in to Web WeChat. You can try mobile WeChat or Windows WeChat.');
+                    window.location.reload();
+                }
 
                 self.auth = auth;
                 await storage.set('auth', auth);
