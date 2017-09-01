@@ -59,12 +59,40 @@ export default class MessageInput extends Component {
         input.focus();
     }
 
-    async handlePaste(e) {
-        var args = ipcRenderer.sendSync('file-paste');
+    async batchProcess(file) {
+        var message;
         var batch = this.props.user.length > 1;
         var receiver = this.props.user.filter(e => e.UserName !== this.props.me.UserName);
         var showMessage = this.props.showMessage;
-        var message;
+
+        for (let user of receiver) {
+            console.log('Send to: ' + user.NickName);
+
+            if (message) {
+                await this.props.sendMessage(user, message, true)
+                    .catch(ex => showMessage(`Send message to ${user.NickName} is failed!`));
+                continue;
+            }
+
+            // Do not repeat upload file, forward the message to another user
+            message = await this.props.process(file, user);
+
+            if (message === false) {
+                if (batch) {
+                    showMessage(`Send message to ${user.NickName} is failed!`);
+                    continue;
+                }
+                // In batch mode just show the failed message
+                showMessage('Failed to send image.');
+            }
+
+            await this.props.sendMessage(user, message, batch)
+                .catch(ex => showMessage(`Send message to ${user.NickName} is failed!`));
+        }
+    }
+
+    async handlePaste(e) {
+        var args = ipcRenderer.sendSync('file-paste');
 
         if (args.hasImage) {
             e.preventDefault();
@@ -81,28 +109,7 @@ export default class MessageInput extends Component {
                 type: 'image/png'
             });
 
-            for (let user of receiver) {
-                if (message) {
-                    this.props.sendMessage(user, message, true)
-                        .catch(ex => showMessage(`Send message to ${user.NickName} is failed!`));
-                    break;
-                }
-
-                // Do not repeat upload file, forward the message to another user
-                message = await this.props.process(file, user);
-
-                if (message === false) {
-                    if (batch) {
-                        showMessage(`Send message to ${user.NickName} is failed!`);
-                        return;
-                    }
-                    // In batch mode just show the failed message
-                    showMessage('Failed to send image.');
-                }
-
-                this.props.sendMessage(user, message, batch)
-                    .catch(ex => showMessage(`Send message to ${user.NickName} is failed!`));
-            }
+            this.batchProcess(file);
         }
     }
 
@@ -143,7 +150,7 @@ export default class MessageInput extends Component {
                         type="file"
                         ref="uploader"
                         onChange={e => {
-                            this.props.process(e.target.files[0]);
+                            this.batchProcess(e.target.files[0]);
                             e.target.value = '';
                         }}
                         style={{
