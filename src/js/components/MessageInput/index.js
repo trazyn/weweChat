@@ -27,6 +27,11 @@ export default class MessageInput extends Component {
 
         if (!message || e.charCode !== 13) return;
 
+        if (user.length === 1
+            && user.slice(-1).pop().UserName === this.props.me.UserName) {
+            return this.props.showMessage('Can\'t send message to yourself.');
+        }
+
         // You can not send message to yourself
         user.filter(e => e.UserName !== this.props.me.UserName).map(async e => {
             let res = await this.props.sendMessage(e, {
@@ -66,8 +71,6 @@ export default class MessageInput extends Component {
         var showMessage = this.props.showMessage;
 
         for (let user of receiver) {
-            console.log('Send to: ' + user.NickName);
-
             if (message) {
                 await this.props.sendMessage(user, message, true)
                     .catch(ex => showMessage(`Send message to ${user.NickName} is failed!`));
@@ -85,9 +88,6 @@ export default class MessageInput extends Component {
                 // In batch mode just show the failed message
                 showMessage('Failed to send image.');
             }
-
-            await this.props.sendMessage(user, message, batch)
-                .catch(ex => showMessage(`Send message to ${user.NickName} is failed!`));
         }
     }
 

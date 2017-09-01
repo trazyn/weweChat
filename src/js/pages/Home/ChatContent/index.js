@@ -22,6 +22,10 @@ import { on, off } from 'utils/event';
     reset: () => {
         stores.chat.user = false;
     },
+    isFriend: (id) => {
+        var user = stores.contacts.memberList.find(e => e.UserName === id) || {};
+        return helper.isContact(user);
+    },
     showUserinfo: async(isme, user) => {
         var caniremove = helper.isChatRoomOwner(stores.chat.user);
 
@@ -158,7 +162,7 @@ export default class ChatContent extends Component {
             case 42:
                 // Contact Card
                 let contact = message.contact;
-                let isFriend = helper.isFriend(contact);
+                let isFriend = this.props.isFriend(contact.UserName);
                 let html = `
                     <div class="${clazz(classes.contact, { 'is-friend': isFriend })}" data-userid="${contact.UserName}">
                         <img src="${contact.image}" class="unload disabledDrag" />
