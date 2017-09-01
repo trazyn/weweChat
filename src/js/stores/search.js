@@ -20,7 +20,7 @@ class Search {
             var res = (e.PYQuanPin + '').toLowerCase().indexOf(pinyin.letter(text.toLocaleLowerCase())) > -1;
 
             if (e.RemarkPYQuanPin) {
-                res = res || (e.RemarkPYQuanPin + '').toLowerCase().indexOf(pinyin.letter(text.toLocaleLowerCase())) > -1;
+                res = res || (e.RemarkPYQuanPin).toLowerCase().indexOf(pinyin.letter(text.toLocaleLowerCase())) > -1;
             }
 
             // The contact should in your contacts

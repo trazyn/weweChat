@@ -1,0 +1,216 @@
+
+.container {
+    position: fixed;
+    top: 40px;
+    left: 0;
+    width: 100vw;
+    background: #fff;
+    color: #333;
+    z-index: 9;
+
+    & header {
+        display: flex;
+        padding: 0 12px;
+        height: 50px;
+        line-height: 50px;
+        justify-content: space-between;
+        align-items: center;
+        font-family: 'Roboto';
+        font-weight: 100;
+        font-size: 20px;
+        color: #333;
+    }
+
+    & input {
+        height: 60px;
+        width: 100%;
+        text-align: center;
+        line-height: 60px;
+        border: 0;
+        background: 0;
+        color: #333;
+        font-size: 14px;
+        outline: 0;
+    }
+
+    & header i {
+        cursor: pointer;
+    }
+
+    & header input {
+        height: 50px;
+        padding-right: 17px;
+        line-height: 50px;
+        text-align: left;
+    }
+
+    & .active,
+    & header i:hover {
+        color: #34b7f1;
+    }
+
+    & header :global(.emoji) {
+        margin-top: 20px;
+    }
+}
+
+.list {
+    position: relative;
+    padding: 0;
+    padding-top: 8px;
+    margin: 0;
+    list-style: none;
+    height: calc(100vh - 90px - 60px - 8px);
+    overflow: hidden;
+    overflow-y: auto;
+
+    & li {
+        position: relative;
+        display: inline-block;
+        padding: 4px 18px;
+        padding-right: 32px;
+        margin: 6px 8px;
+        min-width: 80px;
+        line-height: 32px;
+        text-align: left;
+        border-radius: 48px;
+        color: #fff;
+        background: #f7f7f7;
+        cursor: pointer;
+        overflow: hidden;
+        transition: .2s;
+    }
+
+
+    & li:hover .cover {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+
+    & li i {
+        position: absolute;
+        right: 4px;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 24px;
+        width: 24px;
+        line-height: 24px;
+        text-align: center;
+        border-radius: 24px;
+        background: #405de6;
+    }
+}
+
+.cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    transform: scale(1);
+    opacity: .6;
+    transition: .2s;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, .3);
+    }
+}
+
+.username {
+    position: relative;
+    font-size: 13px;
+
+    & :global(.emoji) {
+        margin-top: 10px;
+    }
+}
+
+.footer {
+    height: 60px;
+    box-shadow: inset 0 1px 0 0 #eaedea;
+}
+
+.notfound {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+
+    & img {
+        width: 240px;
+    }
+
+    & h1 {
+        font-family: 'Roboto';
+        font-weight: 100;
+        color: rgba(0, 0, 0, .8);
+        letter-spacing: 2px;
+        word-spacing: 4px;
+    }
+}
+
+@media (width <= 800px) {
+    .container {
+        top: 30px;
+
+        & header {
+            padding: 0 10px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 16px;
+        }
+
+        & header :global(.emoji) {
+            margin-top: 14px;
+        }
+    }
+
+    .list {
+        height: calc(100vh - 70px - 46px);
+
+        & li {
+            padding: 0 14px;
+            margin: 4px 6px;
+            min-width: 70px;
+            line-height: 28px;
+            border-radius: 33px;
+        }
+    }
+
+    .footer {
+        height: 46px;
+
+        & input {
+            height: 46px;
+            line-height: 46px;
+            font-size: 13px;
+        }
+    }
+
+    .username {
+        font-size: 12px;
+
+        & :global(.emoji) {
+            margin-top: 8px;
+        }
+    }
+
+    .notfound {
+        & img {
+            width: 220px;
+        }
+
+        & h1 {
+            word-spacing: 2px;
+        }
+    }
+}

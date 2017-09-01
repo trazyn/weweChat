@@ -18,7 +18,7 @@ export default class Snackbar extends Component {
 
         return (
             <div className="Snackbar">
-                <div className="Snackbar-text">{this.props.text}</div>
+                <div className="Snackbar-text" dangerouslySetInnerHTML={{__html: this.props.text}} />
                 <div className="Snackbar-action" onClick={() => this.props.close()}>DONE</div>
             </div>
         );

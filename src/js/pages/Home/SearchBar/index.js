@@ -31,11 +31,11 @@ import classes from './style.css';
 export default class SearchBar extends Component {
     timer;
 
-    doFilter(text = '') {
+    filter(text = '') {
         text = text.trim();
 
-        clearTimeout(this.timer);
-        this.timer = setTimeout(() => {
+        clearTimeout(this.filter.timer);
+        this.filter.timer = setTimeout(() => {
             this.props.filter(text);
         }, 300);
     }
@@ -199,9 +199,9 @@ export default class SearchBar extends Component {
                     type="text"
                     placeholder="Search ..."
                     onKeyUp={e => this.navigation(e)}
-                    onFocus={e => this.doFilter(e.target.value)}
+                    onFocus={e => this.filter(e.target.value)}
                     onBlur={e => this.handleBlur(e.target.value)}
-                    onInput={e => this.doFilter(e.target.value)} />
+                    onInput={e => this.filter(e.target.value)} />
 
                 {
                     searching && (

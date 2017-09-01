@@ -1,0 +1,94 @@
+
+.container {
+    position: relative;
+    display: flex;
+    height: 60px;
+    align-items: center;
+    justify-content: space-between;
+
+    & input {
+        height: 60px;
+        width: 100%;
+        margin-left: 32px;
+        line-height: 60px;
+        border: 0;
+        padding-right: 17px;
+        background: 0;
+        color: #333;
+        font-size: 14px;
+        outline: 0;
+    }
+
+    & i {
+        font-size: 24px;
+        color: #000;
+        cursor: pointer;
+    }
+
+    & i:hover {
+        color: #34b7f1;
+    }
+}
+
+.action {
+    width: 65px;
+    margin-right: 17px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tips {
+    position: absolute;
+    height: 32px;
+    left: 14px;
+    top: -32px;
+    padding: 0 16px;
+    line-height: 32px;
+    font-size: 14px;
+    color: #fff;
+    background: color(#616161 -alpha(10%));
+    border-radius: 1px;
+    opacity: 0;
+    transform-origin: center bottom;
+    transition: .15s cubic-bezier(0, 0, .2, 1);
+    pointer-events: none;
+}
+
+.shouldSelectUser:hover .tips {
+    opacity: 1;
+    top: calc(-32px - 24px);
+}
+
+
+@media (width <= 800px) {
+    .container {
+        height: 46px;
+
+        & input {
+            height: 46px;
+            margin-left: 20px;
+            line-height: 46px;
+        }
+
+        & i {
+            font-size: 16px;
+        }
+    }
+
+    & .action {
+        width: 50px;
+    }
+
+    .tips {
+        height: 24px;
+        top: -24px;
+        padding: 0 12px;
+        line-height: 24px;
+        font-size: 12px;
+    }
+
+    .shouldSelectUser:hover .tips {
+        opacity: 1;
+        top: calc(-24px - 12px);
+    }
+}

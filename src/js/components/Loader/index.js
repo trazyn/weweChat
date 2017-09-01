@@ -6,7 +6,7 @@ import clazz from 'classname';
 import './style.global.css';
 
 export default class Button extends Component {
-    static PropTypes = {
+    static propTypes = {
         show: PropTypes.bool,
         fullscreen: PropTypes.bool,
     };

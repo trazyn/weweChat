@@ -64,7 +64,6 @@
     width: calc(100% - 311px);
 }
 
-.home,
 .contacts {
     position: relative;
     display: flex;
@@ -84,37 +83,12 @@
         outline: 0;
     }
 
-    & i {
-        font-size: 24px;
-        color: #000;
-        cursor: pointer;
-    }
-
-    & i:hover {
-        color: var(--active);
-    }
-
-    & i:nth-child(3) {
-        color: #ff1405;
-    }
-
     & label {
         display: flex;
         height: 23px;
         line-height: 23px;
     }
-}
 
-.home {
-    & .action {
-        width: 65px;
-        margin-right: 17px;
-        display: flex;
-        justify-content: space-between;
-    }
-}
-
-.contacts {
     & .action {
         margin-right: 17px;
         display: flex;
@@ -172,27 +146,6 @@
     text-transform: uppercase;
 }
 
-.tips {
-    position: absolute;
-    height: 32px;
-    left: 14px;
-    top: -32px;
-    padding: 0 16px;
-    line-height: 32px;
-    font-size: 14px;
-    background: color(#616161 -alpha(10%));
-    border-radius: 1px;
-    opacity: 0;
-    transform-origin: center bottom;
-    transition: .15s cubic-bezier(0, 0, .2, 1);
-    pointer-events: none;
-}
-
-.shouldSelectUser:hover .tips {
-    opacity: 1;
-    top: calc(-32px - 24px);
-}
-
 @media (width <= 800px) {
     .footer {
         & nav {
@@ -215,7 +168,6 @@
         width: calc(100% - 280px);
     }
 
-    .home,
     .contacts {
         height: 46px;
 
@@ -224,16 +176,6 @@
             width: calc(100% - 200px);
             margin-left: 20px;
             line-height: 46px;
-        }
-
-        & i {
-            font-size: 16px;
-        }
-    }
-
-    .home {
-        & .action {
-            width: 50px;
         }
     }
 
@@ -251,19 +193,6 @@
         & .button i {
             font-size: 16px;
         }
-    }
-
-    .tips {
-        height: 24px;
-        top: -24px;
-        padding: 0 12px;
-        line-height: 24px;
-        font-size: 12px;
-    }
-
-    .shouldSelectUser:hover .tips {
-        opacity: 1;
-        top: calc(-24px - 12px);
     }
 
     .options {

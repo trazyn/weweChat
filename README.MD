@@ -18,6 +18,8 @@ API from [https://web.wechat.com/](https://web.wechat.com/)
   ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/pasteconfirmation.png)
 - Drag to send file
   ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/dragdrop.png)
+- Batch send message
+  ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/batchsend.png)
 - Send GIF emoji
   ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/sendgif.gif)
 

@@ -670,7 +670,7 @@ class Chat {
             let list = transformMessages(payload.to, self.messages, item);
 
             if (!helper.isChatRoom(user.UserName)
-                && !user.isFriend) {
+                && !helper.isContact(user)) {
                 // The target is not your friend
                 list.data.push({
                     Content: `${user.sex ? 'She' : 'He'} is not your friend, <a class="add-friend" data-userid="${user.UserName}">Send friend request</a>`,

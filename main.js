@@ -83,6 +83,14 @@ let mainMenu = [
                 }
             },
             {
+                label: 'Batch Send Message',
+                accelerator: 'Cmd+B',
+                click() {
+                    mainWindow.show();
+                    mainWindow.webContents.send('show-batchsend');
+                }
+            },
+            {
                 type: 'separator',
             },
             {

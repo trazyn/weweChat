@@ -14,6 +14,7 @@
     padding-left: 24px;
     font-family: 'Roboto';
     background-color: #323232;
+    z-index: 999;
 }
 
 .Snackbar-action {
