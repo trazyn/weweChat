@@ -73,7 +73,7 @@ export default class BatchSend extends Component {
             // Unselected all user
             selected = [];
         } else {
-            selected = contacts.map(e => e.UserName);
+            selected = contacts.map(e => Object.assign({}, e));
         }
 
         this.setState({

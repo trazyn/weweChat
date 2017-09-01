@@ -681,27 +681,28 @@ class Chat {
             self.markedRead(payload.to);
             self.messages.set(payload.to, list);
 
-            return true;
+            return list.data[list.data.length - 1];
         }
 
         return false;
     }
 
-    @action async process(file) {
+    @action async process(file, user = self.user) {
         var showMessage = snackbar.showMessage;
 
         if (!file || file.size === 0) {
-            return showMessage('You can\'t send an empty file.');
+            showMessage('You can\'t send an empty file.');
+            return false;
         }
 
         if (!file
             || file.size >= 50 * 1024 * 1024) {
             showMessage('Send file not allowed to exceed 50M.');
-            return;
+            return false;
         }
 
-        var { mediaId, type, uploaderid } = await self.upload(file);
-        var res = await self.sendMessage(self.user, {
+        var { mediaId, type, uploaderid } = await self.upload(file, user);
+        var res = await self.sendMessage(user, {
             type,
             file: {
                 name: file.name,
@@ -763,9 +764,11 @@ class Chat {
         if (res === false) {
             showMessage(`Failed to send ${file.name}.`);
         }
+
+        return res;
     }
 
-    @action async upload(file) {
+    @action async upload(file, user = self.user) {
         var id = (+new Date() * 1000) + Math.random().toString().substr(2, 4);
         var auth = await storage.get('auth');
         var ticket = await helper.getCookie('webwx_data_ticket');
@@ -800,14 +803,14 @@ class Chat {
             FromUserName: session.user.User.UserName,
             MediaType: 4,
             StartPos: 0,
-            ToUserName: self.user.UserName,
+            ToUserName: user.UserName,
             TotalLen: file.size,
         }));
         formdata.append('webwx_data_ticket', ticket);
         formdata.append('pass_ticket', auth.passTicket);
         formdata.append('filename', file.slice(0, file.size));
 
-        var uploaderid = self.addUploadPreview(file, type);
+        var uploaderid = self.addUploadPreview(file, type, user);
         var response = await axios.post(server, formdata);
 
         if (response.data.BaseResponse.Ret === 0) {
@@ -821,10 +824,13 @@ class Chat {
         return false;
     }
 
-    @action addUploadPreview(file, type) {
-        var to = self.user.UserName;
-        var list = self.messages.get(to);
+    @action addUploadPreview(file, type, user = self.user) {
         var uploaderid = Math.random().toString();
+        var to = user.UserName;
+        var list = self.messages.get(to) || {
+            data: [],
+            unread: 0,
+        };
         var item = {
             isme: true,
             CreateTime: +new Date() / 1000,

@@ -53,6 +53,10 @@ class Session {
 
                 // Set your weChat network route, otherwise you will got a code '1102'
                 axios.defaults.baseURL = authAddress.match(/^https:\/\/(.*?)\//)[0];
+                axios.defaults.headers = {
+                    'X-Real-IP': '183.61.49.164',
+                    'X-Forwarded-For': '183.61.49.164',
+                };
 
                 delete window.redirect_uri;
                 delete window.code;

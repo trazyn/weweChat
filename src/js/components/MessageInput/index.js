@@ -20,8 +20,6 @@ export default class MessageInput extends Component {
         me: {},
     };
 
-    isme = (user) => user.UserName === this.props.me.UserName;
-
     async handleEnter(e) {
         var message = this.refs.input.value.trim();
         var user = this.props.user;
@@ -29,26 +27,17 @@ export default class MessageInput extends Component {
 
         if (!message || e.charCode !== 13) return;
 
-        user.map(async e => {
-            if (this.isme(e)) {
-                this.props.showMessage('Can\'t send message to yourself.');
-                return;
-            }
-
+        // You can not send message to yourself
+        user.filter(e => e.UserName !== this.props.me.UserName).map(async e => {
             let res = await this.props.sendMessage(e, {
                 content: message,
                 type: 1,
-            });
+            }, true);
 
             this.refs.input.value = '';
 
-            if (batch) {
-                this.props.showMessage(`Send message to ${e.NickName} is ${res ? 'success' : 'failed'}!`);
-                return;
-            }
-
             if (!res) {
-                this.props.showMessage('Failed to send message.');
+                this.props.showMessage(batch ? `Send message to ${e.NickName} is failed!` : 'Failed to send message.');
             }
         });
     }
@@ -72,6 +61,10 @@ export default class MessageInput extends Component {
 
     async handlePaste(e) {
         var args = ipcRenderer.sendSync('file-paste');
+        var batch = this.props.user.length > 1;
+        var receiver = this.props.user.filter(e => e.UserName !== this.props.me.UserName);
+        var showMessage = this.props.showMessage;
+        var message;
 
         if (args.hasImage) {
             e.preventDefault();
@@ -88,7 +81,28 @@ export default class MessageInput extends Component {
                 type: 'image/png'
             });
 
-            this.props.process(file);
+            for (let user of receiver) {
+                if (message) {
+                    this.props.sendMessage(user, message, true)
+                        .catch(ex => showMessage(`Send message to ${user.NickName} is failed!`));
+                    break;
+                }
+
+                // Do not repeat upload file, forward the message to another user
+                message = await this.props.process(file, user);
+
+                if (message === false) {
+                    if (batch) {
+                        showMessage(`Send message to ${user.NickName} is failed!`);
+                        return;
+                    }
+                    // In batch mode just show the failed message
+                    showMessage('Failed to send image.');
+                }
+
+                this.props.sendMessage(user, message, batch)
+                    .catch(ex => showMessage(`Send message to ${user.NickName} is failed!`));
+            }
         }
     }
 
