@@ -24,7 +24,7 @@ class Session {
     }
 
     @action async getCode() {
-        var response = await axios.get('https://login.wx.qq.com/jslogin?appid=wx782c26e4c19acffb&redirect_uri=https%3A%2F%2Fwx.qq.com%2Fcgi-bin%2Fmmwebwx-bin%2Fwebwxnewloginpage&fun=new&lang=en_US&_=' + +new Date());
+        var response = await axios.get('https://login.wx.qq.com/jslogin?appid=wx782c26e4c19acffb&redirect_uri=https:%2F%2Fweb.wechat.com%2Fcgi-bin%2Fmmwebwx-bin%2Fwebwxnewloginpage&fun=new&lang=en_US&_' + +new Date());
         var code = response.data.match(/[A-Za-z_\-\d]{10}==/)[0];
 
         self.code = code;
@@ -53,10 +53,6 @@ class Session {
 
                 // Set your weChat network route, otherwise you will got a code '1102'
                 axios.defaults.baseURL = authAddress.match(/^https:\/\/(.*?)\//)[0];
-                axios.defaults.headers = {
-                    'X-Real-IP': '183.61.49.164',
-                    'X-Forwarded-For': '183.61.49.164',
-                };
 
                 delete window.redirect_uri;
                 delete window.code;
