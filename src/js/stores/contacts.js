@@ -186,6 +186,10 @@ class Contacts {
         self.showGroup = showGroup;
     }
 
+    @action deleteUser(id) {
+        self.memberList = self.memberList.filter(e => e.UserName !== id);
+    }
+
     @action async updateUser(user) {
         var auth = await storage.get('auth');
         var list = self.memberList;

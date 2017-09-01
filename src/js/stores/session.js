@@ -164,6 +164,12 @@ class Session {
             }
         });
 
+        // Delete user
+        response.data.DelContactList.map((e) => {
+            contacts.deleteUser(e.UserName);
+            chat.removeChat(e);
+        });
+
         if (mods.length) {
             await contacts.batch(mods, true);
         }
