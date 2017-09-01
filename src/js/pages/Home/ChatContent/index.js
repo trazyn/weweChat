@@ -158,8 +158,9 @@ export default class ChatContent extends Component {
             case 42:
                 // Contact Card
                 let contact = message.contact;
+                let isFriend = helper.isFriend(contact);
                 let html = `
-                    <div class="${clazz(classes.contact, { 'is-friend': contact.isFriend })}" data-userid="${contact.UserName}">
+                    <div class="${clazz(classes.contact, { 'is-friend': isFriend })}" data-userid="${contact.UserName}">
                         <img src="${contact.image}" class="unload disabledDrag" />
 
                         <div>
@@ -168,7 +169,7 @@ export default class ChatContent extends Component {
                         </div>
                 `;
 
-                if (!contact.isFriend) {
+                if (!isFriend) {
                     html += `
                         <i class="icon-ion-android-add" data-userid="${contact.UserName}"></i>
                     `;

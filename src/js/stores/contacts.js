@@ -75,7 +75,6 @@ class Contacts {
         self.memberList = response.data.MemberList.filter(e => !helper.isOfficial(e) && !helper.isBrand(e)).concat(me);
         self.memberList.map(e => {
             e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
-            e.isFriend = true;
         });
 
         self.loading = false;
@@ -84,7 +83,7 @@ class Contacts {
         return (window.list = self.memberList);
     }
 
-    resolveUser(auth, user, inContacts = false) {
+    resolveUser(auth, user) {
         if (helper.isOfficial(user)) {
             // Skip the official account
             return;
@@ -111,7 +110,6 @@ class Contacts {
             }
         }
 
-        user.isFriend = inContacts;
         user.HeadImgUrl = `${axios.defaults.baseURL}${user.HeadImgUrl.substr(1)}`;
         user.MemberList.map(e => {
             e.HeadImgUrl = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgeticon?username=${e.UserName}&chatroomid=${user.EncryChatRoomId}&skey=${auth.skey}&seq=0`;
@@ -121,7 +119,7 @@ class Contacts {
     }
 
     // Batch get the contacts
-    async batch(list, inContacts = false) {
+    async batch(list) {
         var auth = await storage.get('auth');
         var response = await axios.post(`/cgi-bin/mmwebwx-bin/webwxbatchgetcontact?type=ex&r=${+new Date()}`, {
             BaseRequest: {
@@ -139,7 +137,7 @@ class Contacts {
         if (response.data.BaseResponse.Ret === 0) {
             response.data.ContactList.map(e => {
                 var index = self.memberList.findIndex(user => user.UserName === e.UserName);
-                var user = self.resolveUser(auth, e, inContacts);
+                var user = self.resolveUser(auth, e);
 
                 if (!user) return;
 

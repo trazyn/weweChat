@@ -81,7 +81,7 @@ export default class UserInfo extends Component {
         }
 
         setTimeout(() => {
-            if (user.isFriend || helper.isChatRoom(user.UserName)) {
+            if (helper.isContact(user) || helper.isChatRoom(user.UserName)) {
                 this.props.toggle(false);
                 this.props.chatTo(user.UserName);
                 document.querySelector('#messageInput').focus();
@@ -92,7 +92,8 @@ export default class UserInfo extends Component {
     }
 
     render() {
-        var { UserName, HeadImgUrl, NickName, RemarkName, Signature, City, Province, isFriend } = this.props.user;
+        var { UserName, HeadImgUrl, NickName, RemarkName, Signature, City, Province } = this.props.user;
+        var isFriend = helper.isContact(this.props.user);
         var pallet = this.props.pallet;
         var isme = this.props.isme();
         var background = pallet[0];

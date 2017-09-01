@@ -5,6 +5,7 @@ import pinyin from 'han';
 
 import contacts from './contacts';
 import storage from 'utils/storage';
+import helper from 'utils/helper';
 
 class NewChat {
     @observable show = false;
@@ -23,7 +24,7 @@ class NewChat {
                 res = res || (e.RemarkPYQuanPin + '').toLowerCase().indexOf(pinyin.letter(text.toLocaleLowerCase())) > -1;
             }
 
-            return e.isFriend && res;
+            return helper.isContact(e) && res;
         });
 
         self.query = text;

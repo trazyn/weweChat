@@ -61,7 +61,6 @@ async function resolveMessage(message) {
             contact.image = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgeticon?seq=0&username=${contact.UserName}&skey=${auth.skey}&msgid=${message.MsgId}`;
             contact.name = contact.NickName;
             contact.address = `${contact.Province || 'UNKNOW'}, ${contact.City || 'UNKNOW'}`;
-            contact.isFriend = !!contacts.memberList.find(e => e.UserName === contact.UserName);
             message.contact = contact;
             break;
 

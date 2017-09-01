@@ -24,7 +24,7 @@ class AddMember {
                 res = res || (e.RemarkPYQuanPin + '').toLowerCase().indexOf(pinyin.letter(text.toLocaleLowerCase())) > -1;
             }
 
-            return e.isFriend && !helper.isChatRoom(e.UserName) && res;
+            return helper.isContact(e) && !helper.isChatRoom(e.UserName) && res;
         });
 
         self.query = text;

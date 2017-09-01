@@ -24,7 +24,7 @@ class Search {
             }
 
             // The contact should in your contacts
-            return (e.isFriend || helper.isChatRoom(e.UserName)) && res;
+            return (helper.isContact(e) || helper.isChatRoom(e.UserName)) && res;
         });
         var groups = [];
         var friend = [];
