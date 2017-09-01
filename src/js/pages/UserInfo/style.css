@@ -52,12 +52,33 @@
         padding-top: 0;
     }
 
-    & h3 {
+    & .username {
+        display: -webkit-box;
+        padding: 0 12px;
+        line-height: 16px;     /* fallback */
+        max-height: 32px;      /* fallback */
+        -webkit-line-clamp: 2; /* number of lines to show */
+        -webkit-box-orient: vertical;
         letter-spacing: 1px;
         color: #4a4a4a;
+        font-weight: bold;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    & .wrap {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     & p {
+        display: -webkit-box;
+        line-height: 16px;
+        max-height: 32px;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
         padding: 0 12px;
         max-width: 280px;
         overflow: hidden;
@@ -106,6 +127,7 @@
 .inner {
     position: relative;
     display: inline-block;
+    margin-bottom: 14px;
 
     & img {
         width: 130px;

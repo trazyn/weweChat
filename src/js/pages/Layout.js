@@ -25,7 +25,7 @@ import Snackbar from 'components/Snackbar';
     show: stores.snackbar.show,
     process: stores.chat.process,
     close: () => stores.snackbar.toggle(false),
-    canidrag: () => !!stores.chat.user,
+    canidrag: () => !!stores.chat.user || !stores.batchsend.show,
 }))
 @observer
 export default class Layout extends Component {

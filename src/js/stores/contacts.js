@@ -72,7 +72,7 @@ class Contacts {
         });
 
         // Remove all official account and brand account
-        self.memberList = response.data.MemberList.filter(e => !helper.isOfficial(e) && !helper.isBrand(e)).concat(me);
+        self.memberList = response.data.MemberList.filter(e => helper.isContact(e) && !helper.isOfficial(e) && !helper.isBrand(e)).concat(me);
         self.memberList.map(e => {
             e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
         });

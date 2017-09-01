@@ -35,6 +35,7 @@ import helper from 'utils/helper';
         filter(filtered.query);
     },
     showAddFriend: (user) => stores.addfriend.toggle(true, user),
+    showMessage: stores.snackbar.showMessage,
     isme: () => {
         return stores.session.user
             && stores.userinfo.user.UserName === stores.session.user.User.UserName;
@@ -63,15 +64,17 @@ export default class UserInfo extends Component {
         if (e.charCode !== 13) return;
 
         var value = e.target.value.trim();
-        var result = await this.props.setRemarkName(value, this.props.user.UserName);
+        var res = await this.props.setRemarkName(value, this.props.user.UserName);
 
-        if (result.BaseResponse.Ret === 0) {
+        if (res) {
             this.props.refreshContacts({
                 ...this.props.user,
                 RemarkName: value,
                 RemarkPYInitial: value ? (pinyin.letter(value)[0]).toUpperCase() : value,
             });
             this.toggleEdit(false);
+        } else {
+            this.props.showMessage('Failed to set remark name.');
         }
     }
 
@@ -161,11 +164,11 @@ export default class UserInfo extends Component {
                             <Avatar src={HeadImgUrl} />
                         </div>
 
-                        <h3 dangerouslySetInnerHTML={{__html: NickName}} />
+                        <div className={classes.username} dangerouslySetInnerHTML={{__html: NickName}} />
 
                         {
                             !this.props.remove ? (
-                                <div>
+                                <div className={classes.wrap}>
                                     <p dangerouslySetInnerHTML={{__html: Signature || 'No Signature'}} />
 
                                     <div className={classes.address}>

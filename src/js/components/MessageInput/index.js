@@ -20,17 +20,26 @@ export default class MessageInput extends Component {
         me: {},
     };
 
+    canisend() {
+        var user = this.props.user;
+
+        if (user.length === 1
+            && user.slice(-1).pop().UserName === this.props.me.UserName) {
+            this.props.showMessage('Can\'t send message to yourself.');
+            return false;
+        }
+
+        return true;
+    }
+
     async handleEnter(e) {
         var message = this.refs.input.value.trim();
         var user = this.props.user;
         var batch = user.length > 1;
 
-        if (!message || e.charCode !== 13) return;
-
-        if (user.length === 1
-            && user.slice(-1).pop().UserName === this.props.me.UserName) {
-            return this.props.showMessage('Can\'t send message to yourself.');
-        }
+        if (!this.canisend()
+            || !message
+            || e.charCode !== 13) return;
 
         // You can not send message to yourself
         user.filter(e => e.UserName !== this.props.me.UserName).map(async e => {
@@ -70,6 +79,10 @@ export default class MessageInput extends Component {
         var receiver = this.props.user.filter(e => e.UserName !== this.props.me.UserName);
         var showMessage = this.props.showMessage;
 
+        if (this.canisend() === false) {
+            return;
+        }
+
         for (let user of receiver) {
             if (message) {
                 await this.props.sendMessage(user, message, true)
@@ -94,7 +107,7 @@ export default class MessageInput extends Component {
     async handlePaste(e) {
         var args = ipcRenderer.sendSync('file-paste');
 
-        if (args.hasImage) {
+        if (args.hasImage && this.canisend()) {
             e.preventDefault();
 
             if ((await this.props.confirmSendImage(args.filename)) === false) {

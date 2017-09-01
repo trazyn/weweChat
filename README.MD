@@ -62,6 +62,7 @@ Hide conversation      | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>M</kbd>
 Jump to conversation   | <kbd>Cmd</kbd> <kbd>0</kbd> ... <kbd>9</kbd>
 Next conversation      | <kbd>Cmd</kbd> <kbd>J</kbd>
 Previous conversation  | <kbd>Cmd</kbd> <kbd>K</kbd>
+Batch message          | <kbd>Cmd</kbd> <kbd>B</kbd>
 Toggle Full Screen     | <kbd>Shift</kbd> <kbd>Cmd</kbd> <kbd>F</kbd>
 Insert QQ emoji        | <kbd>Cmd</kbd> <kbd>I</kbd>
 Preferences            | <kbd>Cmd</kbd> <kbd>,</kbd>
@@ -109,7 +110,7 @@ Preferences            | <kbd>Cmd</kbd> <kbd>,</kbd>
 - [ ] Theme
 - [x] Send image from clipboard
 - [x] Drag to send file
-- [ ] Batch send message
+- [x] Batch send message
 - [ ] Mention a user
 - [ ] Chat bot
 

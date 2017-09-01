@@ -26,6 +26,13 @@
         cursor: pointer;
     }
 
+    & header span:nth-child(1) {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-right: 17px;
+    }
+
     & header i:hover {
         color: #34b7f1;
     }
