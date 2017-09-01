@@ -169,20 +169,26 @@
             font-size: 16px;
         }
 
+        & header input {
+            height: 40px;
+            line-height: 40px;
+        }
+
         & header :global(.emoji) {
             margin-top: 14px;
         }
     }
 
     .list {
-        height: calc(100vh - 70px - 46px);
+        height: calc(100vh - 70px - 46px - 8px);
 
         & li {
-            padding: 0 14px;
+            padding: 2px 14px;
+            padding-right: 24px;
             margin: 4px 6px;
             min-width: 70px;
             line-height: 28px;
-            border-radius: 33px;
+            border-radius: 32px;
         }
     }
 
