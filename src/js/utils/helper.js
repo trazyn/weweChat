@@ -1,6 +1,8 @@
 
 import { remote, ipcRenderer } from 'electron';
 
+import session from '../stores/session';
+
 const CHATROOM_NOTIFY_CLOSE = 0;
 const CONTACTFLAG_NOTIFYCLOSECONTACT = 512;
 const MM_USERATTRVERIFYFALG_BIZ_BRAND = 8;
@@ -9,7 +11,8 @@ const CONTACTFLAG_CONTACT = 1;
 
 const helper = {
     isContact: (user) => {
-        return user.ContactFlag & CONTACTFLAG_CONTACT;
+        return user.ContactFlag & CONTACTFLAG_CONTACT
+            || (session.user && user.UserName === session.user.User.UserName);
     },
 
     isChatRoom: (userid) => {

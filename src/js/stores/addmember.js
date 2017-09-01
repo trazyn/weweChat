@@ -17,11 +17,13 @@ class AddMember {
     }
 
     @action search(text) {
-        var list = contacts.memberList.filter(e => {
-            var res = (e.PYQuanPin + '').toLowerCase().indexOf(pinyin.letter(text.toLocaleLowerCase())) > -1;
+        text = pinyin.letter(text.toLocaleLowerCase());
 
-            if (e.RemarkPYQuanPin) {
-                res = res || (e.RemarkPYQuanPin + '').toLowerCase().indexOf(pinyin.letter(text.toLocaleLowerCase())) > -1;
+        var list = contacts.memberList.filter(e => {
+            var res = pinyin.letter(e.NickName).toLowerCase().indexOf(text) > -1;
+
+            if (e.RemarkName) {
+                res = res || pinyin.letter(e.RemarkName).toLowerCase().indexOf(text) > -1;
             }
 
             return helper.isContact(e) && !helper.isChatRoom(e.UserName) && res;
