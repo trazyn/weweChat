@@ -68,7 +68,6 @@
 
 .message {
     max-width: 170px;
-    font-family: 'Lucida Grande';
     font-size: 14px;
     color: #9b9b9b;
     overflow: hidden;
@@ -77,7 +76,6 @@
 }
 
 .times {
-    font-family: 'Georgia';
     font-size: 12px;
     color: #979797;
 }
