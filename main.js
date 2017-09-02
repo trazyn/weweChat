@@ -1,7 +1,7 @@
 
 import fs from 'fs';
 import tmp from 'tmp';
-import { app, powerMonitor, BrowserWindow, Tray, Menu, ipcMain, clipboard, shell } from 'electron';
+import { app, powerMonitor, BrowserWindow, Tray, Menu, ipcMain, clipboard, shell, session } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import AutoLaunch from 'auto-launch';
 
@@ -557,6 +557,16 @@ const createMainWindow = () => {
     if (isOsx) {
         createMenu();
     }
+
+    session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+        details.requestHeaders['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8';
+        /* eslint-disable */
+        callback({
+            cancel: false,
+            requestHeaders: details.requestHeaders,
+        });
+        /* eslint-enable */
+    });
 
     [imagesCacheDir, voicesCacheDir].map(e => {
         if (!fs.existsSync(e)) {

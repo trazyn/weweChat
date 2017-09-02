@@ -24,7 +24,7 @@ class Session {
     }
 
     @action async getCode() {
-        var response = await axios.get('https://login.wx.qq.com/jslogin?appid=wx782c26e4c19acffb&redirect_uri=https:%2F%2Fweb.wechat.com%2Fcgi-bin%2Fmmwebwx-bin%2Fwebwxnewloginpage&fun=new&lang=en_US&_' + +new Date());
+        var response = await axios.get('https://login.wx.qq.com/jslogin?appid=wx782c26e4c19acffb&redirect_uri=https%3A%2F%2Fwx.qq.com%2Fcgi-bin%2Fmmwebwx-bin%2Fwebwxnewloginpage&fun=new&lang=en_US&_=' + +new Date());
         var code = response.data.match(/[A-Za-z_\-\d]{10}==/)[0];
 
         self.code = code;
@@ -36,12 +36,13 @@ class Session {
         // Already logined
         if (self.auth) return;
 
-        var response = await axios.get('https://login.web.wechat.com/cgi-bin/mmwebwx-bin/login', {
+        var response = await axios.get('https://login.wx.qq.com/cgi-bin/mmwebwx-bin/login', {
             params: {
                 loginicon: true,
                 uuid: self.code,
                 tip: 0,
-                r: +new Date(),
+                r: ~new Date(),
+                _: +new Date(),
             }
         });
 
