@@ -24,9 +24,7 @@ let mainMenu = [
         submenu: [
             {
                 label: `About ${pkg.name}`,
-                click() {
-                    shell.openExternal('https://github.com/trazyn/weweChat');
-                }
+                selector: 'orderFrontStandardAboutPanel:',
             },
             {
                 label: 'Preferences...',
@@ -556,6 +554,14 @@ const createMainWindow = () => {
 
     if (isOsx) {
         createMenu();
+
+        app.setAboutPanelOptions({
+            applicationName: pkg.name,
+            applicationVersion: pkg.version,
+            copyright: 'Made with 💖 by trazyn. \n https://github.com/trazyn/weweChat',
+            credits: `With the invaluable help of: \n web.wechat.com`,
+            version: pkg.version
+        });
     }
 
     session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
