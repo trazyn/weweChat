@@ -32,6 +32,7 @@
         background: #e1306c;
         box-shadow: 0 0 24px 0 rgba(119, 119, 119, .5);
         cursor: pointer;
+        z-index: 9;
     }
 }
 

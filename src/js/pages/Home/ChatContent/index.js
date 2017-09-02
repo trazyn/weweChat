@@ -587,7 +587,6 @@ export default class ChatContent extends Component {
         return (
             <div
                 className={clazz(classes.container, {
-                    [classes.notfound]: !user,
                     [classes.hideConversation]: !showConversation,
                 })}
                 onClick={e => this.handleClick(e)}>
@@ -615,7 +614,9 @@ export default class ChatContent extends Component {
                             </div>
                         </div>
                     ) : (
-                        <div className={classes.inner}>
+                        <div className={clazz({
+                            [classes.noselected]: !user,
+                        })}>
                             <img src="assets/images/noselected.png" className="disabledDrag" />
                             <h1>No Chat selected.</h1>
                         </div>

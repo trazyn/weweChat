@@ -1,6 +1,7 @@
 
 .container {
     position: relative;
+    height: 100%;
 
     & header {
         position: relative;
@@ -59,19 +60,14 @@
     }
 }
 
-.inner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.notfound {
+.noselected {
+    position: relative;
     display: flex;
     height: 100%;
     width: 100%;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 
     & img {
         width: 200px;
@@ -709,6 +705,11 @@
             margin-bottom: 2px;
             font-size: 12px;
         }
+    }
+
+    .noselected img {
+        width: 160px;
+        margin-bottom: 5vh;
     }
 
     .messages {
