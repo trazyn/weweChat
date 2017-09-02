@@ -16,7 +16,7 @@ export default class Avatar extends Component {
         if (!this.props.show) return false;
 
         return (
-            <div className={classes.container}>
+            <div className={classes.container} {...this.props}>
                 <div>
                     <img src="assets/images/offline.png" className="disabledDrag" />
                     <h1>Oops, seems like you are offline!</h1>

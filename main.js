@@ -10,7 +10,7 @@ import pkg from './package.json';
 let forceQuit = false;
 let mainWindow;
 let tray;
-let settings;
+let settings = {};
 let isFullScreen = false;
 let isWin = process.platform === 'win32';
 let isOsx = process.platform === 'darwin';
