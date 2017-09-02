@@ -18,9 +18,11 @@ ElectronCookies.enable({
 
 class App extends Component {
     async componentWillMount() {
-        await stores.session.hasLogin();
-        await stores.settings.init();
-        await stores.search.getHistory();
+        if (window.navigator.onLine) {
+            await stores.session.hasLogin();
+            await stores.settings.init();
+            await stores.search.getHistory();
+        }
     }
 
     canisend() {

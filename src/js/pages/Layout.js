@@ -17,6 +17,7 @@ import Forward from './Forward';
 import ConfirmImagePaste from './ConfirmImagePaste';
 import Loader from 'components/Loader';
 import Snackbar from 'components/Snackbar';
+import Offline from 'components/Offline';
 
 @inject(stores => ({
     isLogin: () => !!stores.session.auth,
@@ -24,11 +25,16 @@ import Snackbar from 'components/Snackbar';
     message: stores.snackbar.text,
     show: stores.snackbar.show,
     process: stores.chat.process,
+    reconnect: stores.session.checkTimeout,
     close: () => stores.snackbar.toggle(false),
     canidrag: () => !!stores.chat.user || !stores.batchsend.show,
 }))
 @observer
 export default class Layout extends Component {
+    state = {
+        offline: false,
+    };
+
     componentDidMount() {
         var templates = [
             {
@@ -70,6 +76,20 @@ export default class Layout extends Component {
                 }
                 node = node.parentNode;
             }
+        });
+
+        window.addEventListener('offline', () => {
+            this.setState({
+                offline: true,
+            });
+        });
+
+        window.addEventListener('online', () => {
+            // Reconnect to wechat
+            this.props.reconnect();
+            this.setState({
+                offline: false,
+            });
         });
 
         if (window.process.platform === 'win32') {
@@ -114,6 +134,15 @@ export default class Layout extends Component {
     }
 
     render() {
+        if (!window.navigator.onLine) {
+            return (
+                <Offline show={true} style={{
+                    top: 0,
+                    paddingTop: 30
+                }} />
+            );
+        }
+
         if (!this.props.isLogin()) {
             return <Login />;
         }
@@ -141,6 +170,8 @@ export default class Layout extends Component {
                 <AddMember />
                 <ConfirmImagePaste />
                 <Forward />
+
+                <Offline show={this.state.offline} />;
 
                 <div className={classes.dragDropHolder} ref="holder">
                     <div className={classes.inner}>
