@@ -1,7 +1,7 @@
 
 import fs from 'fs';
 import tmp from 'tmp';
-import { app, powerMonitor, BrowserWindow, Tray, Menu, ipcMain, clipboard, shell, session } from 'electron';
+import { app, powerMonitor, BrowserWindow, Tray, Menu, ipcMain, clipboard, shell } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import AutoLaunch from 'auto-launch';
 
