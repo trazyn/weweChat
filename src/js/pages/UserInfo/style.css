@@ -66,11 +66,19 @@
         text-overflow: ellipsis;
     }
 
+    & .username :global(.emoji) {
+        zoom: .7;
+    }
+
     & .wrap {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+
+    & .wrap :global(.emoji) {
+        transform: translateY(-3px);
     }
 
     & p {
@@ -207,6 +215,11 @@
             padding: 0 8px;
             max-width: 280px;
             font-size: 12px;
+        }
+
+        & .wrap :global(.emoji) {
+            zoom: .7;
+            transform: translateY(0);
         }
     }
 

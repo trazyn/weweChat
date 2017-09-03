@@ -28,6 +28,14 @@
         color: #34b7f1;
     }
 
+    & header :global(.emoji) {
+        transform: translateY(.5px);
+    }
+
+    & header span :global(.emoji) {
+        zoom: .7;
+    }
+
     & .signature,
     & .times {
         font-size: 12px;
@@ -89,6 +97,14 @@
     padding-top: 16px;
     overflow-x: hidden;
     overflow-y: auto;
+
+    & :global(.qqemoji) {
+        transform: translateY(3px);
+    }
+
+    & :global(.emoji) {
+        transform: translateY(2px);
+    }
 }
 
 .message {
@@ -691,6 +707,15 @@
             font-size: 18px;
         }
 
+        & header :global(.emoji) {
+            zoom: .7;
+            transform: translateY(.5px);
+        }
+
+        & header span :global(.emoji) {
+            zoom: .68;
+        }
+
         & .signature,
         & .times {
             font-size: 11px;
@@ -715,6 +740,14 @@
     .messages {
         height: calc(100vh - 92px - 30px - 12px);
         padding-top: 12px;
+
+        & :global(.qqemoji) {
+            transform: translateY(-1px);
+        }
+
+        & :global(.emoji) {
+            transform: translateY(-1px);
+        }
     }
 
     .message {

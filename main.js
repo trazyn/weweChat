@@ -407,8 +407,10 @@ const createMainWindow = () => {
     );
 
     mainWindow.webContents.on('did-finish-load', () => {
-        mainWindow.show();
-        mainWindow.focus();
+        try {
+            mainWindow.show();
+            mainWindow.focus();
+        } catch (ex) { }
     });
 
     mainWindow.webContents.on('new-window', (event, url) => {
@@ -564,21 +566,13 @@ const createMainWindow = () => {
         });
     }
 
-    session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-        details.requestHeaders['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8';
-        /* eslint-disable */
-        callback({
-            cancel: false,
-            requestHeaders: details.requestHeaders,
-        });
-        /* eslint-enable */
-    });
-
     [imagesCacheDir, voicesCacheDir].map(e => {
         if (!fs.existsSync(e)) {
             fs.mkdirSync(e);
         }
     });
+
+    mainWindow.webContents.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8');
 };
 
 app.setName(pkg.name);

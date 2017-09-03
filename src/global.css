@@ -67,14 +67,15 @@ label {
 /* WEB WECHAT EMOJI :START */
 
 .emoji {
-    background: url(./assets/images/emoji.png) 0 0 no-repeat;
-    width: 20px;
-    height: 20px;
     display: -moz-inline-stack;
     display: inline-block;
-    vertical-align: top;
-    zoom: .8;
+    width: 20px;
+    height: 20px;
     margin-left: 4px;
+    vertical-align: top;
+    background: url(./assets/images/emoji-map.png) 0 0 no-repeat;
+    zoom: .8;
+    transform: translateY(1px);
 }
 
 .emoji2600 {
@@ -3362,435 +3363,467 @@ label {
     background-position: -350px -350px;
 }
 
-.qq_face a {
+.qqemoji {
+    display: -moz-inline-stack;
     display: inline-block;
-    width: 28px;
-    height: 28px;
-    margin: 4px;
-    font-size: 0;
-    text-indent: -999em;
-    cursor: pointer;
-    background: url(./assets/images/qqface.png) no-repeat;
+    background: url(./assets/images/qqemoji-map.png) 0 0 no-repeat;
+    width: 20px;
+    height: 20px;
+    margin-left: 4px;
+    vertical-align: top;
+    zoom: .8;
 }
 
-.qq_face .qqface0 {
+.qqemoji0 {
     background-position: 0 0;
 }
 
-.qq_face .qqface1 {
-    background-position: -29px 0;
+.qqemoji1 {
+    background-position: -24px 0;
 }
 
-.qq_face .qqface2 {
-    background-position: -58px 0;
+.qqemoji2 {
+    background-position: -48px 0;
 }
 
-.qq_face .qqface3 {
-    background-position: -87px 0;
+.qqemoji3 {
+    background-position: -72px 0;
 }
 
-.qq_face .qqface4 {
-    background-position: -116px 0;
+.qqemoji4 {
+    background-position: -96px 0;
 }
 
-.qq_face .qqface5 {
-    background-position: -145px 0;
+.qqemoji5 {
+    background-position: -120px 0;
 }
 
-.qq_face .qqface6 {
-    background-position: -174px 0;
+.qqemoji6 {
+    background-position: -144px 0;
 }
 
-.qq_face .qqface7 {
-    background-position: -203px 0;
+.qqemoji7 {
+    background-position: -168px 0;
 }
 
-.qq_face .qqface8 {
-    background-position: -232px 0;
+.qqemoji8 {
+    background-position: -192px 0;
 }
 
-.qq_face .qqface9 {
-    background-position: -261px 0;
+.qqemoji9 {
+    background-position: -216px 0;
 }
 
-.qq_face .qqface10 {
-    background-position: -290px 0;
+.qqemoji10 {
+    background-position: -240px 0;
 }
 
-.qq_face .qqface11 {
-    background-position: -319px 0;
+.qqemoji11 {
+    background-position: -264px 0;
 }
 
-.qq_face .qqface12 {
-    background-position: -348px 0;
+.qqemoji12 {
+    background-position: -288px 0;
 }
 
-.qq_face .qqface13 {
-    background-position: -377px 0;
+.qqemoji13 {
+    background-position: -312px 0;
 }
 
-.qq_face .qqface14 {
-    background-position: -406px 0;
+.qqemoji14 {
+    background-position: -336px 0;
 }
 
-.qq_face .qqface15 {
-    background-position: 0 -29px;
+.qqemoji15 {
+    background-position: 0 -24px;
 }
 
-.qq_face .qqface16 {
-    background-position: -29px -29px;
+.qqemoji16 {
+    background-position: -24px -24px;
 }
 
-.qq_face .qqface17 {
-    background-position: -58px -29px;
+.qqemoji17 {
+    background-position: -48px -24px;
 }
 
-.qq_face .qqface18 {
-    background-position: -87px -29px;
+.qqemoji18 {
+    background-position: -72px -24px;
 }
 
-.qq_face .qqface19 {
-    background-position: -116px -29px;
+.qqemoji19 {
+    background-position: -96px -24px;
 }
 
-.qq_face .qqface20 {
-    background-position: -145px -29px;
+.qqemoji20 {
+    background-position: -120px -24px;
 }
 
-.qq_face .qqface21 {
-    background-position: -174px -29px;
+.qqemoji21 {
+    background-position: -144px -24px;
 }
 
-.qq_face .qqface22 {
-    background-position: -203px -29px;
+.qqemoji22 {
+    background-position: -168px -24px;
 }
 
-.qq_face .qqface23 {
-    background-position: -232px -29px;
+.qqemoji23 {
+    background-position: -192px -24px;
 }
 
-.qq_face .qqface24 {
-    background-position: -261px -29px;
+.qqemoji24 {
+    background-position: -216px -24px;
 }
 
-.qq_face .qqface25 {
-    background-position: -290px -29px;
+.qqemoji25 {
+    background-position: -240px -24px;
 }
 
-.qq_face .qqface26 {
-    background-position: -319px -29px;
+.qqemoji26 {
+    background-position: -264px -24px;
 }
 
-.qq_face .qqface27 {
-    background-position: -348px -29px;
+.qqemoji27 {
+    background-position: -288px -24px;
 }
 
-.qq_face .qqface28 {
-    background-position: -377px -29px;
+.qqemoji28 {
+    background-position: -312px -24px;
 }
 
-.qq_face .qqface29 {
-    background-position: -406px -29px;
+.qqemoji29 {
+    background-position: -336px -24px;
 }
 
-.qq_face .qqface30 {
-    background-position: 0 -58px;
+.qqemoji30 {
+    background-position: 0 -48px;
 }
 
-.qq_face .qqface31 {
-    background-position: -29px -58px;
+.qqemoji31 {
+    background-position: -24px -48px;
 }
 
-.qq_face .qqface32 {
-    background-position: -58px -58px;
+.qqemoji32 {
+    background-position: -48px -48px;
 }
 
-.qq_face .qqface33 {
-    background-position: -87px -58px;
+.qqemoji33 {
+    background-position: -72px -48px;
 }
 
-.qq_face .qqface34 {
-    background-position: -116px -58px;
+.qqemoji34 {
+    background-position: -96px -48px;
 }
 
-.qq_face .qqface35 {
-    background-position: -145px -58px;
+.qqemoji35 {
+    background-position: -120px -48px;
 }
 
-.qq_face .qqface36 {
-    background-position: -174px -58px;
+.qqemoji36 {
+    background-position: -144px -48px;
 }
 
-.qq_face .qqface37 {
-    background-position: -203px -58px;
+.qqemoji37 {
+    background-position: -168px -48px;
 }
 
-.qq_face .qqface38 {
-    background-position: -232px -58px;
+.qqemoji38 {
+    background-position: -192px -48px;
 }
 
-.qq_face .qqface39 {
-    background-position: -261px -58px;
+.qqemoji39 {
+    background-position: -216px -48px;
 }
 
-.qq_face .qqface40 {
-    background-position: -290px -58px;
+.qqemoji40 {
+    background-position: -240px -48px;
 }
 
-.qq_face .qqface41 {
-    background-position: -319px -58px;
+.qqemoji41 {
+    background-position: -264px -48px;
 }
 
-.qq_face .qqface42 {
-    background-position: -348px -58px;
+.qqemoji42 {
+    background-position: -288px -48px;
 }
 
-.qq_face .qqface43 {
-    background-position: -377px -58px;
+.qqemoji43 {
+    background-position: -312px -48px;
 }
 
-.qq_face .qqface44 {
-    background-position: -406px -58px;
+.qqemoji44 {
+    background-position: -336px -48px;
 }
 
-.qq_face .qqface45 {
-    background-position: 0 -87px;
+.qqemoji45 {
+    background-position: 0 -72px;
 }
 
-.qq_face .qqface46 {
-    background-position: -29px -87px;
+.qqemoji46 {
+    background-position: -24px -72px;
 }
 
-.qq_face .qqface47 {
-    background-position: -58px -87px;
+.qqemoji47 {
+    background-position: -48px -72px;
 }
 
-.qq_face .qqface48 {
-    background-position: -87px -87px;
+.qqemoji48 {
+    background-position: -72px -72px;
 }
 
-.qq_face .qqface49 {
-    background-position: -116px -87px;
+.qqemoji49 {
+    background-position: -96px -72px;
 }
 
-.qq_face .qqface50 {
-    background-position: -145px -87px;
+.qqemoji50 {
+    background-position: -120px -72px;
 }
 
-.qq_face .qqface51 {
-    background-position: -174px -87px;
+.qqemoji51 {
+    background-position: -144px -72px;
 }
 
-.qq_face .qqface52 {
-    background-position: -203px -87px;
+.qqemoji52 {
+    background-position: -168px -72px;
 }
 
-.qq_face .qqface53 {
-    background-position: -232px -87px;
+.qqemoji53 {
+    background-position: -192px -72px;
 }
 
-.qq_face .qqface54 {
-    background-position: -261px -87px;
+.qqemoji54 {
+    background-position: -216px -72px;
 }
 
-.qq_face .qqface55 {
-    background-position: -290px -87px;
+.qqemoji55 {
+    background-position: -240px -72px;
 }
 
-.qq_face .qqface56 {
-    background-position: -319px -87px;
+.qqemoji56 {
+    background-position: -264px -72px;
 }
 
-.qq_face .qqface57 {
-    background-position: -348px -87px;
+.qqemoji57 {
+    background-position: -288px -72px;
 }
 
-.qq_face .qqface58 {
-    background-position: -377px -87px;
+.qqemoji58 {
+    background-position: -312px -72px;
 }
 
-.qq_face .qqface59 {
-    background-position: -406px -87px;
+.qqemoji59 {
+    background-position: -336px -72px;
 }
 
-.qq_face .qqface60 {
-    background-position: 0 -116px;
+.qqemoji60 {
+    background-position: 0 -96px;
 }
 
-.qq_face .qqface61 {
-    background-position: -29px -116px;
+.qqemoji61 {
+    background-position: -24px -96px;
 }
 
-.qq_face .qqface62 {
-    background-position: -58px -116px;
+.qqemoji62 {
+    background-position: -48px -96px;
 }
 
-.qq_face .qqface63 {
-    background-position: -87px -116px;
+.qqemoji63 {
+    background-position: -72px -96px;
 }
 
-.qq_face .qqface64 {
-    background-position: -116px -116px;
+.qqemoji64 {
+    background-position: -96px -96px;
 }
 
-.qq_face .qqface65 {
-    background-position: -145px -116px;
+.qqemoji65 {
+    background-position: -120px -96px;
 }
 
-.qq_face .qqface66 {
-    background-position: -174px -116px;
+.qqemoji66 {
+    background-position: -144px -96px;
 }
 
-.qq_face .qqface67 {
-    background-position: -203px -116px;
+.qqemoji67 {
+    background-position: -168px -96px;
 }
 
-.qq_face .qqface68 {
-    background-position: -232px -116px;
+.qqemoji68 {
+    background-position: -192px -96px;
 }
 
-.qq_face .qqface69 {
-    background-position: -261px -116px;
+.qqemoji69 {
+    background-position: -216px -96px;
 }
 
-.qq_face .qqface70 {
-    background-position: -290px -116px;
+.qqemoji70 {
+    background-position: -240px -96px;
 }
 
-.qq_face .qqface71 {
-    background-position: -319px -116px;
+.qqemoji71 {
+    background-position: -264px -96px;
 }
 
-.qq_face .qqface72 {
-    background-position: -348px -116px;
+.qqemoji72 {
+    background-position: -288px -96px;
 }
 
-.qq_face .qqface73 {
-    background-position: -377px -116px;
+.qqemoji73 {
+    background-position: -312px -96px;
 }
 
-.qq_face .qqface74 {
-    background-position: -406px -116px;
+.qqemoji74 {
+    background-position: -336px -96px;
 }
 
-.qq_face .qqface75 {
-    background-position: 0 -145px;
+.qqemoji75 {
+    background-position: 0 -120px;
 }
 
-.qq_face .qqface76 {
-    background-position: -29px -145px;
+.qqemoji76 {
+    background-position: -24px -120px;
 }
 
-.qq_face .qqface77 {
-    background-position: -58px -145px;
+.qqemoji77 {
+    background-position: -48px -120px;
 }
 
-.qq_face .qqface78 {
-    background-position: -87px -145px;
+.qqemoji78 {
+    background-position: -72px -120px;
 }
 
-.qq_face .qqface79 {
-    background-position: -116px -145px;
+.qqemoji79 {
+    background-position: -96px -120px;
 }
 
-.qq_face .qqface80 {
-    background-position: -145px -145px;
+.qqemoji80 {
+    background-position: -120px -120px;
 }
 
-.qq_face .qqface81 {
-    background-position: -174px -145px;
+.qqemoji81 {
+    background-position: -144px -120px;
 }
 
-.qq_face .qqface82 {
-    background-position: -203px -145px;
+.qqemoji82 {
+    background-position: -168px -120px;
 }
 
-.qq_face .qqface83 {
-    background-position: -232px -145px;
+.qqemoji83 {
+    background-position: -192px -120px;
 }
 
-.qq_face .qqface84 {
-    background-position: -261px -145px;
+.qqemoji84 {
+    background-position: -216px -120px;
 }
 
-.qq_face .qqface85 {
-    background-position: -290px -145px;
+.qqemoji85 {
+    background-position: -240px -120px;
 }
 
-.qq_face .qqface86 {
-    background-position: -319px -145px;
+.qqemoji86 {
+    background-position: -264px -120px;
 }
 
-.qq_face .qqface87 {
-    background-position: -348px -145px;
+.qqemoji87 {
+    background-position: -288px -120px;
 }
 
-.qq_face .qqface88 {
-    background-position: -377px -145px;
+.qqemoji88 {
+    background-position: -312px -120px;
 }
 
-.qq_face .qqface89 {
-    background-position: -406px -145px;
+.qqemoji89 {
+    background-position: -336px -120px;
 }
 
-.qq_face .qqface90 {
-    background-position: 0 -174px;
+.qqemoji90 {
+    background-position: 0 -144px;
 }
 
-.qq_face .qqface91 {
-    background-position: -29px -174px;
+.qqemoji91 {
+    background-position: -24px -144px;
 }
 
-.qq_face .qqface92 {
-    background-position: -58px -174px;
+.qqemoji92 {
+    background-position: -48px -144px;
 }
 
-.qq_face .qqface93 {
-    background-position: -87px -174px;
+.qqemoji93 {
+    background-position: -72px -144px;
 }
 
-.qq_face .qqface94 {
-    background-position: -116px -174px;
+.qqemoji94 {
+    background-position: -96px -144px;
 }
 
-.qq_face .qqface95 {
-    background-position: -145px -174px;
+.qqemoji95 {
+    background-position: -120px -144px;
 }
 
-.qq_face .qqface96 {
-    background-position: -174px -174px;
+.qqemoji96 {
+    background-position: -144px -144px;
 }
 
-.qq_face .qqface97 {
-    background-position: -203px -174px;
+.qqemoji97 {
+    background-position: -168px -144px;
 }
 
-.qq_face .qqface98 {
-    background-position: -232px -174px;
+.qqemoji98 {
+    background-position: -192px -144px;
 }
 
-.qq_face .qqface99 {
-    background-position: -261px -174px;
+.qqemoji99 {
+    background-position: -216px -144px;
 }
 
-.qq_face .qqface100 {
-    background-position: -290px -174px;
+.qqemoji100 {
+    background-position: -240px -144px;
 }
 
-.qq_face .qqface101 {
-    background-position: -319px -174px;
+.qqemoji101 {
+    background-position: -264px -144px;
 }
 
-.qq_face .qqface102 {
-    background-position: -348px -174px;
+.qqemoji102 {
+    background-position: -288px -144px;
 }
 
-.qq_face .qqface103 {
-    background-position: -377px -174px;
+.qqemoji103 {
+    background-position: -312px -144px;
 }
 
-.qq_face .qqface104 {
-    background-position: -406px -174px;
+.qqemoji104 {
+    background-position: -336px -144px;
+}
+
+.qqemoji105 {
+    background-position: 0 -168px;
+}
+
+.qqemoji106 {
+    background-position: -24px -168px;
+}
+
+.qqemoji107 {
+    background-position: -48px -168px;
+}
+
+.qqemoji108 {
+    background-position: -72px -168px;
+}
+
+.qqemoji109 {
+    background-position: -96px -168px;
+}
+
+.qqemoji110 {
+    background-position: -120px -168px;
+}
+
+.qqemoji111 {
+    background-position: -144px -168px;
+}
+
+.qqemoji112 {
+    background-position: -168px -168px;
 }
 
 /* WEB WECHAT EMOJI :END */

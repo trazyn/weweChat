@@ -281,8 +281,6 @@ export default class ChatContent extends Component {
 
             return (
                 <div className={clazz('unread', classes.message, {
-                    'qq_face': type === 1,
-
                     // File is uploading
                     [classes.uploading]: message.uploading === true,
 

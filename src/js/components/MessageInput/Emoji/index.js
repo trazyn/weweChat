@@ -14,7 +14,7 @@ export default class Emoji extends Component {
     };
 
     componentDidMount() {
-        delegate(this.refs.container, 'a.face', 'click', e => {
+        delegate(this.refs.container, 'a.qqemoji', 'click', e => {
             e.preventDefault();
             e.stopPropagation();
 
@@ -32,7 +32,7 @@ export default class Emoji extends Component {
     renderEmoji(emoji) {
         return emoji.map((e, index) => {
             var { key, className } = e;
-            return <a key={index} title={key} className={className}>{key}</a>;
+            return <a key={index} title={key} className={className} />;
         });
     }
 
@@ -41,7 +41,7 @@ export default class Emoji extends Component {
             <div
                 ref="container"
                 tabIndex="-1"
-                className={clazz(classes.container, 'qq_face', {
+                className={clazz(classes.container, {
                     [classes.show]: this.props.show
                 })}
                 onBlur={e => this.props.close()}>
