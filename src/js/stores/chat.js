@@ -326,6 +326,7 @@ class Chat {
         if (sync) {
             list = self.messages.get(message.ToUserName);
             from = message.ToUserName;
+            user = contacts.memberList.find(e => e.UserName === from);
 
             message.isme = true;
             message.HeadImgUrl = session.user.User.HeadImgUrl;
@@ -333,7 +334,7 @@ class Chat {
             message.ToUserName = user.UserName;
         }
 
-        // Check new message is already in the chat set
+        // User is already in the chat set
         if (list) {
             // Swap the chatset order
             let index = self.sessions.findIndex(e => e.UserName === from);
@@ -345,7 +346,7 @@ class Chat {
                     ...self.sessions.slice(index + 1, self.sessions.length)
                 ];
             } else {
-                // User not in chatset
+                // When user has removed should add to chat set
                 sessions = [user, ...self.sessions];
             }
 
@@ -368,7 +369,7 @@ class Chat {
                 list.data.push(message);
             }
         } else {
-            // New friend has accepted
+            // User is not in chat set
             sessions = [user, ...self.sessions];
             list = {
                 data: [message],
@@ -925,6 +926,11 @@ class Chat {
 
     @action markedRead(userid) {
         var list = self.messages.get(userid);
+
+        // Update the unread message need the chat in chat list
+        if (!self.sessions.map(e => e.UserName).includes(userid)) {
+            return;
+        }
 
         if (list) {
             list.unread = list.data.length;

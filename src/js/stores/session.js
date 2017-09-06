@@ -178,15 +178,15 @@ class Session {
         response.data.AddMsgList.map(e => {
             var from = e.FromUserName;
             var to = e.ToUserName;
+            var fromYourPhone = from === self.user.User.UserName && from !== to;
 
             // When message has been readed on your phone, will receive this message
             if (e.MsgType === 51) {
-                return chat.markedRead(to);
+                return chat.markedRead(fromYourPhone ? from : to);
             }
 
             // Sync message from your phone
-            if (from === self.user.User.UserName
-                && from !== to) {
+            if (fromYourPhone) {
                 // Message is sync from your phone
                 chat.addMessage(e, true);
                 return;

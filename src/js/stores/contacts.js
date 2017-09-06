@@ -195,6 +195,9 @@ class Contacts {
         var index = list.findIndex(e => e.UserName === user.UserName);
         var chating = chat.user;
 
+        // Fix chat room miss user avatar
+        user.EncryChatRoomId = list[index]['EncryChatRoomId'];
+
         user = self.resolveUser(auth, user);
 
         // Prevent avatar cache
