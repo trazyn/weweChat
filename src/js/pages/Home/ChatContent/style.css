@@ -144,6 +144,7 @@
         color: #fff;
         background: #323232;
         border-radius: 1px;
+        white-space: nowrap;
         transition: .15s cubic-bezier(0, 0, .2, 1);
         transform: translateX(32px) scale(.8);
         z-index: 99;
