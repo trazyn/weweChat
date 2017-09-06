@@ -8,6 +8,8 @@ Unofficial WeChat client built with React, MobX and Electron.
 
 API from [https://web.wechat.com/](https://web.wechat.com/)
 
+## [CHANGELOG](https://github.com/trazyn/weweChat/blob/master/CHANGELOG.MD)
+
 ## Feature
 - Work on desktop
 - On macOS, window vibrancy effect
@@ -28,7 +30,7 @@ Download the last version on the [website](https://github.com/trazyn/weweChat/re
 
 #### Mac(10.9+)
 [Download](https://github.com/trazyn/weweChat/releases/download/1.0.0/wewechat-1.0.0-mac.dmg) the `.dmg` file.
-Or use [Homebrew-Cask](https://caskroom.github.io/): 
+Or use [Homebrew-Cask](https://caskroom.github.io/):
 ```
 $ brew cask install wewechat
 ```
