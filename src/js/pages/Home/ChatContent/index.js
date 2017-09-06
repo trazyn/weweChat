@@ -106,12 +106,12 @@ export default class ChatContent extends Component {
                 if (uploading) {
                     return `
                         <div>
-                            <img class="open-image unload" data-id="${message.MsgId}" src="${image.src}" onerror="this.src='${image.fallback}'" />
+                            <img class="open-image unload" data-id="${message.MsgId}" src="${image.src}" data-fallback="${image.fallback}" />
                             <i class="icon-ion-android-arrow-up"></i>
                         </div>
                     `;
                 }
-                return `<img class="open-image unload" data-id="${message.MsgId}" src="${image.src}" onerror="this.src='${image.fallback}'" />`;
+                return `<img class="open-image unload" data-id="${message.MsgId}" src="${image.src}" data-fallback="${image.fallback}" />`;
             case 34:
                 /* eslint-disable */
                 // Voice
@@ -145,12 +145,12 @@ export default class ChatContent extends Component {
                     if (uploading) {
                         return `
                             <div>
-                                <img class="unload disabledDrag" src="${emoji.src}" onerror="this.src='${emoji.fallback}'" />
+                                <img class="unload disabledDrag" src="${emoji.src}" data-fallback="${emoji.fallback}" />
                                 <i class="icon-ion-android-arrow-up"></i>
                             </div>
                         `;
                     }
-                    return `<img src="${emoji.src}" class="unload disabledDrag" onerror="this.src='${emoji.fallback}'" />`;
+                    return `<img src="${emoji.src}" class="unload disabledDrag" data-fallback="${emoji.fallback}" />`;
                 }
                 return `
                     <div class="${classes.invalidEmoji}">
@@ -556,6 +556,19 @@ export default class ChatContent extends Component {
                     e.classList.remove('unload');
                     viewport.scrollTop = viewport.scrollHeight;
                     this.scrollTop = viewport.scrollTop;
+                });
+
+                on(e, 'error', ev => {
+                    var fallback = ev.target.dataset.fallback;
+
+                    if (fallback === 'undefined') {
+                        fallback = 'assets/images/broken.png';
+                    }
+
+                    ev.target.src = fallback;
+                    ev.target.removeAttribute('data-fallback');
+
+                    off(e, 'error');
                 });
             });
 
