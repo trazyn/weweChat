@@ -23,10 +23,25 @@ API from [https://web.wechat.com/](https://web.wechat.com/)
 - Send GIF emoji
   ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/sendgif.gif)
 
-## Downloads
-- [Mac](https://github.com/trazyn/weweChat/releases/download/1.0.0/wewechat-1.0.0-mac.dmg)
-- [Windows](https://github.com/trazyn/weweChat/releases/download/1.0.0/wewechat-1.0.0-win-setup.exe)(Test on win7)
-- [Linux](https://github.com/trazyn/weweChat/releases/download/1.0.0/wewechat-1.0.0-x86_64.AppImage)
+## Install
+Download the last version on the [website](https://github.com/trazyn/weweChat/releases/latest) or below.
+
+#### Mac(10.9+)
+[Download](https://github.com/trazyn/weweChat/releases/download/1.0.0/wewechat-1.0.0-mac.dmg) the `.dmg` file.
+Or use [Homebrew-Cask](https://caskroom.github.io/): 
+```
+$ brew cask install wewechat
+```
+
+#### Linux
+[Download](https://github.com/trazyn/weweChat/releases/download/1.0.0/wewechat-1.0.0-x86_64.AppImage) the `.AppImage` file.
+The AppImage needs to be made executable after download:
+```
+$ chmod u+x wewechat-1.0.0-x86_64.AppImage
+```
+
+#### Windows
+[Download](https://github.com/trazyn/weweChat/releases/download/1.0.0/wewechat-1.0.0-win-setup.exe) the `.exe` file.
 
 ## Screenshot
 ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/0.png)
