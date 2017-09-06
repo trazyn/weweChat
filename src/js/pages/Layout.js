@@ -27,7 +27,7 @@ import Offline from 'components/Offline';
     process: stores.chat.process,
     reconnect: stores.session.checkTimeout,
     close: () => stores.snackbar.toggle(false),
-    canidrag: () => !!stores.chat.user || !stores.batchsend.show,
+    canidrag: () => !!stores.chat.user && !stores.batchsend.show,
 }))
 @observer
 export default class Layout extends Component {
@@ -119,12 +119,12 @@ export default class Layout extends Component {
         };
 
         window.ondrop = e => {
-            var file = e.dataTransfer.files[0];
+            var files = e.dataTransfer.files;
             e.preventDefault();
             e.stopPropagation();
 
-            if (file && canidrag()) {
-                this.props.process(file);
+            if (files.length && canidrag()) {
+                Array.from(files).map(e => this.props.process(e));
             }
 
             this.refs.holder.classList.remove(classes.show);
