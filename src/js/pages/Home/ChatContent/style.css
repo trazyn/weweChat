@@ -180,6 +180,7 @@
 .message.isText {
     & .content {
         position: relative;
+        max-width: 100%;
         background: #fff;
         box-shadow: 0 6px 28px 0 rgba(230, 230, 230, 100);
     }
