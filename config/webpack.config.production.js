@@ -11,7 +11,7 @@ export default {
 
     ...baseConfig,
 
-    devtool: 'cheap-module-source-map',
+    devtool: false,
 
     entry: [
         'babel-polyfill',

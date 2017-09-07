@@ -63,6 +63,10 @@ export default {
                 loader: 'json-loader',
             },
             {
+                test: /\.html/,
+                loader: 'html-loader',
+            },
+            {
                 test: /\.woff(\?.*)?$/,
                 loader: 'url-loader?prefix=fonts/&name=[path][name].[ext]&limit=40000&mimetype=application/font-woff',
             },

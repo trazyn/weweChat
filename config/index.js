@@ -10,9 +10,6 @@ const config = {
     client: path.resolve(__dirname, '../src'),
     assets: path.resolve(__dirname, '../src/assets'),
     dist: path.resolve(__dirname, '../dist'),
-
-    /** Bebug namespace */
-    namespace: 'app:*',
 };
 
 export default config;

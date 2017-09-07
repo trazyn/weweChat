@@ -401,9 +401,7 @@ const createMainWindow = () => {
 
     mainWindow.setSize(350, 460);
     mainWindow.loadURL(
-        process.env.NODE_ENV === 'production'
-            ? `file://${__dirname}/src/index.html`
-            : `file://${__dirname}/src/index.dev.html`
+        `file://${__dirname}/src/index.html`
     );
 
     mainWindow.webContents.on('did-finish-load', () => {

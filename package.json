@@ -15,6 +15,7 @@
     "package-win32": "npm run build && rm -rf release && build --win --ia32 --projectDir ./dist",
     "package-linux": "npm run build && rm -rf release && build --linux --projectDir ./dist",
     "package-mac": "npm run build && rm -rf release && build --mac --projectDir ./dist",
+    "package-all": "npm run build && rm -rf release && build --mac --win --linux --projectDir ./dist",
     "hot-server": "cross-env NODE_ENV=development node -r babel-register scripts/dev.js",
     "start-hot": "cross-env HOT=1 NODE_ENV=development ./node_modules/.bin/electron -r babel-register -r babel-polyfill ./main",
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\""
@@ -121,6 +122,7 @@
     "express": "^4.15.3",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
+    "html-loader": "^0.5.1",
     "html-webpack-plugin": "^2.30.1",
     "json-loader": "^0.5.4",
     "postcss-autoreset": "^2.0.0",
