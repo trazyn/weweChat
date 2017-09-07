@@ -17,7 +17,11 @@ import helper from 'utils/helper';
             return addmember.list;
         }
 
-        return contacts.memberList.filter(e => !helper.isChatRoom(e.UserName));
+        return contacts.memberList.filter(
+            e => !helper.isChatRoom(e.UserName)
+                && !helper.isFileHelper(e)
+                && e.UserName !== stores.session.user.User.UserName
+        );
     },
     addMember: async(userids) => {
         var roomid = stores.chat.user.UserName;

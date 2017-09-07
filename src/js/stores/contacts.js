@@ -84,17 +84,20 @@ class Contacts {
     }
 
     resolveUser(auth, user) {
-        if (helper.isOfficial(user)) {
+        if (helper.isOfficial(user)
+            && !helper.isFileHelper(user)) {
             // Skip the official account
             return;
         }
 
-        if (helper.isBrand(user)) {
+        if (helper.isBrand(user)
+            && !helper.isFileHelper(user)) {
             // Skip the brand account, eg: JD.COM
             return;
         }
 
-        if (helper.isChatRoomRemoved(user)) {
+        if (helper.isChatRoomRemoved(user)
+            && !helper.isFileHelper(user)) {
             // Chat room has removed
             return;
         }

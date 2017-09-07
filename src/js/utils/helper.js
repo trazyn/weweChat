@@ -11,6 +11,8 @@ const CONTACTFLAG_CONTACT = 1;
 
 const helper = {
     isContact: (user) => {
+        if (helper.isFileHelper(user)) return true;
+
         return user.ContactFlag & CONTACTFLAG_CONTACT
             || (session.user && user.UserName === session.user.User.UserName);
     },
@@ -34,6 +36,8 @@ const helper = {
     isOfficial: (user) => {
         return !(user.VerifyFlag !== 24 && user.VerifyFlag !== 8 && user.UserName.startsWith('@'));
     },
+
+    isFileHelper: (user) => user.UserName === 'filehelper',
 
     isTop: (user) => {
         if (user.isTop !== void 0) {

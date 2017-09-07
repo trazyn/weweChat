@@ -4,6 +4,7 @@ import axios from 'axios';
 import pinyin from 'han';
 
 import contacts from './contacts';
+import session from './session';
 import storage from 'utils/storage';
 import helper from 'utils/helper';
 
@@ -22,11 +23,18 @@ class AddMember {
         var list = contacts.memberList.filter(e => {
             var res = pinyin.letter(e.NickName).toLowerCase().indexOf(text) > -1;
 
+            if (e.UserName === session.user.User.UserName
+                || !helper.isContact(e)
+                || helper.isChatRoom(e.UserName)
+                || helper.isFileHelper(e)) {
+                return false;
+            }
+
             if (e.RemarkName) {
                 res = res || pinyin.letter(e.RemarkName).toLowerCase().indexOf(text) > -1;
             }
 
-            return helper.isContact(e) && !helper.isChatRoom(e.UserName) && res;
+            return res;
         });
 
         self.query = text;

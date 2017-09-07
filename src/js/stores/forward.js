@@ -3,6 +3,7 @@ import { observable, action } from 'mobx';
 import pinyin from 'han';
 
 import contacts from './contacts';
+import session from './session';
 import chat from './chat';
 
 class Forward {
@@ -28,6 +29,10 @@ class Forward {
 
         if (text) {
             list = contacts.memberList.filter(e => {
+                if (e.UserName === session.user.User.UserName) {
+                    return false;
+                }
+
                 return pinyin.letter(e.NickName).toLowerCase().indexOf(pinyin.letter(text.toLocaleLowerCase())) > -1;
             });
             self.list.replace(list);
