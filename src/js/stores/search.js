@@ -16,8 +16,13 @@ class Search {
     @observable searching = false;
 
     @action filter(text = '') {
+        var list = contacts.memberList;
+        var groups = [];
+        var friend = [];
+
         text = pinyin.letter(text.toLocaleLowerCase());
-        var list = contacts.memberList.filter(e => {
+
+        list = contacts.memberList.filter(e => {
             var res = pinyin.letter(e.NickName).toLowerCase().indexOf(text) > -1;
 
             if (e.RemarkName) {
@@ -25,10 +30,8 @@ class Search {
             }
 
             // The contact should in your contacts
-            return (helper.isContact(e) || helper.isChatRoom(e.UserName)) && res;
+            return res;
         });
-        var groups = [];
-        var friend = [];
 
         list.map(e => {
             if (helper.isChatRoom(e.UserName)) {

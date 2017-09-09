@@ -11,7 +11,7 @@ import classes from './style.css';
     filter: stores.search.filter,
     result: stores.search.result,
     getPlaceholder: () => {
-        stores.contacts.filter();
+        stores.contacts.filter('', true);
         return stores.contacts.filtered.result;
     },
     chat: async(user) => {

@@ -17,12 +17,18 @@ class Contacts {
         result: [],
     };
 
-    @action group(list) {
+    @action group(list, showall = false) {
         var mappings = {};
         var sorted = [];
 
         list.map(e => {
             if (!e) {
+                return;
+            }
+
+            // If 'showall' is false, just show your friends
+            if (showall === false
+                && !helper.isContact(e)) {
                 return;
             }
 
@@ -158,7 +164,7 @@ class Contacts {
         return response.data.ContactList;
     }
 
-    @action filter(text = '') {
+    @action filter(text = '', showall = false) {
         text = pinyin.letter(text.toLocaleLowerCase());
         var list = self.memberList.filter(e => {
             var res = pinyin.letter(e.NickName).toLowerCase().indexOf(text) > -1;
@@ -178,7 +184,7 @@ class Contacts {
 
         self.filtered = {
             query: text,
-            result: list.length ? self.group(list) : [],
+            result: list.length ? self.group(list, showall) : [],
         };
 
         window.res = self.filtered;

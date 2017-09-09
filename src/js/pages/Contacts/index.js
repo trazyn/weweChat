@@ -8,7 +8,10 @@ import classes from './style.css';
 import Avatar from 'components/Avatar';
 
 @inject(stores => ({
-    filtered: stores.contacts.filtered,
+    filtered: () => {
+        stores.contacts.filter('');
+        return stores.contacts.filtered;
+    },
     getContats: stores.contacts.getContats,
     showUserinfo: stores.userinfo.toggle,
 }))
@@ -60,7 +63,7 @@ export default class Contacts extends Component {
     }
 
     render() {
-        var { query, result } = this.props.filtered;
+        var { query, result } = this.props.filtered();
 
         if (query && result.length === 0) {
             return (
