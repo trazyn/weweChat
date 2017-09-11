@@ -13,6 +13,7 @@ class Settings {
     @observable startup = false;
     @observable blockRecall = false;
     @observable remeberConversation = false;
+    @observable showMenu = false;
     @observable downloads = '';
     @observable plugins = [{
         name: 'Message Backup',
@@ -58,6 +59,11 @@ class Settings {
         self.save();
     }
 
+    @action setShowMenu(showMenu) {
+        self.showMenu = showMenu;
+        self.save();
+    }
+
     @action setDownloads(downloads) {
         self.downloads = downloads.path;
         self.save();
@@ -65,7 +71,7 @@ class Settings {
 
     @action async init() {
         var settings = await storage.get('settings');
-        var { alwaysOnTop, showOnTray, showNotification, blockRecall, remeberConversation, startup, downloads } = self;
+        var { alwaysOnTop, showOnTray, showNotification, blockRecall, remeberConversation, startup, showMenu, downloads } = self;
 
         if (settings && Object.keys(settings).length) {
             // Use !! force convert to a bool value
@@ -76,6 +82,7 @@ class Settings {
             self.startup = !!settings.startup;
             self.blockRecall = !!settings.blockRecall;
             self.remeberConversation = !!settings.remeberConversation;
+            self.showMenu = !!settings.showMenu;
             self.downloads = settings.downloads;
         } else {
             await storage.set('settings', {
@@ -83,6 +90,7 @@ class Settings {
                 showOnTray,
                 showNotification,
                 startup,
+                showMenu,
                 downloads,
                 blockRecall,
                 remeberConversation,
@@ -104,7 +112,7 @@ class Settings {
     }
 
     save() {
-        var { alwaysOnTop, showOnTray, showNotification, confirmImagePaste, blockRecall, remeberConversation, startup, downloads } = self;
+        var { alwaysOnTop, showOnTray, showNotification, confirmImagePaste, blockRecall, remeberConversation, startup, showMenu, downloads } = self;
 
         storage.set('settings', {
             alwaysOnTop,
@@ -112,6 +120,7 @@ class Settings {
             showNotification,
             confirmImagePaste,
             startup,
+            showMenu,
             downloads,
             blockRecall,
             remeberConversation,
@@ -124,6 +133,7 @@ class Settings {
                 showNotification,
                 confirmImagePaste,
                 startup,
+                showMenu,
                 downloads,
                 blockRecall,
                 remeberConversation,

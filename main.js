@@ -374,7 +374,12 @@ async function autostart() {
 
 function createMenu() {
     var menu = Menu.buildFromTemplate(mainMenu);
-    Menu.setApplicationMenu(menu);
+
+    if (isOsx || settings.showMenu) {
+        Menu.setApplicationMenu(menu);
+    } else {
+        mainWindow.setMenu(null);
+    }
 }
 
 const createMainWindow = () => {
@@ -433,6 +438,7 @@ const createMainWindow = () => {
         try {
             updateTray();
             autostart();
+            createMenu();
         } catch (ex) {
             console.error(ex);
         }
@@ -553,8 +559,6 @@ const createMainWindow = () => {
     });
 
     if (isOsx) {
-        createMenu();
-
         app.setAboutPanelOptions({
             applicationName: pkg.name,
             applicationVersion: pkg.version,
@@ -571,6 +575,7 @@ const createMainWindow = () => {
     });
 
     mainWindow.webContents.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8');
+    createMenu();
 };
 
 app.setName(pkg.name);
