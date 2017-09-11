@@ -375,7 +375,7 @@ async function autostart() {
 function createMenu() {
     var menu = Menu.buildFromTemplate(mainMenu);
 
-    if (isOsx || settings.showMenu) {
+    if (isOsx) {
         Menu.setApplicationMenu(menu);
     } else {
         mainWindow.setMenu(null);
@@ -438,7 +438,6 @@ const createMainWindow = () => {
         try {
             updateTray();
             autostart();
-            createMenu();
         } catch (ex) {
             console.error(ex);
         }

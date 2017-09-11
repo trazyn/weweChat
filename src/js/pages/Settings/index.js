@@ -16,8 +16,6 @@ import helper from 'utils/helper';
     setShowNotification: stores.settings.setShowNotification,
     startup: stores.settings.startup,
     setStartup: stores.settings.setStartup,
-    showMenu: stores.settings.showMenu,
-    setShowMenu: stores.settings.setShowMenu,
     downloads: stores.settings.downloads,
     setDownloads: stores.settings.setDownloads,
     confirmImagePaste: stores.settings.confirmImagePaste,
@@ -74,8 +72,6 @@ export default class Settings extends Component {
             setShowNotification,
             startup,
             setStartup,
-            showMenu,
-            setShowMenu,
             downloads,
             setDownloads,
             confirmImagePaste,
@@ -157,13 +153,6 @@ export default class Settings extends Component {
                             <label htmlFor="startup">
                                 <span>Launch at startup</span>
                                 <Switch id="startup" checked={startup} onChange={e => setStartup(e.target.checked)} />
-                            </label>
-                        </li>
-
-                        <li>
-                            <label htmlFor="showMenu">
-                                <span>Show menu(Windows and Linux)</span>
-                                <Switch id="showMenu" checked={showMenu} onChange={e => setShowMenu(e.target.checked)} />
                             </label>
                         </li>
                     </ul>
