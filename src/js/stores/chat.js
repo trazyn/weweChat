@@ -357,6 +357,7 @@ class Chat {
                 message = await resolveMessage(message);
 
                 if (!helper.isMuted(user)
+                    && !sync
                     && settings.showNotification) {
                     /* eslint-disable */
                     new Notification(title, {
