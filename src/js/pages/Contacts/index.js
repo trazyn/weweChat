@@ -5,7 +5,6 @@ import clazz from 'classname';
 import randomColor from 'randomcolor';
 
 import classes from './style.css';
-import Avatar from 'components/Avatar';
 
 @inject(stores => ({
     filtered: () => {
@@ -43,7 +42,7 @@ export default class Contacts extends Component {
                                 return (
                                     <div className={classes.item} key={index} onClick={() => this.props.showUserinfo(true, e)}>
                                         <div className={classes.avatar}>
-                                            <Avatar style={{
+                                            <img style={{
                                                 width: 32,
                                                 height: 32,
                                             }} src={e.HeadImgUrl} />
