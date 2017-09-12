@@ -68,10 +68,6 @@
     text-overflow: ellipsis;
     max-width: 70%;
     display: inline-block;
-
-    & :global(.emoji) {
-        transform: translateY(3px);
-    }
 }
 
 @media (width <= 800px) {
@@ -97,9 +93,5 @@
         & img {
             width: 200px;
         }
-    }
-
-    .username :global(.emoji) {
-        zoom: .7;
     }
 }

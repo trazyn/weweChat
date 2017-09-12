@@ -451,7 +451,7 @@ const createMainWindow = () => {
 
         conversations = conversations.slice(0, 10).map((e, index) => {
             return {
-                label: e.NickName,
+                label: e.RemarkName || e.NickName,
                 accelerator: `Cmd+${index}`,
                 click() {
                     mainWindow.show();
@@ -464,7 +464,7 @@ const createMainWindow = () => {
 
         contacts = contacts.map(e => {
             return {
-                label: e.NickName,
+                label: e.RemarkName || e.NickName,
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-userinfo', {

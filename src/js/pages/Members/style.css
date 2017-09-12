@@ -36,12 +36,6 @@
     & header i:hover {
         color: #34b7f1;
     }
-
-    & header :global(.emoji) {
-        margin-top: 20px;
-        zoom: .9;
-        transform: translateY(-6px);
-    }
 }
 
 .list {
@@ -102,10 +96,6 @@
 .username {
     position: relative;
     font-size: 13px;
-
-    & :global(.emoji) {
-        transform: translateY(10px);
-    }
 }
 
 .footer {
@@ -155,11 +145,6 @@
             line-height: 40px;
             font-size: 16px;
         }
-
-        & header :global(.emoji) {
-            margin-top: 14px;
-            transform: translateY(-4px);
-        }
     }
 
     .list {
@@ -186,10 +171,6 @@
 
     .username {
         font-size: 12px;
-
-        & :global(.emoji) {
-            transform: translateY(8px);
-        }
     }
 
     .notfound {

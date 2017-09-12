@@ -28,14 +28,6 @@
         color: #34b7f1;
     }
 
-    & header :global(.emoji) {
-        transform: translateY(.5px);
-    }
-
-    & header span :global(.emoji) {
-        zoom: .7;
-    }
-
     & .signature,
     & .times {
         font-size: 12px;
@@ -101,10 +93,6 @@
     & :global(.qqemoji) {
         transform: translateY(3px);
     }
-
-    & :global(.emoji) {
-        transform: translateY(2px);
-    }
 }
 
 .message {
@@ -149,10 +137,6 @@
         transform: translateX(32px) scale(.8);
         z-index: 99;
         opacity: 0;
-    }
-
-    & p.username :global(.emoji) {
-        transform: translateY(9px);
     }
 
     &:not(.isme) img:hover + p.username {
@@ -709,15 +693,6 @@
             font-size: 18px;
         }
 
-        & header :global(.emoji) {
-            zoom: .7;
-            transform: translateY(.5px);
-        }
-
-        & header span :global(.emoji) {
-            zoom: .68;
-        }
-
         & .signature,
         & .times {
             font-size: 11px;
@@ -746,10 +721,6 @@
         & :global(.qqemoji) {
             transform: translateY(-1px);
         }
-
-        & :global(.emoji) {
-            transform: translateY(-1px);
-        }
     }
 
     .message {
@@ -774,10 +745,6 @@
             padding: 0 9px;
             font-size: 12px;
             transform: translateX(24px) scale(.8);
-        }
-
-        & p.username :global(.emoji) {
-            transform: translateY(4px);
         }
 
         &:not(.isme) img:hover + p.username {

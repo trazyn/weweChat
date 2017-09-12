@@ -66,19 +66,11 @@
         text-overflow: ellipsis;
     }
 
-    & .username :global(.emoji) {
-        zoom: .7;
-    }
-
     & .wrap {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-    }
-
-    & .wrap :global(.emoji) {
-        transform: translateY(-3px);
     }
 
     & p {
@@ -206,20 +198,10 @@
             color: #4a4a4a;
         }
 
-        & h3 :global(.emoji) {
-            margin-top: 5px;
-            margin-right: 2px;
-        }
-
         & p {
             padding: 0 8px;
             max-width: 280px;
             font-size: 12px;
-        }
-
-        & .wrap :global(.emoji) {
-            zoom: .7;
-            transform: translateY(0);
         }
     }
 

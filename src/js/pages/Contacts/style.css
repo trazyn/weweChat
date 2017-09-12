@@ -97,10 +97,6 @@
     display: inline-block;
 }
 
-.info :global(.emoji) {
-    transform: translateY(0);
-}
-
 .username,
 .signature {
     max-width: 200px;

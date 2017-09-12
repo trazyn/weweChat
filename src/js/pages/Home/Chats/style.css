@@ -64,10 +64,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-
-    & :global(.emoji) {
-        transform: translateY(2px);
-    }
 }
 
 .message {
@@ -77,10 +73,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-
-    & :global(.emoji) {
-        transform: translateY(0);
-    }
 }
 
 .times {
@@ -139,20 +131,11 @@
         max-width: 160px;
         margin-bottom: 4px;
         font-size: 13px;
-
-        & :global(.emoji) {
-            zoom: .7;
-            transform: translateY(2px);
-        }
     }
 
     .message {
         max-width: 160px;
         font-size: 12px;
-
-        & :global(.emoji) {
-            zoom: .7;
-        }
     }
 
     .times {
