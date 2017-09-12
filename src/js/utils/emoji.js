@@ -376,7 +376,25 @@ function parser(text) {
         text = decodeText = text.split(`${e}`).join(`<a class="${className}"></a>`);
     });
 
+    return normalize(decodeText);
+}
+
+function normalize(text = '') {
+    var matchs = text.match(/<span class="emoji emoji[0-9a-fA-F]+"><\/span>/g) || [];
+    var decodeText = text;
+
+    try {
+        matchs.map(e => {
+            // Decode utf16 to emoji
+            var emojiCode = e.match(/emoji([0-9a-fA-F]+)/)[1].substr(0, 5);
+            var emoji = String.fromCodePoint(parseInt(emojiCode, 16));
+            text = decodeText = text.split(e).join(emoji);
+        });
+    } catch (ex) {
+        console.error('Failed decode %s: %o', text, ex);
+    }
+
     return decodeText;
 }
 
-export { emoji, parser };
+export { emoji, parser, normalize };

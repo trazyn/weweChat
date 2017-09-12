@@ -7,6 +7,7 @@ import session from './session';
 import chat from './chat';
 import storage from 'utils/storage';
 import helper from 'utils/helper';
+import { normalize } from 'utils/emoji';
 
 class Contacts {
     @observable loading = false;
@@ -80,7 +81,9 @@ class Contacts {
         // Remove all official account and brand account
         self.memberList = response.data.MemberList.filter(e => helper.isContact(e) && !helper.isOfficial(e) && !helper.isBrand(e)).concat(me);
         self.memberList.map(e => {
-            e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
+            e.MemberList = [];
+
+            return self.resolveUser(auth, e);
         });
 
         self.loading = false;
@@ -119,8 +122,14 @@ class Contacts {
             }
         }
 
+        user.NickName = normalize(user.NickName);
+        user.RemarkName = normalize(user.RemarkName);
+        user.Signature = normalize(user.Signature);
+
         user.HeadImgUrl = `${axios.defaults.baseURL}${user.HeadImgUrl.substr(1)}`;
         user.MemberList.map(e => {
+            e.NickName = normalize(e.NickName);
+            e.RemarkName = normalize(e.RemarkName);
             e.HeadImgUrl = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgeticon?username=${e.UserName}&chatroomid=${user.EncryChatRoomId}&skey=${auth.skey}&seq=0`;
         });
 

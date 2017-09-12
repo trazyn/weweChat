@@ -5,6 +5,7 @@ import { observable, action } from 'mobx';
 
 import helper from 'utils/helper';
 import storage from 'utils/storage';
+import { normalize } from 'utils/emoji';
 import chat from './chat';
 import contacts from './contacts';
 
@@ -184,6 +185,8 @@ class Session {
             if (e.MsgType === 51) {
                 return chat.markedRead(fromYourPhone ? from : to);
             }
+
+            e.Content = normalize(e.Content);
 
             // Sync message from your phone
             if (fromYourPhone) {
