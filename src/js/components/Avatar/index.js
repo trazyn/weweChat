@@ -28,6 +28,7 @@ export default class Avatar extends Component {
         return (
             <img
                 className={clazz('Avatar', 'fade fadein', this.props.className)}
+                src={this.props.src}
                 onLoad={e => this.handleLoad(e)}
                 onError={e => this.handleError(e)} />
         );
