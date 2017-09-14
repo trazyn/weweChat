@@ -11,7 +11,7 @@ export default class Avatar extends Component {
     };
 
     static defaultProps = {
-        fallback: 'http://i.pravatar.cc/200',
+        fallback: 'assets/images/user-fallback.png',
     };
 
     handleError(e) {
@@ -29,6 +29,7 @@ export default class Avatar extends Component {
             <img
                 className={clazz('Avatar', 'fade fadein', this.props.className)}
                 src={this.props.src}
+                onClick={this.props.onClick}
                 onLoad={e => this.handleLoad(e)}
                 onError={e => this.handleError(e)} />
         );

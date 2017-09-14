@@ -173,10 +173,25 @@ function hasUnreadMessage(messages) {
     });
 }
 
-function updateMenus(sessions) {
+async function updateMenus(sessions) {
+    var conversationsWithIcon = await Promise.all(
+        sessions.map(async e => {
+            e.icon = await helper.getDataURL(e.HeadImgUrl);
+            return e;
+        })
+    );
+    var contactsWithIcon = await Promise.all(
+        contacts.memberList.map(async e => {
+            e.icon = await helper.getDataURL(e.HeadImgUrl);
+            return e;
+        })
+    );
+
+    console.log(conversationsWithIcon);
+
     ipcRenderer.send('menu-update', {
-        conversations: JSON.stringify(sessions),
-        contacts: JSON.stringify(contacts.memberList),
+        conversations: JSON.stringify(conversationsWithIcon),
+        contacts: JSON.stringify(contactsWithIcon),
     });
 }
 

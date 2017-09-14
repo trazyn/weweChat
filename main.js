@@ -1,7 +1,7 @@
 
 import fs from 'fs';
 import tmp from 'tmp';
-import { app, powerMonitor, BrowserWindow, Tray, Menu, ipcMain, clipboard, shell } from 'electron';
+import { app, powerMonitor, BrowserWindow, Tray, Menu, ipcMain, clipboard, shell, nativeImage } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import AutoLaunch from 'auto-launch';
 
@@ -248,6 +248,16 @@ let mainMenu = [
     }
 ];
 
+function getIcon(data) {
+    var fallback = nativeImage.createFromPath(`${__dirname}/src/assets/images/user-fallback.png`);
+    var icon = data ? nativeImage.createFromDataURL(data) : fallback;
+
+    return icon.resize({
+        width: 24,
+        height: 24,
+    });
+}
+
 function updateTray(unread = 0) {
     if (!isOsx) {
         // Always show the tray icon on windows
@@ -453,6 +463,7 @@ const createMainWindow = () => {
             return {
                 label: e.RemarkName || e.NickName,
                 accelerator: `Cmd+${index}`,
+                icon: getIcon(e.icon),
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('message-chatto', {
@@ -465,6 +476,7 @@ const createMainWindow = () => {
         contacts = contacts.map(e => {
             return {
                 label: e.RemarkName || e.NickName,
+                icon: getIcon(e.icon),
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-userinfo', {

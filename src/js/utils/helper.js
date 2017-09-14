@@ -229,7 +229,7 @@ const helper = {
     },
 
     // 3 types supported: pic, video, doc
-    getMediaType(ext = '') {
+    getMediaType: (ext = '') => {
         ext = ext.toLowerCase();
 
         switch (true) {
@@ -242,6 +242,28 @@ const helper = {
             default:
                 return 'doc';
         }
+    },
+
+    getDataURL: (src) => {
+        var image = new window.Image();
+
+        return new Promise((resolve, reject) => {
+            image.src = src;
+            image.onload = () => {
+                var canvas = document.createElement('canvas');
+                var context = canvas.getContext('2d');
+
+                canvas.width = image.width;
+                canvas.height = image.height;
+
+                context.drawImage(image, 0, 0, image.width, image.height);
+                resolve(canvas.toDataURL('image/png'));
+            };
+
+            image.onerror = () => {
+                resolve('');
+            };
+        });
     },
 
     isOsx: window.process.platform === 'darwin',
