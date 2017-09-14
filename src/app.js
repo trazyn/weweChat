@@ -117,7 +117,7 @@ class App extends Component {
         ipcRenderer.on('os-resume', async() => {
             var session = stores.session;
 
-            console.log('os-resume');
+            console.log('os-resume' + new Date());
             setTimeout(() => {
                 session.checkTimeout(true);
             }, 3000);

@@ -204,11 +204,11 @@ class Session {
     }
 
     // A callback for cancel the sync request
-    syncTimeout = window.Function;
+    cancelCheck = window.Function;
 
     checkTimeout(weakup) {
         // Kill the zombie request or duplicate request
-        self.syncTimeout();
+        self.cancelCheck();
         clearTimeout(self.checkTimeout.timer);
 
         if (helper.isSuspend() || weakup) {
@@ -216,7 +216,7 @@ class Session {
         }
 
         self.checkTimeout.timer = setTimeout(() => {
-            self.syncTimeout();
+            self.cancelCheck();
         }, 30 * 1000);
     }
 
@@ -239,7 +239,7 @@ class Session {
             var response = await axios.get(`${host}cgi-bin/mmwebwx-bin/synccheck`, {
                 cancelToken: new CancelToken(exe => {
                     // An executor function receives a cancel function as a parameter
-                    this.syncTimeout = exe;
+                    this.cancelCheck = exe;
                 }),
                 params: {
                     r: +new Date(),
@@ -309,10 +309,17 @@ class Session {
     @action async logout() {
         var auth = self.auth;
 
-        await axios.post(`/cgi-bin/mmwebwx-bin/webwxlogout?skey=${auth.skey}&redirect=0&type=1`, {
-            sid: auth.sid,
-            uin: auth.uid,
-        });
+        try {
+            await axios.post(`/cgi-bin/mmwebwx-bin/webwxlogout?skey=${auth.skey}&redirect=0&type=1`, {
+                sid: auth.sid,
+                uin: auth.uid,
+            });
+        } finally {
+            self.exit();
+        }
+    }
+
+    async exit() {
         await storage.remove('auth');
         window.location.reload();
     }
