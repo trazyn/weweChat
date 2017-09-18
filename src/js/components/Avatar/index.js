@@ -1,6 +1,5 @@
 
 import React, { Component, PropTypes } from 'react';
-import clazz from 'classname';
 
 import './style.global.css';
 
@@ -27,7 +26,7 @@ export default class Avatar extends Component {
 
         return (
             <img
-                className={clazz('Avatar', 'fade fadein', this.props.className)}
+                className={`Avatar fade fadein ${this.props.className}`}
                 src={this.props.src}
                 onClick={this.props.onClick}
                 onLoad={e => this.handleLoad(e)}

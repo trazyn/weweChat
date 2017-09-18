@@ -85,7 +85,7 @@
 
 .messages {
     width: 100%;
-    height: calc(100vh - 160px - 16px);
+    height: calc(100vh - 160px - 16px); /* Height - Header - Footer - Subtitle - Padding top */
     padding-top: 16px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -715,7 +715,7 @@
     }
 
     .messages {
-        height: calc(100vh - 92px - 30px - 12px);
+        height: calc(100vh - 92px - 40px - 12px);
         padding-top: 12px;
 
         & :global(.qqemoji) {

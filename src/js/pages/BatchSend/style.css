@@ -56,7 +56,7 @@
     padding-top: 8px;
     margin: 0;
     list-style: none;
-    height: calc(100vh - 90px - 60px - 8px);
+    height: calc(100vh - 90px - 60px - 8px); /* Height - Header - Search Input - Message Input - Padding */
     overflow: hidden;
     overflow-y: auto;
 
@@ -168,7 +168,7 @@
     }
 
     .list {
-        height: calc(100vh - 70px - 46px - 8px);
+        height: calc(100vh - 80px - 46px - 8px);
 
         & li {
             padding: 2px 14px;

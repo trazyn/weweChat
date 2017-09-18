@@ -137,8 +137,6 @@
 
 @media (width <= 800px) {
     .container {
-        top: 30px;
-
         & header {
             padding: 0 10px;
             height: 40px;
@@ -148,7 +146,7 @@
     }
 
     .list {
-        height: calc(100vh - 70px - 46px);
+        height: calc(100vh - 80px - 46px);
 
         & li {
             padding: 0 10px;

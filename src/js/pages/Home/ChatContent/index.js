@@ -629,7 +629,7 @@ export default class ChatContent extends Component {
                             [classes.noselected]: !user,
                         })}>
                             <img src="assets/images/noselected.png" className="disabledDrag" />
-                            <h1>No Chat selected.</h1>
+                            <h1>No Chat selected :(</h1>
                         </div>
                     )
                 }

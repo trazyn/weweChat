@@ -18,8 +18,6 @@
 
 @media (width <= 800px) {
     .container h1 {
-        height: 30px;
-        line-height: 30px;
         font-size: 12px;
     }
 }

@@ -4,7 +4,7 @@
 }
 
 .chats {
-    height: calc(100vh - 160px);
+    height: calc(100vh - 160px); /* Height - Header - Footer - Search Input */
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -57,6 +57,7 @@
     max-width: 170px;
     margin: 0;
     padding: 0;
+    padding-right: 4px;
     margin-bottom: 12px;
     font-family: 'Helvetica';
     font-size: 15px;
@@ -106,7 +107,7 @@
 
 @media (width <= 800px) {
     .chats {
-        height: calc(100vh - 76px - 46px);
+        height: calc(100vh - 86px - 46px);
     }
 
     .chat {
