@@ -1,13 +1,15 @@
 
 import fs from 'fs';
 import tmp from 'tmp';
-import { app, powerMonitor, BrowserWindow, Tray, Menu, ipcMain, clipboard, shell, nativeImage } from 'electron';
+import { app, powerMonitor, BrowserWindow, Tray, Menu, ipcMain, clipboard, shell, nativeImage, dialog } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import AutoLaunch from 'auto-launch';
+import { autoUpdater } from 'electron-updater';
 
 import pkg from './package.json';
 
 let forceQuit = false;
+let downloading = false;
 let mainWindow;
 let tray;
 let settings = {};
@@ -45,6 +47,13 @@ let mainMenu = [
             },
             {
                 role: 'unhide'
+            },
+            {
+                label: 'Check for updates',
+                accelerator: 'Cmd+U',
+                click() {
+                    checkForUpdates();
+                }
             },
             {
                 type: 'separator'
@@ -258,6 +267,22 @@ function getIcon(data) {
     });
 }
 
+function checkForUpdates() {
+    if (downloading) {
+        dialog.showMessageBox({
+            type: 'info',
+            buttons: ['OK'],
+            title: pkg.name,
+            message: `Downloading...`,
+            detail: `Please leave the app open, the new version is downloading. You'll receive a new dialog when downloading is finished.`
+        });
+
+        return;
+    }
+
+    autoUpdater.checkForUpdates();
+}
+
 function updateTray(unread = 0) {
     if (!isOsx) {
         // Always show the tray icon on windows
@@ -320,6 +345,16 @@ function updateTray(unread = 0) {
                 label: 'Hide menu bar icon',
                 click() {
                     mainWindow.webContents.send('hide-tray');
+                }
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: 'Check for updates',
+                accelerator: 'Cmd+U',
+                click() {
+                    checkForUpdates();
                 }
             },
             {
@@ -601,4 +636,33 @@ app.on('activate', e => {
     if (!mainWindow.isVisible()) {
         mainWindow.show();
     }
+});
+
+autoUpdater.on('update-not-available', e => {
+    dialog.showMessageBox({
+        type: 'info',
+        buttons: ['OK'],
+        title: pkg.name,
+        message: `${pkg.name} is up to date :)`,
+        detail: `${pkg.name} ${pkg.version} is currently the newest version available, It looks like you're already rocking the latest version!`
+    });
+
+    console.log('Update not available.');
+});
+
+autoUpdater.on('error', err => {
+    dialog.showMessageBox({
+        type: 'error',
+        buttons: ['Cancel update'],
+        title: pkg.name,
+        message: `Failed to update ${pkg.name} :(`,
+        detail: `An error occurred in retrieving update information, Please try again later.`,
+    });
+
+    downloading = false;
+    console.error(err);
+});
+
+autoUpdater.on('update-downloaded', e => {
+    autoUpdater.quitAndInstall();
 });

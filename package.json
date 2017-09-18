@@ -1,6 +1,6 @@
 {
   "name": "wewechat",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Unofficial WeChat client built with React, MobX and Electron.",
   "main": "main.js",
   "scripts": {
@@ -64,7 +64,12 @@
     },
     "directories": {
       "output": "../release"
-    }
+    },
+    "publish": [{
+      "provider": "github",
+      "owner": "trazyn",
+      "repo": "weweChat"
+    }]
   },
   "dependencies": {
     "@exponent/electron-cookies": "^2.0.0",
@@ -109,11 +114,12 @@
     "css-loader": "^0.28.4",
     "electron": "^1.6.11",
     "electron-builder": "^19.24.1",
+    "electron-updater": "^2.8.9",
     "eslint": "^4.1.1",
-    "eslint-loader": "^1.9.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-config-standard-react": "^5.0.0",
     "eslint-formatter-pretty": "^1.1.0",
+    "eslint-loader": "^1.9.0",
     "eslint-plugin-import": "^2.6.1",
     "eslint-plugin-node": "^5.1.0",
     "eslint-plugin-promise": "^3.5.0",

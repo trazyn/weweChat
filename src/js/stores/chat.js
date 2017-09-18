@@ -187,8 +187,6 @@ async function updateMenus(sessions) {
         })
     );
 
-    console.log(conversationsWithIcon);
-
     ipcRenderer.send('menu-update', {
         conversations: JSON.stringify(conversationsWithIcon),
         contacts: JSON.stringify(contactsWithIcon),
