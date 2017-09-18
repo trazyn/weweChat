@@ -488,6 +488,13 @@ const createMainWindow = () => {
         }
     });
 
+    ipcMain.on('show-window', event => {
+        if (!mainWindow.isVisible()) {
+            mainWindow.show();
+            mainWindow.focus();
+        }
+    });
+
     ipcMain.on('menu-update', (event, args) => {
         var { contacts, conversations } = args;
 

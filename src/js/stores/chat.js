@@ -372,13 +372,15 @@ class Chat {
                 if (!helper.isMuted(user)
                     && !sync
                     && settings.showNotification) {
-                    /* eslint-disable */
-                    new Notification(title, {
+                    let notification = new window.Notification(title, {
                         icon: user.HeadImgUrl,
                         body: helper.getMessageContent(message),
                         vibrate: [200, 100, 200],
                     });
-                    /* eslint-enable */
+
+                    notification.onclick = () => {
+                        ipcRenderer.send('show-window');
+                    };
                 }
                 list.data.push(message);
             }
