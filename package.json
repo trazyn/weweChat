@@ -1,6 +1,6 @@
 {
   "name": "wewechat",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "Unofficial WeChat client built with React, MobX and Electron.",
   "main": "main.js",
   "scripts": {
@@ -65,11 +65,13 @@
     "directories": {
       "output": "../release"
     },
-    "publish": [{
-      "provider": "github",
-      "owner": "trazyn",
-      "repo": "weweChat"
-    }]
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "trazyn",
+        "repo": "weweChat"
+      }
+    ]
   },
   "dependencies": {
     "@exponent/electron-cookies": "^2.0.0",
