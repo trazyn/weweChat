@@ -657,6 +657,11 @@ autoUpdater.on('update-not-available', e => {
     console.log('Update not available.');
 });
 
+autoUpdater.on('update-available', e => {
+    downloading = true;
+    checkForUpdates();
+});
+
 autoUpdater.on('error', err => {
     dialog.showMessageBox({
         type: 'error',
@@ -670,6 +675,24 @@ autoUpdater.on('error', err => {
     console.error(err);
 });
 
-autoUpdater.on('update-downloaded', e => {
+autoUpdater.on('update-downloaded', info => {
+    var { releaseNotes, releaseName } = info;
+    var index = dialog.showMessageBox({
+        type: 'info',
+        buttons: ['Restart', 'Later'],
+        title: pkg.name,
+        message: `The new version has been downloaded. Please restart the application to apply the updates.`,
+        detail: `${releaseName}\n\n${releaseNotes}`
+    });
+    downloading = false;
+
+    if (index === 1) {
+        return;
+    }
+
     autoUpdater.quitAndInstall();
+    setTimeout(() => {
+        mainWindow = null;
+        app.quit();
+    });
 });
