@@ -83,7 +83,6 @@ class Contacts {
         self.memberList = response.data.MemberList.filter(e => helper.isContact(e) && !helper.isOfficial(e) && !helper.isBrand(e)).concat(me);
         self.memberList.map(e => {
             e.MemberList = [];
-
             return self.resolveUser(auth, e);
         });
 

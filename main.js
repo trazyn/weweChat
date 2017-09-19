@@ -258,20 +258,23 @@ let mainMenu = [
     }
 ];
 let avatarPath = tmp.dirSync();
-let avatarMap = {};
+let avatarCache = {};
 let avatarPlaceholder = `${__dirname}/src/assets/images/user-fallback.png`;
 
 async function getIcon(cookies, userid, src) {
-    var icon = src || avatarPlaceholder;
+    var cached = avatarCache[userid];
+    var icon;
 
-    icon = avatarMap[userid];
+    if (cached) {
+        return cached;
+    }
 
-    if (!icon && cookies && src) {
+    if (cookies && src) {
         try {
             let response = await axios({
                 url: src,
                 method: 'get',
-                responseType: 'stream',
+                responseType: 'arraybuffer',
                 headers: {
                     Cookie: cookies,
                     Host: 'wx.qq.com',
@@ -279,17 +282,24 @@ async function getIcon(cookies, userid, src) {
                     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8',
                 },
             });
+            // eslint-disable-next-line
+            let base64 = new Buffer(response.data, 'binary').toString('base64');
 
             icon = `${avatarPath.name}/${userid}.jpg`;
-            response.data.pipe(fs.createWriteStream(icon));
+            fs.writeFileSync(icon, base64.replace(/^data:image\/png;base64,/, ''), 'base64');
         } catch (ex) {
             console.error(ex);
             icon = avatarPlaceholder;
         }
     }
 
-    avatarMap[userid] = icon;
-    return nativeImage.createFromPath(icon).resize({ width: 24, height: 24 });
+    var image = nativeImage.createFromPath(icon);
+
+    image = image.resize({ width: 24, height: 24 });
+
+    avatarCache[userid] = image;
+
+    return image;
 }
 
 function checkForUpdates() {
@@ -526,22 +536,26 @@ const createMainWindow = () => {
         var contactsMenu = mainMenu.find(e => e.label === 'Contacts');
         var shouldUpdate = false;
 
-        conversations = JSON.parse(conversations);
-        contacts = JSON.parse(contacts);
+        if (!isOsx) {
+            return;
+        }
 
-        if (conversations.length) {
+        if (conversations.length
+            && conversations.map(e => e.name).join() !== conversationsMenu.submenu.map(e => e.label).join()) {
             shouldUpdate = true;
 
             conversations = await Promise.all(
                 conversations.map(async(e, index) => {
+                    let icon = await getIcon(cookies, e.id, e.avatar);
+
                     return {
-                        label: e.RemarkName || e.NickName,
+                        label: e.name,
                         accelerator: `Cmd+${index}`,
-                        icon: await getIcon(cookies, e.UserName, e.HeadImgUrl),
+                        icon,
                         click() {
                             mainWindow.show();
                             mainWindow.webContents.send('message-chatto', {
-                                id: e.UserName,
+                                id: e.id,
                             });
                         }
                     };
@@ -555,13 +569,15 @@ const createMainWindow = () => {
 
             contacts = await Promise.all(
                 contacts.map(async e => {
+                    let icon = await getIcon(cookies, e.id, e.avatar);
+
                     return {
-                        label: e.RemarkName || e.NickName,
-                        icon: await getIcon(cookies, e.UserName, e.HeadImgUrl),
+                        label: e.name,
+                        icon,
                         click() {
                             mainWindow.show();
                             mainWindow.webContents.send('show-userinfo', {
-                                id: e.UserName,
+                                id: e.id,
                             });
                         }
                     };
@@ -570,7 +586,9 @@ const createMainWindow = () => {
             contactsMenu.submenu = contacts;
         }
 
-        shouldUpdate && createMenu();
+        if (shouldUpdate) {
+            createMenu();
+        }
     });
 
     ipcMain.on('message-unread', (event, args) => {

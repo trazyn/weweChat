@@ -175,8 +175,16 @@ function hasUnreadMessage(messages) {
 
 async function updateMenus({ conversations = [], contacts = [] }) {
     ipcRenderer.send('menu-update', {
-        conversations: JSON.stringify(conversations),
-        contacts: JSON.stringify(contacts),
+        conversations: conversations.map(e => ({
+            id: e.UserName,
+            name: e.RemarkName || e.NickName,
+            avatar: e.HeadImgUrl,
+        })),
+        contacts: contacts.map(e => ({
+            id: e.UserName,
+            name: e.RemarkName || e.NickName,
+            avatar: e.HeadImgUrl,
+        })),
         cookies: await helper.getCookie(),
     });
 }
@@ -382,6 +390,7 @@ class Chat {
                 data: [message],
                 unread: 0,
             };
+            self.messages.set(from, list);
         }
 
         if (self.user.UserName === from) {
@@ -402,7 +411,6 @@ class Chat {
         });
 
         self.sessions.replace([...stickyed, ...normaled]);
-        self.messages.set(from, list);
 
         hasUnreadMessage(self.messages);
         updateMenus({
