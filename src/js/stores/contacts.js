@@ -1,5 +1,6 @@
 
 import { observable, action } from 'mobx';
+import { ipcRenderer } from 'electron';
 import axios from 'axios';
 import pinyin from 'han';
 
@@ -153,11 +154,15 @@ class Contacts {
         });
 
         if (response.data.BaseResponse.Ret === 0) {
+            var shouldUpdate = false;
+
             response.data.ContactList.map(e => {
                 var index = self.memberList.findIndex(user => user.UserName === e.UserName);
                 var user = self.resolveUser(auth, e);
 
                 if (!user) return;
+
+                shouldUpdate = true;
 
                 if (index !== -1) {
                     self.memberList[index] = user;
@@ -166,6 +171,14 @@ class Contacts {
                     self.memberList.push(user);
                 }
             });
+
+            if (shouldUpdate) {
+                // Update contact in menu
+                ipcRenderer.send('menu-update', {
+                    contacts: JSON.stringify(self.memberList),
+                    cookies: await helper.getCookie(),
+                });
+            }
         } else {
             throw new Error(`Failed to get user: ${list}`);
         }
@@ -203,8 +216,14 @@ class Contacts {
         self.showGroup = showGroup;
     }
 
-    @action deleteUser(id) {
+    @action async deleteUser(id) {
         self.memberList = self.memberList.filter(e => e.UserName !== id);
+
+        // Update contact in menu
+        ipcRenderer.send('menu-update', {
+            contacts: JSON.stringify(self.memberList),
+            cookies: await helper.getCookie(),
+        });
     }
 
     @action async updateUser(user) {

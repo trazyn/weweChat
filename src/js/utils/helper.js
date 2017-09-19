@@ -1,5 +1,6 @@
 
 import { remote, ipcRenderer } from 'electron';
+import axios from 'axios';
 
 import session from '../stores/session';
 
@@ -146,10 +147,29 @@ const helper = {
         var value = {
             name,
         };
+        var cookies = remote.getCurrentWindow().webContents.session.cookies;
+
+        if (!name) {
+            return new Promise((resolve, reject) => {
+                cookies.get({ url: axios.defaults.baseURL }, (error, cookies) => {
+                    let string = '';
+
+                    if (error) {
+                        return resolve('');
+                    }
+
+                    for (var i = cookies.length; --i >= 0;) {
+                        let item = cookies[i];
+                        string += `${item.name}=${item.value} ;`;
+                    }
+
+                    resolve(string);
+                });
+            });
+        }
 
         return new Promise((resolve, reject) => {
-            var session = remote.getCurrentWindow().webContents.session;
-            session.cookies.get(value, (err, cookies) => {
+            cookies.get(value, (err, cookies) => {
                 if (err) {
                     reject(err);
                 } else {

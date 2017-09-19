@@ -5,6 +5,7 @@ import { app, powerMonitor, BrowserWindow, Tray, Menu, ipcMain, clipboard, shell
 import windowStateKeeper from 'electron-window-state';
 import AutoLaunch from 'auto-launch';
 import { autoUpdater } from 'electron-updater';
+import axios from 'axios';
 
 import pkg from './package.json';
 
@@ -256,15 +257,40 @@ let mainMenu = [
         ]
     }
 ];
+let avatarPath = tmp.dirSync();
+let avatarMap = {};
+let avatarPlaceholder = `${__dirname}/src/assets/images/user-fallback.png`;
 
-function getIcon(data) {
-    var fallback = nativeImage.createFromPath(`${__dirname}/src/assets/images/user-fallback.png`);
-    var icon = data ? nativeImage.createFromDataURL(data) : fallback;
+async function getIcon(cookies, userid, src) {
+    var icon = src || avatarPlaceholder;
 
-    return icon.resize({
-        width: 24,
-        height: 24,
-    });
+    icon = avatarMap[userid];
+
+    if (!icon && src) {
+        try {
+            let response = await axios({
+                url: src,
+                method: 'get',
+                responseType: 'stream',
+                headers: {
+                    Cookie: cookies,
+                    Host: 'wx.qq.com',
+                    Referer: 'https://wx.qq.com/',
+                    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8',
+                },
+            });
+
+            icon = `${avatarPath.name}/${userid}.jpg`;
+            response.data.pipe(fs.createWriteStream(icon));
+            console.log('write %s', icon);
+        } catch (ex) {
+            console.error(ex);
+            icon = avatarPlaceholder;
+        }
+    }
+
+    avatarMap[userid] = icon;
+    return nativeImage.createFromPath(icon).resize({ width: 24, height: 24 });
 }
 
 function checkForUpdates() {
@@ -495,38 +521,42 @@ const createMainWindow = () => {
         }
     });
 
-    ipcMain.on('menu-update', (event, args) => {
-        var { contacts, conversations } = args;
+    ipcMain.on('menu-update', async(event, args) => {
+        var { cookies, contacts, conversations } = args;
 
         contacts = JSON.parse(contacts);
         conversations = JSON.parse(conversations);
 
-        conversations = conversations.slice(0, 10).map((e, index) => {
-            return {
-                label: e.RemarkName || e.NickName,
-                accelerator: `Cmd+${index}`,
-                icon: getIcon(e.icon),
-                click() {
-                    mainWindow.show();
-                    mainWindow.webContents.send('message-chatto', {
-                        id: e.UserName,
-                    });
-                }
-            };
-        });
+        conversations = await Promise.all(
+            conversations.map(async(e, index) => {
+                return {
+                    label: e.RemarkName || e.NickName,
+                    accelerator: `Cmd+${index}`,
+                    icon: await getIcon(cookies, e.UserName, e.HeadImgUrl),
+                    click() {
+                        mainWindow.show();
+                        mainWindow.webContents.send('message-chatto', {
+                            id: e.UserName,
+                        });
+                    }
+                };
+            })
+        );
 
-        contacts = contacts.map(e => {
-            return {
-                label: e.RemarkName || e.NickName,
-                icon: getIcon(e.icon),
-                click() {
-                    mainWindow.show();
-                    mainWindow.webContents.send('show-userinfo', {
-                        id: e.UserName,
-                    });
-                }
-            };
-        });
+        contacts = await Promise.all(
+            contacts.map(async e => {
+                return {
+                    label: e.RemarkName || e.NickName,
+                    icon: await getIcon(cookies, e.UserName, e.HeadImgUrl),
+                    click() {
+                        mainWindow.show();
+                        mainWindow.webContents.send('show-userinfo', {
+                            id: e.UserName,
+                        });
+                    }
+                };
+            })
+        );
 
         mainMenu.find(e => e.label === 'Conversations').submenu = conversations;
         mainMenu.find(e => e.label === 'Contacts').submenu = contacts;
