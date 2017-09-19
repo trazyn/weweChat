@@ -173,10 +173,10 @@ function hasUnreadMessage(messages) {
     });
 }
 
-async function updateMenus(sessions) {
+async function updateMenus({ conversations = [], contacts = [] }) {
     ipcRenderer.send('menu-update', {
-        conversations: JSON.stringify(sessions),
-        contacts: JSON.stringify(contacts.memberList),
+        conversations: JSON.stringify(conversations),
+        contacts: JSON.stringify(contacts),
         cookies: await helper.getCookie(),
     });
 }
@@ -240,7 +240,10 @@ class Chat {
         });
 
         self.sessions.replace(sorted);
-        updateMenus(self.sessions);
+        updateMenus({
+            conversations: self.sessions.slice(0, 10),
+            contacts: contacts.memberList,
+        });
         return res;
     }
 
@@ -402,7 +405,9 @@ class Chat {
         self.messages.set(from, list);
 
         hasUnreadMessage(self.messages);
-        updateMenus(self.sessions);
+        updateMenus({
+            conversations: self.sessions.slice(0, 10),
+        });
     }
 
     @action async sendTextMessage(auth, message, isForward) {
@@ -946,7 +951,6 @@ class Chat {
         }
 
         self.messages.set(userid, list);
-        updateMenus(self.sessions);
     }
 
     @action async sticky(user) {
@@ -976,6 +980,9 @@ class Chat {
             });
             self.sessions.replace(sorted);
 
+            updateMenus({
+                conversations: sorted.slice(0, 10)
+            });
             return true;
         }
 
@@ -985,6 +992,10 @@ class Chat {
     @action removeChat(user) {
         var sessions = self.sessions.filter(e => e.UserName !== user.UserName);
         self.sessions.replace(sessions);
+
+        updateMenus({
+            conversations: sessions.slice(0, 10)
+        });
     }
 
     @action empty(user) {

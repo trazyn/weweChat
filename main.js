@@ -266,7 +266,7 @@ async function getIcon(cookies, userid, src) {
 
     icon = avatarMap[userid];
 
-    if (!icon && src) {
+    if (!icon && cookies && src) {
         try {
             let response = await axios({
                 url: src,
@@ -282,7 +282,6 @@ async function getIcon(cookies, userid, src) {
 
             icon = `${avatarPath.name}/${userid}.jpg`;
             response.data.pipe(fs.createWriteStream(icon));
-            console.log('write %s', icon);
         } catch (ex) {
             console.error(ex);
             icon = avatarPlaceholder;
@@ -523,45 +522,55 @@ const createMainWindow = () => {
 
     ipcMain.on('menu-update', async(event, args) => {
         var { cookies, contacts, conversations } = args;
+        var conversationsMenu = mainMenu.find(e => e.label === 'Conversations');
+        var contactsMenu = mainMenu.find(e => e.label === 'Contacts');
+        var shouldUpdate = false;
 
-        contacts = JSON.parse(contacts);
         conversations = JSON.parse(conversations);
+        contacts = JSON.parse(contacts);
 
-        conversations = await Promise.all(
-            conversations.map(async(e, index) => {
-                return {
-                    label: e.RemarkName || e.NickName,
-                    accelerator: `Cmd+${index}`,
-                    icon: await getIcon(cookies, e.UserName, e.HeadImgUrl),
-                    click() {
-                        mainWindow.show();
-                        mainWindow.webContents.send('message-chatto', {
-                            id: e.UserName,
-                        });
-                    }
-                };
-            })
-        );
+        if (conversations.length) {
+            shouldUpdate = true;
 
-        contacts = await Promise.all(
-            contacts.map(async e => {
-                return {
-                    label: e.RemarkName || e.NickName,
-                    icon: await getIcon(cookies, e.UserName, e.HeadImgUrl),
-                    click() {
-                        mainWindow.show();
-                        mainWindow.webContents.send('show-userinfo', {
-                            id: e.UserName,
-                        });
-                    }
-                };
-            })
-        );
+            conversations = await Promise.all(
+                conversations.map(async(e, index) => {
+                    return {
+                        label: e.RemarkName || e.NickName,
+                        accelerator: `Cmd+${index}`,
+                        icon: await getIcon(cookies, e.UserName, e.HeadImgUrl),
+                        click() {
+                            mainWindow.show();
+                            mainWindow.webContents.send('message-chatto', {
+                                id: e.UserName,
+                            });
+                        }
+                    };
+                })
+            );
+            conversationsMenu.submenu = conversations;
+        }
 
-        mainMenu.find(e => e.label === 'Conversations').submenu = conversations;
-        mainMenu.find(e => e.label === 'Contacts').submenu = contacts;
+        if (contacts.length) {
+            shouldUpdate = true;
 
-        createMenu();
+            contacts = await Promise.all(
+                contacts.map(async e => {
+                    return {
+                        label: e.RemarkName || e.NickName,
+                        icon: await getIcon(cookies, e.UserName, e.HeadImgUrl),
+                        click() {
+                            mainWindow.show();
+                            mainWindow.webContents.send('show-userinfo', {
+                                id: e.UserName,
+                            });
+                        }
+                    };
+                })
+            );
+            contactsMenu.submenu = contacts;
+        }
+
+        shouldUpdate && createMenu();
     });
 
     ipcMain.on('message-unread', (event, args) => {
