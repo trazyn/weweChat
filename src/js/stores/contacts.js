@@ -175,7 +175,7 @@ class Contacts {
             if (shouldUpdate) {
                 // Update contact in menu
                 ipcRenderer.send('menu-update', {
-                    contacts: JSON.stringify(self.memberList),
+                    contacts: JSON.stringify(self.memberList.filter(e => helper.isContact(e))),
                     cookies: await helper.getCookie(),
                 });
             }
@@ -221,7 +221,7 @@ class Contacts {
 
         // Update contact in menu
         ipcRenderer.send('menu-update', {
-            contacts: JSON.stringify(self.memberList),
+            contacts: JSON.stringify(self.memberList.filter(e => helper.isContact(e))),
             cookies: await helper.getCookie(),
         });
     }

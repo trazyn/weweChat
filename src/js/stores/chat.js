@@ -242,7 +242,7 @@ class Chat {
         self.sessions.replace(sorted);
         updateMenus({
             conversations: self.sessions.slice(0, 10),
-            contacts: contacts.memberList,
+            contacts: contacts.memberList.filter(e => helper.isContact(e)),
         });
         return res;
     }
