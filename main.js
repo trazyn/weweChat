@@ -257,6 +257,76 @@ let mainMenu = [
         ]
     }
 ];
+let trayMenu = [
+    {
+        label: `You have 0 messages`,
+        click() {
+            mainWindow.show();
+            mainWindow.webContents.send('show-messages');
+        }
+    },
+    {
+        label: 'Toggle main window',
+        click() {
+            let isVisible = mainWindow.isVisible();
+            isVisible ? mainWindow.hide() : mainWindow.show();
+        }
+    },
+    {
+        type: 'separator'
+    },
+    {
+        label: 'Preferences...',
+        accelerator: 'Cmd+,',
+        click() {
+            mainWindow.show();
+            mainWindow.webContents.send('show-settings');
+        }
+    },
+    {
+        label: 'Fork me on Github',
+        click() {
+            shell.openExternal('https://github.com/trazyn/weweChat');
+        }
+    },
+    {
+        type: 'separator'
+    },
+    {
+        label: 'Toggle DevTools',
+        accelerator: 'Alt+Command+I',
+        click() {
+            mainWindow.show();
+            mainWindow.toggleDevTools();
+        }
+    },
+    {
+        label: 'Hide menu bar icon',
+        click() {
+            mainWindow.webContents.send('hide-tray');
+        }
+    },
+    {
+        type: 'separator'
+    },
+    {
+        label: 'Check for updates',
+        accelerator: 'Cmd+U',
+        click() {
+            checkForUpdates();
+        }
+    },
+    {
+        label: 'Quit weweChat',
+        accelerator: 'Command+Q',
+        selector: 'terminate:',
+        click() {
+            forceQuit = true;
+            mainWindow = null;
+            app.quit();
+        }
+    }
+];
 let avatarPath = tmp.dirSync();
 let avatarCache = {};
 let avatarPlaceholder = `${__dirname}/src/assets/images/user-fallback.png`;
@@ -324,105 +394,38 @@ function updateTray(unread = 0) {
         settings.showOnTray = true;
     }
 
+    // Update unread mesage count
+    trayMenu[0].label = `You have ${unread} messages`;
+
     if (settings.showOnTray) {
-        if (tray) {
-            if (updateTray.lastUnread === unread) {
-                return;
-            } else {
-                tray.destroy();
-            }
+        if (tray
+            && updateTray.lastUnread === unread) {
+            return;
         }
 
-        let contextmenu = Menu.buildFromTemplate([
-            {
-                label: `You have ${unread} messages`,
-                click() {
-                    mainWindow.show();
-                    mainWindow.webContents.send('show-messages');
-                }
-            },
-            {
-                label: 'Toggle main window',
-                click() {
-                    let isVisible = mainWindow.isVisible();
-                    isVisible ? mainWindow.hide() : mainWindow.show();
-                }
-            },
-            {
-                type: 'separator'
-            },
-            {
-                label: 'Preferences...',
-                accelerator: 'Cmd+,',
-                click() {
-                    mainWindow.show();
-                    mainWindow.webContents.send('show-settings');
-                }
-            },
-            {
-                label: 'Fork me on Github',
-                click() {
-                    shell.openExternal('https://github.com/trazyn/weweChat');
-                }
-            },
-            {
-                type: 'separator'
-            },
-            {
-                label: 'Toggle DevTools',
-                accelerator: 'Alt+Command+I',
-                click() {
-                    mainWindow.show();
-                    mainWindow.toggleDevTools();
-                }
-            },
-            {
-                label: 'Hide menu bar icon',
-                click() {
-                    mainWindow.webContents.send('hide-tray');
-                }
-            },
-            {
-                type: 'separator'
-            },
-            {
-                label: 'Check for updates',
-                accelerator: 'Cmd+U',
-                click() {
-                    checkForUpdates();
-                }
-            },
-            {
-                label: 'Quit weweChat',
-                accelerator: 'Command+Q',
-                selector: 'terminate:',
-                click() {
-                    forceQuit = true;
-                    mainWindow = null;
-                    app.quit();
-                }
-            }
-        ]);
+        let contextmenu = Menu.buildFromTemplate(trayMenu);
+        let icon = unread
+            ? `${__dirname}/src/assets/images/icon-new-message.png`
+            : `${__dirname}/src/assets/images/icon.png`
+            ;
 
         // Make sure the last tray has been destroyed
         setTimeout(() => {
-            tray && tray.destroy();
+            if (!tray) {
+                // Init tray icon
+                tray = new Tray(icon);
 
-            tray = new Tray(
-                unread
-                    ? `${__dirname}/src/assets/images/icon-new-message.png`
-                    : `${__dirname}/src/assets/images/icon.png`
-            );
-            tray.on('right-click', () => {
-                tray.popUpContextMenu();
-            });
+                tray.on('right-click', () => {
+                    tray.popUpContextMenu();
+                });
+            }
+
+            tray.setImage(icon);
             tray.setContextMenu(contextmenu);
         });
     } else {
-        if (tray) {
-            tray.destroy();
-            tray = null;
-        }
+        tray.destroy();
+        tray = null;
     }
 
     // Avoid tray icon been recreate
@@ -531,7 +534,7 @@ const createMainWindow = () => {
     });
 
     ipcMain.on('menu-update', async(event, args) => {
-        var { cookies, contacts, conversations } = args;
+        var { cookies, contacts = [], conversations = [] } = args;
         var conversationsMenu = mainMenu.find(e => e.label === 'Conversations');
         var contactsMenu = mainMenu.find(e => e.label === 'Contacts');
         var shouldUpdate = false;
