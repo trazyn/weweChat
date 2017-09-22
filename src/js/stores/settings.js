@@ -13,6 +13,7 @@ class Settings {
     @observable startup = false;
     @observable blockRecall = false;
     @observable remeberConversation = false;
+    @observable showRedIcon = true;
     @observable downloads = '';
     @observable plugins = [{
         name: 'Message Backup',
@@ -25,6 +26,11 @@ class Settings {
 
     @action setAlwaysOnTop(alwaysOnTop) {
         self.alwaysOnTop = alwaysOnTop;
+        self.save();
+    }
+
+    @action setShowRedIcon(showRedIcon) {
+        self.showRedIcon = showRedIcon;
         self.save();
     }
 
@@ -65,7 +71,7 @@ class Settings {
 
     @action async init() {
         var settings = await storage.get('settings');
-        var { alwaysOnTop, showOnTray, showNotification, blockRecall, remeberConversation, startup, downloads } = self;
+        var { alwaysOnTop, showOnTray, showNotification, blockRecall, remeberConversation, showRedIcon, startup, downloads } = self;
 
         if (settings && Object.keys(settings).length) {
             // Use !! force convert to a bool value
@@ -76,6 +82,7 @@ class Settings {
             self.startup = !!settings.startup;
             self.blockRecall = !!settings.blockRecall;
             self.remeberConversation = !!settings.remeberConversation;
+            self.showRedIcon = !!settings.showRedIcon;
             self.downloads = settings.downloads;
         } else {
             await storage.set('settings', {
@@ -86,6 +93,7 @@ class Settings {
                 downloads,
                 blockRecall,
                 remeberConversation,
+                showRedIcon,
             });
         }
 
@@ -104,7 +112,7 @@ class Settings {
     }
 
     save() {
-        var { alwaysOnTop, showOnTray, showNotification, confirmImagePaste, blockRecall, remeberConversation, startup, downloads } = self;
+        var { alwaysOnTop, showOnTray, showNotification, confirmImagePaste, blockRecall, remeberConversation, showRedIcon, startup, downloads } = self;
 
         storage.set('settings', {
             alwaysOnTop,
@@ -115,6 +123,7 @@ class Settings {
             downloads,
             blockRecall,
             remeberConversation,
+            showRedIcon,
         });
 
         ipcRenderer.send('settings-apply', {
@@ -127,6 +136,7 @@ class Settings {
                 downloads,
                 blockRecall,
                 remeberConversation,
+                showRedIcon,
             }
         });
     }

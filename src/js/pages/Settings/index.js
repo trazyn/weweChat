@@ -24,6 +24,8 @@ import helper from 'utils/helper';
     setBlockRecall: stores.settings.setBlockRecall,
     remeberConversation: stores.settings.remeberConversation,
     setRemeberConversation: stores.settings.setRemeberConversation,
+    showRedIcon: stores.settings.showRedIcon,
+    setShowRedIcon: stores.settings.setShowRedIcon,
 
     user: stores.session.user,
     logout: stores.session.logout,
@@ -80,6 +82,8 @@ export default class Settings extends Component {
             setBlockRecall,
             remeberConversation,
             setRemeberConversation,
+            showRedIcon,
+            setShowRedIcon,
             plugins,
             user,
         } = this.props;
@@ -139,6 +143,13 @@ export default class Settings extends Component {
                             <label htmlFor="remeberConversation">
                                 <span>Remeber the last Conversation</span>
                                 <Switch id="remeberConversation" checked={remeberConversation} onChange={e => setRemeberConversation(e.target.checked)} />
+                            </label>
+                        </li>
+
+                        <li>
+                            <label htmlFor="showRedIcon">
+                                <span>Show the red button</span>
+                                <Switch id="showRedIcon" checked={showRedIcon} onChange={e => setShowRedIcon(e.target.checked)} />
                             </label>
                         </li>
 

@@ -13,6 +13,7 @@ import ChatContent from './ChatContent';
     loading: stores.session.loading,
     showConversation: stores.chat.showConversation,
     toggleConversation: stores.chat.toggleConversation,
+    showRedIcon: stores.settings.showRedIcon,
     newChat: () => stores.newchat.toggle(true),
 }))
 @observer
@@ -32,9 +33,13 @@ export default class Home extends Component {
                         <SearchBar />
                         <Chats />
 
-                        <div className={classes.addChat} onClick={() => this.props.newChat()}>
-                            <i className="icon-ion-android-add" />
-                        </div>
+                        {
+                            this.props.showRedIcon && (
+                                <div className={classes.addChat} onClick={() => this.props.newChat()}>
+                                    <i className="icon-ion-android-add" />
+                                </div>
+                            )
+                        }
                     </div>
 
                     <div className={classes.right}>
