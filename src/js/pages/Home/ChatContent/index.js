@@ -529,6 +529,13 @@ export default class ChatContent extends Component {
         }
     }
 
+    scrollBottomWhenSentMessage() {
+        var { user, messages } = this.props;
+        var list = messages.get(user.id);
+
+        return list.slice(-1).isme;
+    }
+
     componentWillUnmount() {
         !this.props.remeberConversation && this.props.reset();
     }
@@ -538,8 +545,17 @@ export default class ChatContent extends Component {
         var tips = this.refs.tips;
 
         if (viewport) {
-            var images = viewport.querySelectorAll('img.unload');
+            let newestMessage = this.props.messages.get(this.props.user.UserName).data.slice(-1)[0];
+            let images = viewport.querySelectorAll('img.unload');
 
+            // Scroll to bottom when you sent message
+            if (newestMessage
+                    && newestMessage.isme) {
+                viewport.scrollTop = viewport.scrollHeight;
+                return;
+            }
+
+            // Show the unread messages count
             if (viewport.scrollTop < this.scrollTop) {
                 let counter = viewport.querySelectorAll(`.${classes.message}.unread`).length;
 
@@ -550,6 +566,7 @@ export default class ChatContent extends Component {
                 return;
             }
 
+            // Auto scroll to bottom when message has been loaded
             Array.from(images).map(e => {
                 on(e, 'load', ev => {
                     off(e, 'load');
@@ -572,10 +589,12 @@ export default class ChatContent extends Component {
                 });
             });
 
+            // Hide the unread message count
             tips.classList.remove(classes.show);
             viewport.scrollTop = viewport.scrollHeight;
             this.scrollTop = viewport.scrollTop;
 
+            // Mark message has been loaded
             Array.from(viewport.querySelectorAll(`.${classes.message}.unread`)).map(e => e.classList.remove('unread'));
         }
     }
