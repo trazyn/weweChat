@@ -23,6 +23,10 @@ export default class MessageInput extends Component {
     canisend() {
         var user = this.props.user;
 
+        if (this.blocking) {
+            return false;
+        }
+
         if (user.length === 1
             && user.slice(-1).pop().UserName === this.props.me.UserName) {
             this.props.showMessage('Can\'t send message to yourself.');
@@ -31,6 +35,9 @@ export default class MessageInput extends Component {
 
         return true;
     }
+
+    // Prevent duplicate message
+    blocking = false;
 
     async handleEnter(e) {
         var message = this.refs.input.value.trim();
@@ -41,19 +48,26 @@ export default class MessageInput extends Component {
             || !message
             || e.charCode !== 13) return;
 
+        this.blocking = true;
+
         // You can not send message to yourself
-        user.filter(e => e.UserName !== this.props.me.UserName).map(async e => {
-            let res = await this.props.sendMessage(e, {
-                content: message,
-                type: 1,
-            }, true);
+        await Promise.all(
+            user.filter(e => e.UserName !== this.props.me.UserName).map(async e => {
+                let res = await this.props.sendMessage(e, {
+                    content: message,
+                    type: 1,
+                }, true);
 
-            this.refs.input.value = '';
+                this.refs.input.value = '';
 
-            if (!res) {
-                this.props.showMessage(batch ? `Send message to ${e.NickName} is failed!` : 'Failed to send message.');
-            }
-        });
+                if (!res) {
+                    await this.props.showMessage(batch ? `Send message to ${e.NickName} is failed!` : 'Failed to send message.');
+                }
+
+                return true;
+            })
+        );
+        this.blocking = false;
     }
 
     state = {
