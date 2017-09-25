@@ -251,7 +251,7 @@ let mainMenu = [
             {
                 label: '💕 Follow me on Twitter 👏',
                 click() {
-                    shell.openExternal('https://github.com/trazyn/weweChat/issues');
+                    shell.openExternal('https://twitter.com/var_darling');
                 }
             }
         ]
