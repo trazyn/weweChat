@@ -1,5 +1,9 @@
 # weweChat
 
+<img src="https://github.com/trazyn/weweChat/blob/master/resource/128x128.png" />
+
+> Icon by [octiviotti](https://octiviotti.deviantart.com/)
+
 [![Build Status](https://travis-ci.org/trazyn/weweChat.svg?branch=master)](https://travis-ci.org/trazyn/weweChat)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg)](https://github.com/trazyn/weweChat/pulls)
