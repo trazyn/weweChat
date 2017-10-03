@@ -55,7 +55,6 @@ The rpm packages needs to be made executable after download:
 $ sudo yum localinstall wewechat-1.0.0-x86_64.rpm
 ```
 
-
 The AppImage needs to be made executable after download:
 ```
 $ chmod u+x wewechat-1.0.0-x86_64.AppImage
@@ -81,8 +80,8 @@ Generate the binary:
 * For Linux
 ```
 $ npm run package-linux
-Maybe you will install some depends packages.
 ```
+Maybe you will install some depends packages.
 * For Mac
 ```
 $ npm run package-mac
