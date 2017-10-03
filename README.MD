@@ -50,7 +50,7 @@ Install deb package for Debian / Ubuntu:
 $ sudo dpkg -i wewechat-1.0.0-amd64.deb
 ```
 
-Install rpm package for Centos/RHEL:
+Install rpm package for Centos / RHEL:
 ```
 $ sudo yum localinstall wewechat-1.0.0-x86_64.rpm
 ```
