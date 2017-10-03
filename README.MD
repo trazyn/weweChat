@@ -40,10 +40,25 @@ $ brew cask install wewechat
 ```
 
 #### Linux
-[Download](https://github.com/trazyn/weweChat/releases/download/1.0.0/wewechat-1.0.0-x86_64.AppImage) the `.AppImage` file.
-The AppImage needs to be made executable after download:
+[Download](https://github.com/trazyn/weweChat/releases/download/)
+Centos/RHEL please download `.rpm` packages.
+Debian/Ubuntu please download `.deb` pacages.
+Other linux distribution please download `.AppImage` packages.
+
+Install deb package for Debian / Ubuntu:
+```
+$ sudo dpkg -i wewechat-1.0.0-amd64.deb
+```
+
+Install rpm package for Centos / RHEL:
+```
+$ sudo yum localinstall wewechat-1.0.0-x86_64.rpm
+```
+
+Install AppImage package for other linux distribution:
 ```
 $ chmod u+x wewechat-1.0.0-x86_64.AppImage
+$ ./wewechat-1.0.0-x86_64.AppImage
 ```
 
 #### Windows
@@ -67,6 +82,7 @@ Generate the binary:
 ```
 $ npm run package-linux
 ```
+Maybe you will install some depends packages.
 * For Mac
 ```
 $ npm run package-mac

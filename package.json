@@ -20,7 +20,9 @@
     "start-hot": "cross-env HOT=1 NODE_ENV=development ./node_modules/.bin/electron -r babel-register -r babel-polyfill ./main",
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\""
   },
-  "author": "var.darling@gmail.com",
+  "author": {
+	"email":"var.darling@gmail.com"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/trazyn/weweChat.git"
@@ -51,7 +53,10 @@
     },
     "linux": {
       "icon": "../resource",
-      "category": "Chat"
+      "category": "Chat",
+      "target": [
+        "deb", "rpm", "AppImage"
+      ]
     },
     "win": {
       "target": "nsis"
@@ -112,7 +117,7 @@
     "babel-register": "^6.24.1",
     "concurrently": "^3.5.0",
     "copy-webpack-plugin": "^4.0.1",
-    "cross-env": "^5.0.1",
+    "cross-env": "^5.0.5",
     "css-loader": "^0.28.4",
     "electron": "^1.6.11",
     "electron-builder": "^19.24.1",
