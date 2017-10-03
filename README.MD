@@ -45,19 +45,20 @@ Centos/RHEL please download `.rpm` packages.
 Debian/Ubuntu please download `.deb` pacages.
 Other linux distribution please download `.AppImage` packages.
 
-The deb packages needs to be made executable after download:
+Install deb package for Debian / Ubuntu:
 ```
 $ sudo dpkg -i wewechat-1.0.0-amd64.deb
 ```
 
-The rpm packages needs to be made executable after download:
+Install rpm package for Centos/RHEL:
 ```
 $ sudo yum localinstall wewechat-1.0.0-x86_64.rpm
 ```
 
-The AppImage needs to be made executable after download:
+Install AppImage package for other linux distribution:
 ```
 $ chmod u+x wewechat-1.0.0-x86_64.AppImage
+$ ./wewechat-1.0.0-x86_64.AppImage
 ```
 
 #### Windows
