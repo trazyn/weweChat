@@ -40,7 +40,7 @@ $ brew cask install wewechat
 ```
 
 #### Linux
-[Download](https://github.com/trazyn/weweChat/releases/download/)
+[Download](https://github.com/trazyn/weweChat/releases)
 Centos/RHEL please download `.rpm` packages.
 Debian/Ubuntu please download `.deb` pacages.
 Other linux distribution please download `.AppImage` packages.
