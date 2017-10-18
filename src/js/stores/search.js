@@ -29,7 +29,6 @@ class Search {
                 res = res || pinyin.letter(e.RemarkName).toLowerCase().indexOf(text) > -1;
             }
 
-            // The contact should in your contacts
             return res;
         });
 
