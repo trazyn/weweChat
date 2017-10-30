@@ -122,7 +122,7 @@
     "copy-webpack-plugin": "^4.2.0",
     "cross-env": "^5.1.1",
     "css-loader": "^0.28.4",
-    "electron": "^1.7.9",
+    "electron": "^1.8.1",
     "electron-builder": "^19.42.2",
     "electron-updater": "^2.15.0",
     "eslint": "^4.10.0",
