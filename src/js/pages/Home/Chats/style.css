@@ -86,11 +86,11 @@
 
     &::after {
         position: absolute;
-        bottom: 6px;
+        bottom: 4px;
         right: 0;
-        width: 6px;
-        height: 6px;
-        border-radius: 6px;
+        width: 8px;
+        height: 8px;
+        border-radius: 8px;
         border: 2px solid #fff;
     }
 
@@ -145,10 +145,10 @@
 
     .dot {
         &::after {
-            bottom: 4px;
-            width: 4px;
-            height: 4px;
-            border-radius: 4px;
+            bottom: 3px;
+            width: 6px;
+            height: 6px;
+            border-radius: 6px;
         }
     }
 }
