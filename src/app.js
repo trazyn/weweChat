@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'mobx-react';
-import { Router, hashHistory } from 'react-router';
+import { HashRouter } from 'react-router-dom';
 import ElectronCookies from '@exponent/electron-cookies';
 import { ipcRenderer } from 'electron';
 
@@ -26,11 +26,13 @@ class App extends Component {
     }
 
     canisend() {
-        return this.refs.navigator.state.location.pathname === '/'
+        return this.refs.navigator.history.location.pathname === '/'
             && stores.chat.user;
     }
 
     componentDidMount() {
+        var navigator = this.refs.navigator;
+
         // Hide the tray icon
         ipcRenderer.on('hide-tray', () => {
             stores.settings.setShowOnTray(false);
@@ -40,7 +42,7 @@ class App extends Component {
         ipcRenderer.on('message-chatto', (event, args) => {
             var user = stores.contacts.memberList.find(e => e.UserName === args.id);
 
-            this.refs.navigator.router.push('/');
+            navigator.history.push('/');
             setTimeout(stores.chat.chatTo(user));
         });
 
@@ -52,12 +54,12 @@ class App extends Component {
 
         // Shwo the settings page
         ipcRenderer.on('show-settings', () => {
-            this.refs.navigator.router.push('/settings');
+            navigator.history.push('/settings');
         });
 
         // Show a modal to create a new conversation
         ipcRenderer.on('show-newchat', () => {
-            this.refs.navigator.router.push('/');
+            navigator.history.push('/');
             stores.newchat.toggle(true);
         });
 
@@ -70,7 +72,7 @@ class App extends Component {
 
         // Search in currently conversation list
         ipcRenderer.on('show-search', () => {
-            this.refs.navigator.router.push('/');
+            navigator.history.push('/');
             stores.chat.toggleConversation(true);
 
             setTimeout(() => document.querySelector('#search').focus());
@@ -78,7 +80,7 @@ class App extends Component {
 
         // Show the home page
         ipcRenderer.on('show-messages', () => {
-            this.refs.navigator.router.push('/');
+            navigator.history.push('/');
             stores.chat.toggleConversation(true);
         });
 
@@ -96,19 +98,19 @@ class App extends Component {
 
         // Show contacts page
         ipcRenderer.on('show-contacts', () => {
-            this.refs.navigator.router.push('/contacts');
+            navigator.history.push('/contacts');
         });
 
         // Go to next conversation
         ipcRenderer.on('show-next', () => {
-            this.refs.navigator.router.push('/');
+            navigator.history.push('/');
             stores.chat.toggleConversation(true);
             setTimeout(stores.chat.chatToNext);
         });
 
         // Go to the previous conversation
         ipcRenderer.on('show-previous', () => {
-            this.refs.navigator.router.push('/');
+            navigator.history.push('/');
             stores.chat.toggleConversation(true);
             setTimeout(stores.chat.chatToPrev);
         });
@@ -132,9 +134,9 @@ class App extends Component {
     render() {
         return (
             <Provider {...stores}>
-                <Router history={hashHistory} ref="navigator">
+                <HashRouter ref="navigator">
                     {getRoutes()}
-                </Router>
+                </HashRouter>
             </Provider>
         );
     }

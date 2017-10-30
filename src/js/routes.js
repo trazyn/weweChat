@@ -1,15 +1,19 @@
 
 import React from 'react';
-import { IndexRoute, Route } from 'react-router';
+import { withRouter, Route } from 'react-router-dom';
 
 import { Layout, Settings, Contacts, Home } from './pages';
 
+const Main = withRouter(props => <Layout {...props} />);
+
 export default () => {
+    /* eslint-disable */
     return (
-        <Route path="/" component={Layout}>
-            <IndexRoute component={Home} />
+        <Main>
+            <Route exact path="/" component={Home} />
             <Route path="/contacts" component={Contacts} />
             <Route path="/settings" component={Settings} />
-        </Route>
+        </Main>
     );
+    /* eslint-enable */
 };

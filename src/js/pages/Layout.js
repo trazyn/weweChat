@@ -134,6 +134,8 @@ export default class Layout extends Component {
     }
 
     render() {
+        var { isLogin, loading, show, close, message, location } = this.props;
+
         if (!window.navigator.onLine) {
             return (
                 <Offline show={true} style={{
@@ -143,7 +145,7 @@ export default class Layout extends Component {
             );
         }
 
-        if (!this.props.isLogin()) {
+        if (!isLogin()) {
             return <Login />;
         }
 
@@ -152,16 +154,16 @@ export default class Layout extends Component {
         return (
             <div>
                 <Snackbar
-                    close={this.props.close}
-                    show={this.props.show}
-                    text={this.props.message} />
+                    close={close}
+                    show={show}
+                    text={message} />
 
-                <Loader show={this.props.loading} />
-                <Header location={this.props.location} />
+                <Loader show={loading} />
+                <Header location={location} />
                 <div className={classes.container} ref="viewport">
                     {this.props.children}
                 </div>
-                <Footer location={this.props.location} ref="footer" />
+                <Footer location={location} ref="footer" />
                 <UserInfo />
                 <AddFriend />
                 <NewChat />
