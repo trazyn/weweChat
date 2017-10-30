@@ -4,6 +4,8 @@
 
 > Icon by [octiviotti](https://octiviotti.deviantart.com/)
 
+[![dependencies Status](https://david-dm.org/trazyn/weweChat/status.svg)](https://david-dm.org/trazyn/weweChat)
+[![devDependencies Status](https://david-dm.org/trazyn/weweChat/dev-status.svg?style=flat-square)](https://david-dm.org/trazyn/weweChat?type=dev)
 [![Build Status](https://travis-ci.org/trazyn/weweChat.svg?branch=master)](https://travis-ci.org/trazyn/weweChat)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg)](https://github.com/trazyn/weweChat/pulls)
