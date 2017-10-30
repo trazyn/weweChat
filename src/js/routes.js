@@ -11,8 +11,8 @@ export default () => {
     return (
         <Main>
             <Route exact path="/" component={Home} />
-            <Route path="/contacts" component={Contacts} />
-            <Route path="/settings" component={Settings} />
+            <Route exact path="/contacts" component={Contacts} />
+            <Route exact path="/settings" component={Settings} />
         </Main>
     );
     /* eslint-enable */

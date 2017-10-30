@@ -7,10 +7,8 @@ import randomColor from 'randomcolor';
 import classes from './style.css';
 
 @inject(stores => ({
-    filtered: () => {
-        stores.contacts.filter('');
-        return stores.contacts.filtered;
-    },
+    filter: stores.contacts.filter,
+    filtered: stores.contacts.filtered,
     getContats: stores.contacts.getContats,
     showUserinfo: stores.userinfo.toggle,
 }))
@@ -61,8 +59,12 @@ export default class Contacts extends Component {
         });
     }
 
+    componentWillMount() {
+        this.props.filter();
+    }
+
     render() {
-        var { query, result } = this.props.filtered();
+        var { query, result } = this.props.filtered;
 
         if (query && result.length === 0) {
             return (

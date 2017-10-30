@@ -207,8 +207,6 @@ class Contacts {
             query: text,
             result: list.length ? self.group(list, showall) : [],
         };
-
-        window.res = self.filtered;
     }
 
     @action toggleGroup(showGroup) {
