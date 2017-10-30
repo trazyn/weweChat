@@ -128,6 +128,7 @@ const helper = {
                 return '[Video]';
 
             case 47:
+            case 49 + 8:
                 // Emoji
                 return '[Emoji]';
 

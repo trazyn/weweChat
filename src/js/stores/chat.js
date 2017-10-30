@@ -48,10 +48,12 @@ async function resolveMessage(message) {
             // External emoji
             if (!content) break;
 
-            let emoji = helper.parseKV(content);
+            {
+                let emoji = helper.parseKV(content);
 
-            emoji.src = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${message.MsgId}&skey=${auth.skey}`;
-            message.emoji = emoji;
+                emoji.src = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${message.MsgId}&skey=${auth.skey}`;
+                message.emoji = emoji;
+            }
             break;
 
         case 42:
@@ -110,6 +112,19 @@ async function resolveMessage(message) {
                     message.download = {
                         done: false,
                     };
+                    break;
+
+                case 8:
+                    // Animated emoji
+                    if (!content) break;
+
+                    {
+                        let emoji = helper.parseKV(content) || {};
+
+                        emoji.src = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${message.MsgId}&skey=${auth.skey}&type=big`;
+                        message.MsgType += 8;
+                        message.emoji = emoji;
+                    }
                     break;
 
                 default:

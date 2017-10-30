@@ -138,6 +138,7 @@ export default class ChatContent extends Component {
                     </div>
                 `;
             case 47:
+            case 49 + 8:
                 // External emoji
                 let emoji = message.emoji;
 
@@ -288,7 +289,7 @@ export default class ChatContent extends Component {
                     [classes.isText]: type === 1 && !message.location,
                     [classes.isLocation]: type === 1 && message.location,
                     [classes.isImage]: type === 3,
-                    [classes.isEmoji]: type === 47,
+                    [classes.isEmoji]: type === 47 || type === 49 + 8,
                     [classes.isVoice]: type === 34,
                     [classes.isContact]: type === 42,
                     [classes.isVideo]: type === 43,
