@@ -28,7 +28,9 @@ export default class ConfirmImagePaste extends Component {
         var { show, cancel, ok, image } = this.props;
 
         return (
-            <Modal show={show} fullscreen={true}>
+            <Modal
+                fullscreen={true}
+                show={show}>
                 <ModalBody className={classes.container}>
                     Send image ?
 

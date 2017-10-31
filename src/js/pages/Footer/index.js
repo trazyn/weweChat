@@ -20,7 +20,10 @@ export default class Footer extends Component {
         return (
             <footer className={classes.footer}>
                 <nav>
-                    <Link className="link" to="/" tabIndex="-1">
+                    <Link
+                        className="link"
+                        tabIndex="-1"
+                        to="/">
                         <span className={clazz({
                             [classes.active]: pathname === '/'
                         })}>
@@ -28,7 +31,10 @@ export default class Footer extends Component {
                         </span>
                     </Link>
 
-                    <Link className="link" to="/contacts" tabIndex="-1">
+                    <Link
+                        className="link"
+                        tabIndex="-1"
+                        to="/contacts">
                         <span className={clazz({
                             [classes.active]: pathname === '/contacts'
                         })}>
@@ -36,7 +42,10 @@ export default class Footer extends Component {
                         </span>
                     </Link>
 
-                    <Link className="link" to="/settings" tabIndex="-1">
+                    <Link
+                        className="link"
+                        tabIndex="-1"
+                        to="/settings">
                         <span className={clazz({
                             [classes.active]: pathname === '/settings'
                         })}>

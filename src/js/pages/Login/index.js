@@ -19,7 +19,9 @@ export default class Login extends Component {
         return (
             <div className={classes.inner}>
                 {
-                    <img src={this.props.avatar} className="disabledDrag" />
+                    <img
+                        className="disabledDrag"
+                        src={this.props.avatar} />
                 }
 
                 <p>Scan successful</p>

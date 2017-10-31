@@ -121,13 +121,19 @@ export default class SearchBar extends Component {
 
     renderUser(user) {
         return (
-            <div className={classes.user} onClick={e => this.chatTo(user)} data-userid={user.UserName}>
+            <div
+                className={classes.user}
+                onClick={e => this.chatTo(user)} data-userid={user.UserName}>
                 <img src={user.HeadImgUrl} />
 
                 <div className={classes.info}>
-                    <p className={classes.username} dangerouslySetInnerHTML={{__html: user.RemarkName || user.NickName}} />
+                    <p
+                        className={classes.username}
+                        dangerouslySetInnerHTML={{__html: user.RemarkName || user.NickName}} />
 
-                    <span className={classes.signature} dangerouslySetInnerHTML={{__html: user.Signature || 'No Signature'}} />
+                    <span
+                        className={classes.signature}
+                        dangerouslySetInnerHTML={{__html: user.Signature || 'No Signature'}} />
                 </div>
             </div>
         );
@@ -160,7 +166,11 @@ export default class SearchBar extends Component {
                 <header>
                     <h3>History</h3>
 
-                    <a href="" onClick={e => this.props.clear(e)}>CLEAR</a>
+                    <a
+                        href=""
+                        onClick={e => this.props.clear(e)}>
+                        CLEAR
+                    </a>
                 </header>
                 {
                     list.map((e, index) => {
@@ -195,17 +205,18 @@ export default class SearchBar extends Component {
                 <i className="icon-ion-ios-search-strong" />
                 <input
                     id="search"
-                    ref="search"
-                    type="text"
-                    placeholder="Search ..."
-                    onKeyUp={e => this.navigation(e)}
-                    onFocus={e => this.filter(e.target.value)}
                     onBlur={e => this.handleBlur(e.target.value)}
-                    onInput={e => this.filter(e.target.value)} />
-
+                    onFocus={e => this.filter(e.target.value)}
+                    onInput={e => this.filter(e.target.value)}
+                    onKeyUp={e => this.navigation(e)}
+                    placeholder="Search ..."
+                    ref="search"
+                    type="text" />
                 {
                     searching && (
-                        <div className={classes.dropdown} ref="dropdown">
+                        <div
+                            className={classes.dropdown}
+                            ref="dropdown">
                             {
                                 !result.query && (history.length ? this.renderHistory(history) : this.renderPlaceholder())
                             }

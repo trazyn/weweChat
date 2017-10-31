@@ -87,7 +87,10 @@ export default class NewChat extends Component {
 
     render() {
         return (
-            <Modal show={this.props.show} fullscreen={true} onCancel={e => this.props.close()}>
+            <Modal
+                fullscreen={true}
+                onCancel={e => this.props.close()}
+                show={this.props.show}>
                 <ModalBody className={classes.container}>
                     New Chat ({this.state.selected.length} / 20)
 
@@ -95,7 +98,12 @@ export default class NewChat extends Component {
                         {
                             this.state.selected.map((e, index) => {
                                 var user = this.props.getUser(e);
-                                return <img src={user.HeadImgUrl} key={index} onClick={ev => this.refs.users.removeSelected(e)} />;
+                                return (
+                                    <img
+                                        key={index}
+                                        onClick={ev => this.refs.users.removeSelected(e)}
+                                        src={user.HeadImgUrl} />
+                                );
                             })
                         }
                     </div>
@@ -103,7 +111,11 @@ export default class NewChat extends Component {
                     {this.renderList()}
 
                     <div>
-                        <button onClick={e => this.chat()} disabled={!this.state.selected.length}>Chat</button>
+                        <button
+                            disabled={!this.state.selected.length}
+                            onClick={e => this.chat()}>
+                            Chat
+                        </button>
 
                         <button onClick={e => this.close()}>Cancel</button>
                     </div>

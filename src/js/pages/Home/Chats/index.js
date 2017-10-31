@@ -110,7 +110,9 @@ export default class Chats extends Component {
 
         return (
             <div className={classes.container}>
-                <div className={classes.chats} ref="container">
+                <div
+                    className={classes.chats}
+                    ref="container">
                     {
                         !searching && chats.map((e, index) => {
                             var message = this.getTheLastestMessage(e.UserName) || {};
@@ -131,13 +133,19 @@ export default class Chats extends Component {
                                             [classes.green]: !muted && this.hasUnreadMessage(e.UserName),
                                             [classes.red]: muted && this.hasUnreadMessage(e.UserName)
                                         })}>
-                                            <img src={e.HeadImgUrl} className="disabledDrag" />
+                                            <img
+                                                className="disabledDrag"
+                                                src={e.HeadImgUrl} />
                                         </div>
 
                                         <div className={classes.info}>
-                                            <p className={classes.username} dangerouslySetInnerHTML={{__html: e.RemarkName || e.NickName}} />
+                                            <p
+                                                className={classes.username}
+                                                dangerouslySetInnerHTML={{__html: e.RemarkName || e.NickName}} />
 
-                                            <span className={classes.message} dangerouslySetInnerHTML={{__html: helper.getMessageContent(message) || 'No Message'}} />
+                                            <span
+                                                className={classes.message}
+                                                dangerouslySetInnerHTML={{__html: helper.getMessageContent(message) || 'No Message'}} />
                                         </div>
                                     </div>
 

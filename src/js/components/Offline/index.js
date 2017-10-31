@@ -17,10 +17,16 @@ export default class Avatar extends Component {
         if (!this.props.show) return false;
 
         return (
-            <div className={classes.container} {...this.props}>
+            <div
+                className={classes.container}
+                {...this.props}>
                 <div>
-                    <img src="assets/images/offline.png" className="disabledDrag" />
+                    <img
+                        className="disabledDrag"
+                        src="assets/images/offline.png" />
+
                     <h1>Oops, seems like you are offline!</h1>
+
                     <button onClick={e => window.location.reload()}>Reload</button>
                 </div>
             </div>

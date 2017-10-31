@@ -25,7 +25,9 @@ export default class Home extends Component {
     render() {
         return (
             <div className={classes.container}>
-                <Loader show={this.props.loading} fullscreen={true} />
+                <Loader
+                    fullscreen={true}
+                    show={this.props.loading} />
                 <div className={clazz(classes.inner, {
                     [classes.hideConversation]: !this.props.showConversation
                 })}>
@@ -35,7 +37,9 @@ export default class Home extends Component {
 
                         {
                             this.props.showRedIcon && (
-                                <div className={classes.addChat} onClick={() => this.props.newChat()}>
+                                <div
+                                    className={classes.addChat}
+                                    onClick={() => this.props.newChat()}>
                                     <i className="icon-ion-android-add" />
                                 </div>
                             )

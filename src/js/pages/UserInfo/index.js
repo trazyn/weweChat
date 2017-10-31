@@ -130,7 +130,9 @@ export default class UserInfo extends Component {
         }
 
         return (
-            <Modal show={this.props.show} onCancel={() => this.handleClose()}>
+            <Modal
+                onCancel={() => this.handleClose()}
+                show={this.props.show}>
                 <ModalBody className={classes.container}>
                     <div
                         className={clazz(classes.hero, {
@@ -151,20 +153,26 @@ export default class UserInfo extends Component {
 
                         {
                             (!isme && isFriend) && (
-                                <div className={classes.edit} onClick={() => this.toggleEdit()}>
+                                <div
+                                    className={classes.edit}
+                                    onClick={() => this.toggleEdit()}>
                                     <i className="icon-ion-edit" />
                                 </div>
                             )
                         }
 
                         <div className={classes.inner}>
-                            <div className={classes.mask} style={{
-                                background: gradient
-                            }} />
+                            <div
+                                className={classes.mask}
+                                style={{
+                                    background: gradient
+                                }} />
                             <Avatar src={HeadImgUrl} />
                         </div>
 
-                        <div className={classes.username} dangerouslySetInnerHTML={{__html: NickName}} />
+                        <div
+                            className={classes.username}
+                            dangerouslySetInnerHTML={{__html: NickName}} />
 
                         {
                             !this.props.remove ? (
@@ -172,7 +180,9 @@ export default class UserInfo extends Component {
                                     <p dangerouslySetInnerHTML={{__html: Signature || 'No Signature'}} />
 
                                     <div className={classes.address}>
-                                        <i className="icon-ion-android-map" style={{ color: fontColor }} />
+                                        <i
+                                            className="icon-ion-android-map"
+                                            style={{ color: fontColor }} />
 
                                         {City || 'UNKNOW'}, {Province || 'UNKNOW'}
                                     </div>
@@ -180,13 +190,13 @@ export default class UserInfo extends Component {
                             ) : (
                                 <div
                                     className={classes.action}
+                                    onClick={() => this.props.removeMember(this.props.user)}
                                     style={{
                                         color: buttonColor,
                                         opacity: .6,
                                         marginTop: 20,
                                         marginBottom: -30,
-                                    }}
-                                    onClick={() => this.props.removeMember(this.props.user)}>
+                                    }}>
                                     Delete
                                 </div>
                             )
@@ -194,11 +204,11 @@ export default class UserInfo extends Component {
 
                         <div
                             className={classes.action}
+                            onClick={() => this.handleAction(this.props.user)}
                             style={{
                                 color: buttonColor,
                                 opacity: .6,
-                            }}
-                            onClick={() => this.handleAction(this.props.user)}>
+                            }}>
                             {helper.isChatRoom(UserName) || isFriend ? 'Send Message' : 'Add Friend'}
                         </div>
                     </div>
@@ -207,12 +217,12 @@ export default class UserInfo extends Component {
                         /* eslint-disable */
                         this.state.showEdit && (
                             <input
-                                type="text"
-                                ref="input"
                                 autoFocus={true}
-                                placeholder="Type the remark name"
                                 defaultValue={RemarkName}
-                                onKeyPress={e => this.handleEnter(e)} />
+                                onKeyPress={e => this.handleEnter(e)}
+                                placeholder="Type the remark name"
+                                ref="input"
+                                type="text" />
                         )
                         /* eslint-enable */
                     }

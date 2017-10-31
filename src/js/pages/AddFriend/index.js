@@ -22,11 +22,18 @@ export default class AddFriend extends Component {
         var { me, show, close } = this.props;
 
         return (
-            <Modal show={show} fullscreen={true} onCancel={e => close()}>
+            <Modal
+                fullscreen={true}
+                onCancel={e => close()}
+                show={show}>
                 <ModalBody className={classes.container}>
                     Send friend request first
 
-                    <input type="text" defaultValue={`Hallo, im ${me && me.User.NickName}`} autoFocus={true} ref="input" />
+                    <input
+                        autoFocus={true}
+                        defaultValue={`Hallo, im ${me && me.User.NickName}`}
+                        ref="input"
+                        type="text" />
 
                     <div>
                         <button onClick={e => this.addFriend()}>Send</button>

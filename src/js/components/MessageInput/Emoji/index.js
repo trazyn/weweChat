@@ -33,7 +33,12 @@ export default class Emoji extends Component {
     renderEmoji(emoji) {
         return emoji.map((e, index) => {
             var { key, className } = e;
-            return <a key={index} title={key} className={className} />;
+            return (
+                <a
+                    className={className}
+                    key={index}
+                    title={key} />
+            );
         });
     }
 

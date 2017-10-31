@@ -101,21 +101,23 @@ export default class BatchSend extends Component {
             <div className={classes.container}>
                 <header>
                     <input
-                        type="text"
                         autoFocus={true}
                         onInput={e => this.search(e.target.value)}
-                        placeholder="Batch to send message, Choose one or more user." />
+                        placeholder="Batch to send message, Choose one or more user."
+                        type="text" />
 
                     <span>
                         <i
-                            onClick={() => this.selectAll()}
                             className={clazz('icon-ion-android-done-all', {
                                 [classes.active]: this.state.selected.length === contacts.length
                             })}
+                            onClick={() => this.selectAll()}
                             style={{
                                 marginRight: 20,
                             }} />
-                        <i className="icon-ion-android-close" onClick={e => this.close()} />
+                        <i
+                            className="icon-ion-android-close"
+                            onClick={e => this.close()} />
                     </span>
                 </header>
 
@@ -133,12 +135,16 @@ export default class BatchSend extends Component {
                         (searching ? filtered : contacts).map((e, index) => {
                             return (
                                 <li
-                                    onClick={() => this.handleSelected(e)}
-                                    key={index}>
-                                    <div className={classes.cover} style={{
-                                        backgroundImage: `url(${e.HeadImgUrl})`,
-                                    }} />
-                                    <span className={classes.username} dangerouslySetInnerHTML={{ __html: e.RemarkName || e.NickName }} />
+                                    key={index}
+                                    onClick={() => this.handleSelected(e)}>
+                                    <div
+                                        className={classes.cover}
+                                        style={{
+                                            backgroundImage: `url(${e.HeadImgUrl})`,
+                                        }} />
+                                    <span
+                                        className={classes.username}
+                                        dangerouslySetInnerHTML={{ __html: e.RemarkName || e.NickName }} />
 
                                     {
                                         this.state.selected.find(user => user.UserName === e.UserName) && (

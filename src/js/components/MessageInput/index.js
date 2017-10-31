@@ -154,39 +154,39 @@ export default class MessageInput extends Component {
                 </div>
                 <input
                     id="messageInput"
-                    type="text"
-                    ref="input"
+                    onPaste={e => this.handlePaste(e)}
+                    onKeyPress={e => this.handleEnter(e)}
                     placeholder="Type someting to send..."
                     readOnly={!canisend}
-                    onPaste={e => this.handlePaste(e)}
-                    onKeyPress={e => this.handleEnter(e)} />
+                    ref="input"
+                    type="text" />
 
                 <div className={classes.action}>
                     <i
-                        id="showUploader"
                         className="icon-ion-android-attach"
+                        id="showUploader"
                         onClick={e => canisend && this.refs.uploader.click()} />
                     <i
-                        id="showEmoji"
                         className="icon-ion-ios-heart"
+                        id="showEmoji"
+                        onClick={e => canisend && this.toggleEmoji(true)}
                         style={{
                             color: 'red',
-                        }}
-                        onClick={e => canisend && this.toggleEmoji(true)} />
+                        }} />
 
                     <input
-                        type="file"
-                        ref="uploader"
                         onChange={e => {
                             this.batchProcess(e.target.files[0]);
                             e.target.value = '';
                         }}
+                        ref="uploader"
                         style={{
                             display: 'none',
-                        }} />
+                        }}
+                        type="file" />
                     <Emoji
-                        output={emoji => this.writeEmoji(emoji)}
                         close={e => setTimeout(() => this.toggleEmoji(false), 100)}
+                        output={emoji => this.writeEmoji(emoji)}
                         show={this.state.showEmoji} />
                 </div>
             </div>

@@ -153,15 +153,19 @@ export default class UserList extends Component {
         return list.map((e, index) => {
             return (
                 <li
-                    key={index}
-                    data-userid={e.UserName}
                     className={clazz({
                         [classes.selected]: this.state.selected.includes(e.UserName),
                         [classes.active]: this.state.active === e.UserName,
                     })}
+                    data-userid={e.UserName}
+                    key={index}
                     onClick={ev => this.toggleSelected(e.UserName)}>
-                    <img src={e.HeadImgUrl} className={classes.avatar} />
-                    <span className={classes.username} dangerouslySetInnerHTML={{__html: e.RemarkName || e.NickName}} />
+                    <img
+                        className={classes.avatar}
+                        src={e.HeadImgUrl} />
+                    <span
+                        className={classes.username}
+                        dangerouslySetInnerHTML={{__html: e.RemarkName || e.NickName}} />
 
                     <i className="icon-ion-android-done-all" />
                 </li>
@@ -173,14 +177,16 @@ export default class UserList extends Component {
         return (
             <div className={classes.container}>
                 <input
-                    ref="input"
-                    type="text"
-                    placeholder="Type to Search..."
+                    autoFocus={true}
                     onKeyUp={e => this.navigation(e)}
                     onInput={e => this.search(e.target.value)}
-                    autoFocus={true} />
+                    placeholder="Type to Search..."
+                    ref="input"
+                    type="text" />
 
-                <ul className={classes.list} ref="list">
+                <ul
+                    className={classes.list}
+                    ref="list">
                     {this.renderList()}
                 </ul>
             </div>

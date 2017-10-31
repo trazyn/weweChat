@@ -11,8 +11,13 @@ import { on, off } from 'utils/event';
 class ModalBody extends Component {
     render() {
         return (
-            <Transition transitionName="fade" transitionEnterTimeout={1000} transitionLeaveTimeout={1000}>
-                <div className={clazz('Modal-body', this.props.className)} style={this.props.style}>
+            <Transition
+                transitionName="fade"
+                transitionEnterTimeout={1000}
+                transitionLeaveTimeout={1000}>
+                <div
+                    className={clazz('Modal-body', this.props.className)}
+                    style={this.props.style}>
                     {this.props.children}
                 </div>
             </Transition>
@@ -61,7 +66,11 @@ class Modal extends Component {
             return;
         }
 
-        return (<div className={clazz('Modal-overlay', this.props.className)} onClick={this.props.onCancel} />);
+        return (
+            <div
+                className={clazz('Modal-overlay', this.props.className)}
+                onClick={this.props.onCancel} />
+        );
     }
 
     renderBody() {
@@ -98,11 +107,19 @@ class Modal extends Component {
 
         return (
             <div className="Modal" ref="node">
-                <Transition transitionName={this.props.transition4overlay} transitionEnterTimeout={200} transitionLeaveTimeout={200} ref="overlay">
+                <Transition
+                    transitionName={this.props.transition4overlay}
+                    transitionEnterTimeout={200}
+                    transitionLeaveTimeout={200}
+                    ref="overlay">
                     {this.renderOverlay()}
                 </Transition>
 
-                <TransitionPortal transitionName={this.props.transition4body} transitionEnterTimeout={200} transitionLeaveTimeout={140} ref="content">
+                <TransitionPortal
+                    transitionName={this.props.transition4body}
+                    transitionEnterTimeout={200}
+                    transitionLeaveTimeout={140}
+                    ref="content">
                     {this.renderBody()}
                 </TransitionPortal>
             </div>

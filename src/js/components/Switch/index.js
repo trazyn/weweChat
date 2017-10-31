@@ -8,7 +8,9 @@ export default class Switch extends Component {
     render() {
         return (
             <span className="Switch">
-                <input type="checkbox" {...blacklist(this.props, 'className', 'children')} />
+                <input
+                    {...blacklist(this.props, 'className', 'children')}
+                    type="checkbox" />
                 <span className="Switch--fake" />
             </span>
         );

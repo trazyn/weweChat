@@ -70,7 +70,8 @@ export default class Layout extends Component {
             let node = e.target;
 
             while (node) {
-                if (node.nodeName.match(/^(input|textarea)$/i) || node.isContentEditable) {
+                if (node.nodeName.match(/^(input|textarea)$/i)
+                        || node.isContentEditable) {
                     menu.popup(remote.getCurrentWindow());
                     break;
                 }
@@ -160,10 +161,14 @@ export default class Layout extends Component {
 
                 <Loader show={loading} />
                 <Header location={location} />
-                <div className={classes.container} ref="viewport">
+                <div
+                    className={classes.container}
+                    ref="viewport">
                     {this.props.children}
                 </div>
-                <Footer location={location} ref="footer" />
+                <Footer
+                    location={location}
+                    ref="footer" />
                 <UserInfo />
                 <AddFriend />
                 <NewChat />
@@ -175,7 +180,9 @@ export default class Layout extends Component {
 
                 <Offline show={this.state.offline} />;
 
-                <div className={classes.dragDropHolder} ref="holder">
+                <div
+                    className={classes.dragDropHolder}
+                    ref="holder">
                     <div className={classes.inner}>
                         <div>
                             <img src="assets/images/filetypes/image.png" />

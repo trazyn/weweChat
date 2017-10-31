@@ -35,12 +35,19 @@ export default class Filter extends Component {
     render() {
         return (
             <div className={classes.contacts}>
-                <input type="text" ref="filter" placeholder="Type someting to search..." onInput={e => this.doFilter(e.target.value)} />
+                <input
+                    onInput={e => this.doFilter(e.target.value)}
+                    placeholder="Type someting to search..."
+                    ref="filter"
+                    type="text" />
 
                 <div className={classes.action}>
                     <label htmlFor="showGroup">
                         <span className={classes.options}>Show Groups</span>
-                        <Switch id="showGroup" defaultChecked={this.props.showGroup} onClick={e => this.handleShowGroup(e)} />
+                        <Switch
+                            defaultChecked={this.props.showGroup}
+                            id="showGroup"
+                            onClick={e => this.handleShowGroup(e)} />
                     </label>
                 </div>
             </div>

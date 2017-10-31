@@ -57,7 +57,9 @@ export default class Members extends Component {
                                 marginRight: 20,
                             }} />
 
-                        <i className="icon-ion-android-close" onClick={e => this.props.close()} />
+                        <i
+                            className="icon-ion-android-close"
+                            onClick={e => this.props.close()} />
                     </span>
                 </header>
 
@@ -87,10 +89,14 @@ export default class Members extends Component {
                                             ${frontColor[2]}
                                         )`,
                                     }}>
-                                    <div className={classes.cover} style={{
-                                        backgroundImage: `url(${e.HeadImgUrl})`,
-                                    }} />
-                                    <span className={classes.username} dangerouslySetInnerHTML={{ __html: e.NickName }} />
+                                    <div
+                                        className={classes.cover}
+                                        style={{
+                                            backgroundImage: `url(${e.HeadImgUrl})`,
+                                        }} />
+                                    <span
+                                        className={classes.username}
+                                        dangerouslySetInnerHTML={{ __html: e.NickName }} />
                                 </li>
                             );
                         })
@@ -99,13 +105,13 @@ export default class Members extends Component {
 
                 <div className={classes.footer}>
                     <input
-                        id="messageInput"
-                        type="text"
-                        ref="input"
-                        placeholder="Type someting to search..."
-                        maxLength={30}
                         autoFocus={true}
-                        onInput={e => this.props.search(e.target.value)} />
+                        id="messageInput"
+                        maxLength={30}
+                        onInput={e => this.props.search(e.target.value)}
+                        placeholder="Type someting to search..."
+                        ref="input"
+                        type="text" />
                 </div>
             </div>
         );

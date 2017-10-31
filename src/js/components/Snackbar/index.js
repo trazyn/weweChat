@@ -19,15 +19,24 @@ export default class Snackbar extends Component {
 
         return (
             <div className="Snackbar">
-                <div className="Snackbar-text" dangerouslySetInnerHTML={{__html: this.props.text}} />
-                <div className="Snackbar-action" onClick={() => this.props.close()}>DONE</div>
+                <div
+                    className="Snackbar-text"
+                    dangerouslySetInnerHTML={{__html: this.props.text}} />
+                <div
+                    className="Snackbar-action"
+                    onClick={() => this.props.close()}>
+                    DONE
+                </div>
             </div>
         );
     }
 
     render() {
         return (
-            <TransitionPortal transitionEnterTimeout={0} transitionLeaveTimeout={150} transitionName="Snackbar">
+            <TransitionPortal
+                transitionEnterTimeout={0}
+                transitionLeaveTimeout={150}
+                transitionName="Snackbar">
                 {this.renderContent()}
             </TransitionPortal>
         );
