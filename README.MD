@@ -161,3 +161,8 @@ Preferences            | <kbd>Cmd</kbd> <kbd>,</kbd>
 ### License
 MIT License
 
+#### If you like my works you can buy me a coffee
+<span>
+<img src="https://github.com/trazyn/ieaseMusic/blob/master/resource/alipay.JPG" width="300" />
+<img src="https://github.com/trazyn/ieaseMusic/blob/master/resource/wechat.JPG" width="300" />
+</span>
