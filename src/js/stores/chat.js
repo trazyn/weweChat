@@ -729,8 +729,8 @@ class Chat {
         }
 
         if (!file
-            || file.size >= 50 * 1024 * 1024) {
-            showMessage('Send file not allowed to exceed 50M.');
+            || file.size >= 100 * 1024 * 1024) {
+            showMessage('Send file not allowed to exceed 100M.');
             return false;
         }
 
