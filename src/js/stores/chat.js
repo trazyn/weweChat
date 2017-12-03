@@ -584,7 +584,8 @@ class Chat {
                 ToUserName: message.to,
                 ClientMsgId: message.ClientMsgId,
                 LocalID: message.LocalID,
-                MediaId: '',
+                MediaId: message.file.mediaId,
+                Signature: message.file.signature,
                 Type: 6,
             },
             Scene: isForward ? 2 : 0,
@@ -733,13 +734,14 @@ class Chat {
             return false;
         }
 
-        var { mediaId, type, uploaderid } = await self.upload(file, user);
+        var { mediaId, signature, type, uploaderid } = await self.upload(file, user);
         var res = await self.sendMessage(user, {
             type,
             file: {
                 name: file.name,
                 size: file.size,
                 mediaId,
+                signature,
                 extension: file.name.split('.').slice(-1).pop()
             },
         }, false, (to, messages, message) => {
@@ -802,9 +804,9 @@ class Chat {
 
     @action async upload(file, user = self.user) {
         var id = (+new Date() * 1000) + Math.random().toString().substr(2, 4);
+        var md5 = await helper.md5(file);
         var auth = await storage.get('auth');
         var ticket = await helper.getCookie('webwx_data_ticket');
-        var formdata = new window.FormData();
         var server = axios.defaults.baseURL.replace(/https:\/\//, 'https://file.') + 'cgi-bin/mmwebwx-bin/webwxuploadmedia?f=json';
         var mediaType = helper.getMediaType(file.name.split('.').slice(-1).pop());
         var type = {
@@ -812,43 +814,88 @@ class Chat {
             'video': 43,
             'doc': 49 + 6,
         }[mediaType];
+        var chunks = Math.ceil(file.size / 524288);
+        var payment = {};
+        var process = async(index) => {
+            let formdata = new window.FormData();
+            let start = index * 524288;
+            let end = start + 524288;
+
+            formdata.append('id', `WU_FILE_${self.upload.counter}`);
+            formdata.append('name', file.name);
+            formdata.append('type', file.type);
+            formdata.append('lastModifieDate', new Date(file.lastModified).toString());
+            formdata.append('size', file.size);
+            formdata.append('mediatype', mediaType);
+            formdata.append('chunks', chunks);
+            formdata.append('chunk', index);
+            formdata.append('uploadmediarequest', JSON.stringify(Object.assign({
+                BaseRequest: {
+                    Sid: auth.wxsid,
+                    Uin: auth.wxuin,
+                    Skey: auth.skey,
+                },
+                ClientMediaId: id,
+                DataLen: file.size,
+                FromUserName: session.user.User.UserName,
+                ToUserName: user.UserName,
+                MediaType: 4,
+                StartPos: 0,
+                TotalLen: file.size,
+                FileMd5: md5,
+            }, file.size > 1048576 * 10 ? {
+                AESKey: payment.AESKey,
+                Signature: payment.Signature,
+            } : {})));
+            formdata.append('webwx_data_ticket', ticket);
+            formdata.append('pass_ticket', auth.passTicket);
+            formdata.append('filename', file.slice(start, end <= file.size ? end : file.size));
+
+            var response = await axios.post(server, formdata);
+            return response;
+        };
 
         // Increase the counter
-        self.upload.count = self.upload.count ? 0 : self.upload.count + 1;
+        self.upload.counter = self.upload.counter ? self.upload.counter + 1 : 0;
 
         type = file.name.toLowerCase().endsWith('.gif') ? 47 : type;
-
-        formdata.append('id', `WU_FILE_${self.upload.counter}`);
-        formdata.append('name', file.name);
-        formdata.append('type', file.type);
-        formdata.append('lastModifieDate', new Date(file.lastModifieDate).toString());
-        formdata.append('size', file.size);
-        formdata.append('mediatype', mediaType);
-        formdata.append('uploadmediarequest', JSON.stringify({
-            BaseRequest: {
-                Sid: auth.wxsid,
-                Uin: auth.wxuin,
-                Skey: auth.skey,
-            },
-            ClientMediaId: id,
-            DataLen: file.size,
-            FromUserName: session.user.User.UserName,
-            MediaType: 4,
-            StartPos: 0,
-            ToUserName: user.UserName,
-            TotalLen: file.size,
-        }));
-        formdata.append('webwx_data_ticket', ticket);
-        formdata.append('pass_ticket', auth.passTicket);
-        formdata.append('filename', file.slice(0, file.size));
-
         var uploaderid = self.addUploadPreview(file, type, user);
-        var response = await axios.post(server, formdata);
 
-        if (response.data.BaseResponse.Ret === 0) {
+        if (file.size > 1048576 * 10) {
+            let response = await axios.post('/cgi-bin/mmwebwx-bin/webwxcheckupload', {
+                BaseRequest: {
+                    Sid: auth.wxsid,
+                    Uin: auth.wxuin,
+                    Skey: auth.skey,
+                },
+                FileSize: file.size,
+                FileName: file.name,
+                FileMd5: md5,
+                FileType: 7,
+                FromUserName: session.user.User.UserName,
+                ToUserName: user.UserName,
+            });
+            let data = response.data;
+
+            if (data.BaseResponse.Ret === 0) {
+                payment.AESKey = data.AESKey;
+                payment.Signature = data.Signature;
+                payment.MediaId = data.MediaId;
+            }
+        }
+
+        var response;
+
+        for (let i = 0; !payment.MediaId && i < chunks; ++i) {
+            response = await process(i);
+        }
+
+        if (!response
+            || response.data.BaseResponse.Ret === 0) {
             return {
                 type,
-                mediaId: response.data.MediaId,
+                mediaId: payment.MediaId || response.data.MediaId,
+                signature: payment.Signature,
                 uploaderid,
             };
         }

@@ -84,6 +84,7 @@
     "@exponent/electron-cookies": "^2.0.0",
     "auto-launch": "^5.0.1",
     "axios": "^0.17.0",
+    "browser-md5-file": "^1.0.0",
     "classname": "^0.0.0",
     "delegate": "^3.1.3",
     "electron-context-menu": "^0.9.1",
