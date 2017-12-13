@@ -418,6 +418,19 @@ function updateTray(unread = 0) {
                 tray.on('right-click', () => {
                     tray.popUpContextMenu();
                 });
+
+                let clicked = false;
+                tray.on('click', () => {
+                    if (clicked) {
+                        mainWindow.show();
+                        clicked = false;
+                    } else {
+                        clicked = true;
+                        setTimeout(() => {
+                            clicked = false;
+                        }, 400);
+                    }
+                });
             }
 
             tray.setImage(icon);
