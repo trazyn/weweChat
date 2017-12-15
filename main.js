@@ -330,6 +330,7 @@ let trayMenu = [
 let avatarPath = tmp.dirSync();
 let avatarCache = {};
 let avatarPlaceholder = `${__dirname}/src/assets/images/user-fallback.png`;
+const icon = `${__dirname}/src/assets/images/dock.png`;
 
 async function getIcon(cookies, userid, src) {
     var cached = avatarCache[userid];
@@ -498,6 +499,7 @@ const createMainWindow = () => {
             scrollBounce: true
         },
         frame: !isWin,
+        icon
     });
 
     mainWindow.setSize(350, 460);
@@ -705,7 +707,7 @@ const createMainWindow = () => {
 };
 
 app.setName(pkg.name);
-app.dock && app.dock.setIcon(`${__dirname}/src/assets/images/dock.png`);
+app.dock && app.dock.setIcon(icon);
 
 app.on('ready', createMainWindow);
 app.on('before-quit', () => {
