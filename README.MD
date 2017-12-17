@@ -35,7 +35,7 @@ API from [https://web.wechat.com/](https://web.wechat.com/)
 Download the last version on the [website](https://github.com/trazyn/weweChat/releases/latest) or below.
 
 #### Mac(10.9+)
-[Download](https://github.com/trazyn/weweChat/releases/download/1.1.5/wewechat-1.1.5-mac.dmg) the `.dmg` file.
+[Download](https://github.com/trazyn/weweChat/releases/download/v1.1.5/wewechat-1.1.5-mac.dmg) the `.dmg` file.
 Or use [Homebrew-Cask](https://caskroom.github.io/):
 ```
 $ brew cask install wewechat
@@ -64,7 +64,7 @@ $ ./wewechat-1.1.5-x86_64.AppImage
 ```
 
 #### Windows
-[Download](https://github.com/trazyn/weweChat/releases/download/1.1.5/wewechat-1.1.5-win-setup.exe) the `.exe` file.
+[Download](https://github.com/trazyn/weweChat/releases/download/v1.1.5/wewechat-1.1.5-win-setup.exe) the `.exe` file.
 
 ## Screenshot
 ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/0.png)
