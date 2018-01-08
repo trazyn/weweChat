@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import {withRouter} from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import pinyin from 'han';
 import clazz from 'classname';
@@ -42,7 +43,7 @@ import helper from 'utils/helper';
     },
 }))
 @observer
-export default class UserInfo extends Component {
+class UserInfo extends Component {
     state = {
         showEdit: false,
     };
@@ -79,8 +80,8 @@ export default class UserInfo extends Component {
     }
 
     handleAction(user) {
-        if (this._reactInternalInstance._context.location.pathname !== '/') {
-            this._reactInternalInstance._context.router.push('/');
+        if (this.props.history.location.pathname !== '/') {
+            this.props.history.push('/');
         }
 
         setTimeout(() => {
@@ -231,3 +232,5 @@ export default class UserInfo extends Component {
         );
     }
 }
+
+export default withRouter(UserInfo);
