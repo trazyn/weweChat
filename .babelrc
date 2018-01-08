@@ -5,7 +5,7 @@
 // module.hot is disabled), so keeping it and related plugins contained
 // within webpack helps prevent unexpected errors.
 {
-  "presets": ['es2015', "react", "stage-0"],
+  "presets": ["es2015", "react", "stage-0"],
   "plugins": ["babel-polyfill", "transform-decorators-legacy"],
   "env": {
       "production": {
@@ -13,6 +13,6 @@
       },
       "development": {
           "presets": ["react-hmre"]
-      },
-  },
+      }
+  }
 }
