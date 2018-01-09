@@ -1034,7 +1034,7 @@ class Chat {
             },
             CmdId: 3,
             OP: sticky,
-            RemarkName: '',
+            RemarkName: user.RemarkName || user.NickName,
             UserName: user.UserName
         });
         var sorted = [];
