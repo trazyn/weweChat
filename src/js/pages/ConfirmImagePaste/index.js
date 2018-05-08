@@ -37,9 +37,9 @@ export default class ConfirmImagePaste extends Component {
                     <img src={image} />
 
                     <div>
-                        <button onClick={e => ok()}>Send</button>
+                        <button onClick={e => ok()}>发送</button>
 
-                        <button onClick={e => cancel()}>Cancel</button>
+                        <button onClick={e => cancel()}>取消</button>
                     </div>
                 </ModalBody>
             </Modal>

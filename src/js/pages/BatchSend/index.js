@@ -103,7 +103,7 @@ export default class BatchSend extends Component {
                     <input
                         autoFocus={true}
                         onInput={e => this.search(e.target.value)}
-                        placeholder="Batch to send message, Choose one or more user."
+                        placeholder="群发发送消息，请选择联系人..."
                         type="text" />
 
                     <span>
@@ -126,7 +126,7 @@ export default class BatchSend extends Component {
                         (searching && filtered.length === 0) && (
                             <div className={classes.notfound}>
                                 <img src="assets/images/crash.png" />
-                                <h1>Can't find any people matching '{searching}'</h1>
+                                <h1>未找到匹配 '{searching}' 的联系人。</h1>
                             </div>
                         )
                     }

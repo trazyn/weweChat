@@ -31,14 +31,14 @@ export default class AddFriend extends Component {
 
                     <input
                         autoFocus={true}
-                        defaultValue={`Hallo, im ${me && me.User.NickName}`}
+                        defaultValue={`你好, 我是 ${me && me.User.NickName}`}
                         ref="input"
                         type="text" />
 
                     <div>
-                        <button onClick={e => this.addFriend()}>Send</button>
+                        <button onClick={e => this.addFriend()}>发送</button>
 
-                        <button onClick={e => close()}>Cancel</button>
+                        <button onClick={e => close()}>取消</button>
                     </div>
                 </ModalBody>
             </Modal>

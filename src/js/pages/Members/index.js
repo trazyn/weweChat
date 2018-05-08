@@ -47,7 +47,7 @@ export default class Members extends Component {
         return (
             <div className={classes.container}>
                 <header>
-                    <span dangerouslySetInnerHTML={{ __html: `Group '${user.NickName}' has ${list.length} members` }} />
+                    <span dangerouslySetInnerHTML={{ __html: `分组 '${user.NickName}' 包含 ${list.length} 个成员。` }} />
 
                     <span>
                         <i
@@ -68,7 +68,7 @@ export default class Members extends Component {
                         (searching && filtered.length === 0) && (
                             <div className={classes.notfound}>
                                 <img src="assets/images/crash.png" />
-                                <h1>Can't find any people matching '{searching}'</h1>
+                                <h1>未找到匹配 '{searching}' 的联系人</h1>
                             </div>
                         )
                     }
@@ -109,7 +109,7 @@ export default class Members extends Component {
                         id="messageInput"
                         maxLength={30}
                         onInput={e => this.props.search(e.target.value)}
-                        placeholder="Type something to search..."
+                        placeholder="输入搜索内容..."
                         ref="input"
                         type="text" />
                 </div>

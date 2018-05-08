@@ -114,10 +114,10 @@ export default class NewChat extends Component {
                         <button
                             disabled={!this.state.selected.length}
                             onClick={e => this.chat()}>
-                            Chat
+                            聊天
                         </button>
 
-                        <button onClick={e => this.close()}>Cancel</button>
+                        <button onClick={e => this.close()}>取消</button>
                     </div>
                 </ModalBody>
             </Modal>

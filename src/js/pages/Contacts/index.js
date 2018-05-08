@@ -25,7 +25,7 @@ export default class Contacts extends Component {
                     <div className={classes.header}>
                         <label>{e.prefix}</label>
 
-                        <span>{e.list.length} people</span>
+                        <span>{e.list.length} 人</span>
                         <span style={{
                             position: 'absolute',
                             left: 0,
@@ -58,7 +58,7 @@ export default class Contacts extends Component {
                                                 dangerouslySetInnerHTML={{__html: e.RemarkName || e.NickName}} />
                                             <p
                                                 className={classes.signature}
-                                                dangerouslySetInnerHTML={{__html: e.Signature || 'No Signature'}} />
+                                                dangerouslySetInnerHTML={{__html: e.Signature || '这家伙很懒，没写签名~'}} />
                                         </div>
                                     </div>
                                 );
@@ -82,7 +82,7 @@ export default class Contacts extends Component {
                 <div className={clazz(classes.container, classes.notfound)}>
                     <div className={classes.inner}>
                         <img src="assets/images/crash.png" />
-                        <h1>Can't find any people matching '{query}'</h1>
+                        <h1>未找到匹配 '{query}' 的联系人</h1>
                     </div>
                 </div>
             );

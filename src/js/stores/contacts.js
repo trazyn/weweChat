@@ -179,7 +179,7 @@ class Contacts {
                 });
             }
         } else {
-            throw new Error(`Failed to get user: ${list}`);
+            throw new Error(`无法获取用户: ${list}`);
         }
 
         return response.data.ContactList;

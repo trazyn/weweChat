@@ -134,14 +134,14 @@ const helper = {
                 return '[Emoji]';
 
             case 49 + 17:
-                return '🚀 &nbsp; Location sharing, Please check your phone.';
+                return '🚀 &nbsp; 位置分享，请在手机上查看';
 
             case 49 + 6:
                 return `🚚 &nbsp; ${message.file.name}`;
 
             case 49 + 2000:
                 // Transfer
-                return `Money +${message.transfer.money} 💰💰💰`;
+                return `转账信息 +${message.transfer.money} 💰💰💰`;
         }
     },
 
