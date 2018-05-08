@@ -26,12 +26,12 @@ let mainMenu = [
         label: pkg.name,
         submenu: [
             {
-                label: `About ${pkg.name}`,
+                label: `关于 ${pkg.name}`,
                 selector: 'orderFrontStandardAboutPanel:',
             },
             {
-                label: 'Preferences...',
-                accelerator: 'Cmd+,',
+                label: '设置',
+                accelerator: 'Ctrl+,',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-settings');
@@ -50,8 +50,8 @@ let mainMenu = [
                 role: 'unhide'
             },
             {
-                label: 'Check for updates',
-                accelerator: 'Cmd+U',
+                label: '检查更新',
+                accelerator: 'Ctrl+U',
                 click() {
                     checkForUpdates();
                 }
@@ -60,8 +60,8 @@ let mainMenu = [
                 type: 'separator'
             },
             {
-                label: 'Quit weweChat',
-                accelerator: 'Command+Q',
+                label: '退出',
+                accelerator: 'Ctrl+Q',
                 selector: 'terminate:',
                 click() {
                     forceQuit = true;
@@ -72,27 +72,27 @@ let mainMenu = [
         ]
     },
     {
-        label: 'File',
+        label: '文件',
         submenu: [
             {
-                label: 'New Chat',
-                accelerator: 'Cmd+N',
+                label: '新建聊天',
+                accelerator: 'Ctrl+N',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-newchat');
                 }
             },
             {
-                label: 'Search...',
-                accelerator: 'Cmd+F',
+                label: '搜索',
+                accelerator: 'Ctrl+F',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-search');
                 }
             },
             {
-                label: 'Batch Send Message',
-                accelerator: 'Cmd+B',
+                label: '群发消息',
+                accelerator: 'Ctrl+B',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-batchsend');
@@ -102,8 +102,8 @@ let mainMenu = [
                 type: 'separator',
             },
             {
-                label: 'Insert emoji',
-                accelerator: 'Cmd+I',
+                label: 'Emoji表情',
+                accelerator: 'Ctrl+I',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-emoji');
@@ -113,16 +113,16 @@ let mainMenu = [
                 type: 'separator',
             },
             {
-                label: 'Next conversation',
-                accelerator: 'Cmd+J',
+                label: '下一会话',
+                accelerator: 'Ctrl+J',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-next');
                 }
             },
             {
-                label: 'Previous conversation',
-                accelerator: 'Cmd+K',
+                label: '上一会话',
+                accelerator: 'Ctrl+K',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-previous');
@@ -131,18 +131,18 @@ let mainMenu = [
         ]
     },
     {
-        label: 'Conversations',
+        label: '会话',
         submenu: [
             {
-                label: 'Loading...',
+                label: '加载中...',
             }
         ],
     },
     {
-        label: 'Contacts',
+        label: '联系人',
         submenu: [
             {
-                label: 'Loading...',
+                label: '加载中...',
             }
         ],
     },
@@ -150,7 +150,7 @@ let mainMenu = [
 
     },
     {
-        label: 'Edit',
+        label: '编辑',
         submenu: [
             {
                 role: 'undo'
@@ -182,11 +182,11 @@ let mainMenu = [
         ]
     },
     {
-        label: 'View',
+        label: '查看',
         submenu: [
             {
-                label: isFullScreen ? 'Exit Full Screen' : 'Enter Full Screen',
-                accelerator: 'Shift+Cmd+F',
+                label: isFullScreen ? '退出全屏' : '全屏',
+                accelerator: 'Shift+Ctrl+F',
                 click() {
                     isFullScreen = !isFullScreen;
 
@@ -195,8 +195,8 @@ let mainMenu = [
                 }
             },
             {
-                label: 'Toggle Conversations',
-                accelerator: 'Shift+Cmd+M',
+                label: '选择会话',
+                accelerator: 'Shift+Ctrl+M',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-conversations');
@@ -220,7 +220,7 @@ let mainMenu = [
         ]
     },
     {
-        role: 'window',
+        role: '窗口',
         submenu: [
             {
                 role: 'minimize'
@@ -231,42 +231,42 @@ let mainMenu = [
         ]
     },
     {
-        role: 'help',
+        role: '帮助',
         submenu: [
             {
-                label: 'Feedback',
+                label: '反馈',
                 click() {
                     shell.openExternal('https://github.com/trazyn/weweChat/issues');
                 }
             },
             {
-                label: 'Fork me on Github',
+                label: '源码',
                 click() {
                     shell.openExternal('https://github.com/trazyn/weweChat');
                 }
-            },
+            } /*,
             {
                 type: 'separator'
             },
             {
-                label: '💕 Follow me on Twitter 👏',
+                label: '💕 Twitter上关注 👏',
                 click() {
                     shell.openExternal('https://twitter.com/var_darling');
                 }
-            }
+            } */
         ]
     }
 ];
 let trayMenu = [
     {
-        label: `You have 0 messages`,
+        label: `暂无消息`,
         click() {
             mainWindow.show();
             mainWindow.webContents.send('show-messages');
         }
     },
     {
-        label: 'Toggle main window',
+        label: '显示/隐藏',
         click() {
             let isVisible = mainWindow.isVisible();
             isVisible ? mainWindow.hide() : mainWindow.show();
@@ -276,32 +276,32 @@ let trayMenu = [
         type: 'separator'
     },
     {
-        label: 'Preferences...',
-        accelerator: 'Cmd+,',
+        label: '设置',
+        accelerator: 'Ctrl+,',
         click() {
             mainWindow.show();
             mainWindow.webContents.send('show-settings');
         }
-    },
+    }, /*
     {
         label: 'Fork me on Github',
         click() {
             shell.openExternal('https://github.com/trazyn/weweChat');
         }
-    },
+    }, */
     {
         type: 'separator'
     },
     {
-        label: 'Toggle DevTools',
-        accelerator: 'Alt+Command+I',
+        label: '显示调试工具',
+        accelerator: 'Alt+Ctrl+I',
         click() {
             mainWindow.show();
             mainWindow.toggleDevTools();
         }
     },
     {
-        label: 'Hide menu bar icon',
+        label: '隐藏菜单图标',
         click() {
             mainWindow.webContents.send('hide-tray');
         }
@@ -310,15 +310,15 @@ let trayMenu = [
         type: 'separator'
     },
     {
-        label: 'Check for updates',
-        accelerator: 'Cmd+U',
+        label: '检测更新',
+        accelerator: 'Ctrl+U',
         click() {
             checkForUpdates();
         }
     },
     {
-        label: 'Quit weweChat',
-        accelerator: 'Command+Q',
+        label: '退出',
+        accelerator: 'Ctrl+Q',
         selector: 'terminate:',
         click() {
             forceQuit = true;
@@ -396,7 +396,7 @@ function updateTray(unread = 0) {
     }
 
     // Update unread mesage count
-    trayMenu[0].label = `You have ${unread} messages`;
+    trayMenu[0].label = ` ${unread} 条未读`;
 
     if (settings.showOnTray) {
         if (tray
@@ -711,16 +711,16 @@ app.dock && app.dock.setIcon(icon);
 
 app.on('ready', createMainWindow);
 app.on('before-quit', () => {
-    // Fix issues #14
     forceQuit = true;
 });
-app.on('activate', e => {
+
+app.on('activate', () => {
     if (!mainWindow.isVisible()) {
         mainWindow.show();
     }
 });
 
-autoUpdater.on('update-not-available', e => {
+autoUpdater.on('update-not-available', () => {
     dialog.showMessageBox({
         type: 'info',
         buttons: ['OK'],
@@ -732,7 +732,7 @@ autoUpdater.on('update-not-available', e => {
     console.log('Update not available.');
 });
 
-autoUpdater.on('update-available', e => {
+autoUpdater.on('update-available', () => {
     downloading = true;
     checkForUpdates();
 });
