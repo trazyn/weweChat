@@ -8,15 +8,9 @@ import moment from 'moment';
 import classes from './style.css';
 import helper from 'utils/helper';
 
-moment.updateLocale('en', {
+moment.updateLocale('zh-cn', {
     relativeTime: {
-        past: '%s',
-        m: '1 分钟前',
-        mm: '%d 分钟前',
-        h: '1小时前',
-        hh: '%d 小时前',
-        s: '刚刚',
-        ss: '%d 秒前',
+        past: '%s'
     },
 });
 

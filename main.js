@@ -31,7 +31,6 @@ let mainMenu = [
             },
             {
                 label: '设置',
-                accelerator: 'Ctrl+,',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-settings');
@@ -51,7 +50,6 @@ let mainMenu = [
             },
             {
                 label: '检查更新',
-                accelerator: 'Ctrl+U',
                 click() {
                     checkForUpdates();
                 }
@@ -61,7 +59,6 @@ let mainMenu = [
             },
             {
                 label: '退出',
-                accelerator: 'Ctrl+Q',
                 selector: 'terminate:',
                 click() {
                     forceQuit = true;
@@ -76,7 +73,6 @@ let mainMenu = [
         submenu: [
             {
                 label: '新建聊天',
-                accelerator: 'Ctrl+N',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-newchat');
@@ -84,7 +80,6 @@ let mainMenu = [
             },
             {
                 label: '搜索',
-                accelerator: 'Ctrl+F',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-search');
@@ -92,7 +87,6 @@ let mainMenu = [
             },
             {
                 label: '群发消息',
-                accelerator: 'Ctrl+B',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-batchsend');
@@ -103,7 +97,6 @@ let mainMenu = [
             },
             {
                 label: 'Emoji表情',
-                accelerator: 'Ctrl+I',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-emoji');
@@ -114,7 +107,6 @@ let mainMenu = [
             },
             {
                 label: '下一会话',
-                accelerator: 'Ctrl+J',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-next');
@@ -122,7 +114,6 @@ let mainMenu = [
             },
             {
                 label: '上一会话',
-                accelerator: 'Ctrl+K',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-previous');
@@ -186,7 +177,6 @@ let mainMenu = [
         submenu: [
             {
                 label: isFullScreen ? '退出全屏' : '全屏',
-                accelerator: 'Shift+Ctrl+F',
                 click() {
                     isFullScreen = !isFullScreen;
 
@@ -196,7 +186,6 @@ let mainMenu = [
             },
             {
                 label: '选择会话',
-                accelerator: 'Shift+Ctrl+M',
                 click() {
                     mainWindow.show();
                     mainWindow.webContents.send('show-conversations');
@@ -220,7 +209,7 @@ let mainMenu = [
         ]
     },
     {
-        role: '窗口',
+        role: 'window',
         submenu: [
             {
                 role: 'minimize'
@@ -231,7 +220,7 @@ let mainMenu = [
         ]
     },
     {
-        role: '帮助',
+        role: 'help',
         submenu: [
             {
                 label: '反馈',
@@ -277,7 +266,6 @@ let trayMenu = [
     },
     {
         label: '设置',
-        accelerator: 'Ctrl+,',
         click() {
             mainWindow.show();
             mainWindow.webContents.send('show-settings');
@@ -294,7 +282,6 @@ let trayMenu = [
     },
     {
         label: '显示调试工具',
-        accelerator: 'Alt+Ctrl+I',
         click() {
             mainWindow.show();
             mainWindow.toggleDevTools();
@@ -311,14 +298,12 @@ let trayMenu = [
     },
     {
         label: '检测更新',
-        accelerator: 'Ctrl+U',
         click() {
             checkForUpdates();
         }
     },
     {
         label: '退出',
-        accelerator: 'Ctrl+Q',
         selector: 'terminate:',
         click() {
             forceQuit = true;
@@ -711,16 +696,16 @@ app.dock && app.dock.setIcon(icon);
 
 app.on('ready', createMainWindow);
 app.on('before-quit', () => {
+    // Fix issues #14
     forceQuit = true;
 });
-
-app.on('activate', () => {
+app.on('activate', e => {
     if (!mainWindow.isVisible()) {
         mainWindow.show();
     }
 });
 
-autoUpdater.on('update-not-available', () => {
+autoUpdater.on('update-not-available', e => {
     dialog.showMessageBox({
         type: 'info',
         buttons: ['OK'],
@@ -732,7 +717,7 @@ autoUpdater.on('update-not-available', () => {
     console.log('Update not available.');
 });
 
-autoUpdater.on('update-available', () => {
+autoUpdater.on('update-available', e => {
     downloading = true;
     checkForUpdates();
 });
