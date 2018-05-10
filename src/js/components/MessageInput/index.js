@@ -150,7 +150,7 @@ export default class MessageInput extends Component {
             })}>
                 <div
                     className={classes.tips}>
-                    You should choice a contact at first.
+                    请先选择一个联系人。
                 </div>
                 <input
                     id="messageInput"

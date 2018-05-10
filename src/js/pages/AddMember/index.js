@@ -88,7 +88,7 @@ export default class AddMember extends Component {
                 onCancel={e => this.close()}
                 show={this.props.show}>
                 <ModalBody className={classes.container}>
-                    Add Members
+                    添加组员
 
                     <div className={classes.avatars}>
                         {
@@ -110,10 +110,10 @@ export default class AddMember extends Component {
                         <button
                             disabled={!this.state.selected.length}
                             onClick={e => this.add(this.state.selected)}>
-                            Add
+                            添加
                         </button>
 
-                        <button onClick={e => this.close()}>Cancel</button>
+                        <button onClick={e => this.close()}>取消</button>
                     </div>
                 </ModalBody>
             </Modal>

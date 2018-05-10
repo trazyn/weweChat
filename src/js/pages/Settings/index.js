@@ -50,7 +50,7 @@ export default class Settings extends Component {
                             <a
                                 href={e.link}
                                 target="_bank">
-                                View on Github
+                                软件主页
                             </a>
                         </p>
                         <div className={classes.description}>{e.description}</div>

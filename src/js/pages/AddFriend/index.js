@@ -27,8 +27,7 @@ export default class AddFriend extends Component {
                 onCancel={e => close()}
                 show={show}>
                 <ModalBody className={classes.container}>
-                    Send friend request first
-
+                    添加好友
                     <input
                         autoFocus={true}
                         defaultValue={`你好, 我是 ${me && me.User.NickName}`}
@@ -37,7 +36,6 @@ export default class AddFriend extends Component {
 
                     <div>
                         <button onClick={e => this.addFriend()}>发送</button>
-
                         <button onClick={e => close()}>取消</button>
                     </div>
                 </ModalBody>

@@ -7,17 +7,42 @@
     font-size: 14px;
     font-family: "system-ui";
     font-weight: normal;
-    width: 100%;
+    width: 80%;
     color: #777;
     text-align: center;
     background: rgba(255, 255, 255, 1);
     -webkit-user-select: none;
     -webkit-app-region: drag;
     cursor: default;
+    display: inline-block;
 }
 
 @media (width <= 800px) {
     .container h1 {
         font-size: 12px;
     }
+}
+
+.btnSection {
+    display: inline-block;
+    float: right;
+}
+
+.btn {
+    border-color: transparent;
+    background-color: rgba(255, 255, 255, .001);
+    border-radius: 9px;
+    text-decoration: none;
+}
+
+.min {
+    color: #99eb1f;
+}
+
+.max {
+    color: #bb56ee;
+}
+
+.danger {
+    color: #ff6347;
 }

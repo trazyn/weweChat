@@ -16,7 +16,7 @@ class Settings {
     @observable showRedIcon = true;
     @observable downloads = '';
     @observable plugins = [{
-        name: 'Message Backup',
+        name: '聊天记录备份',
         link: 'https://github.com/trazyn',
         description: 'Curabitur lobortis id lorem id bibendum. Ut id consectetur magna. Quisque volutpat augue enim, pulvinar lobortis nibh lacinia at. Vestibulum nec erat ut mi sollicitudin porttitor id sit amet risus. Nam tempus vel odio vitae aliquam. In imperdiet eros id lacus vestibulum vestibulum. Suspendisse fermentum sem sagittis ante venenatis egestas quis vel justo. Maecenas semper suscipit nunc, sed aliquam sapien convallis eu. Nulla ut turpis in diam dapibus consequat.',
         version: '1.0.1',

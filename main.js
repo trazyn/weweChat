@@ -407,7 +407,7 @@ function updateTray(unread = 0) {
         let contextmenu = Menu.buildFromTemplate(trayMenu);
         let icon = unread
             ? `${__dirname}/src/assets/images/icon-new-message.png`
-            : `${__dirname}/src/assets/images/icon.png`
+            : `${__dirname}/src/assets/images/icon.ico`
             ;
 
         // Make sure the last tray has been destroyed
@@ -771,3 +771,8 @@ autoUpdater.on('update-downloaded', info => {
         app.quit();
     });
 });
+
+ipcMain.on('min', () => mainWindow.minimize());
+ipcMain.on('max', () => mainWindow.maximize());
+ipcMain.on('unmax', () => mainWindow.unmaximize());
+ipcMain.on('close', () => mainWindow.hide());

@@ -156,7 +156,7 @@ export default class ChatContent extends Component {
                 return `
                     <div class="${classes.invalidEmoji}">
                         <div></div>
-                        <span>Send an emoji, view it on mobile</span>
+                        <span>无法解析的Emoji表情，请在手机端查看！</span>
                     </div>
                 `;
 

@@ -195,7 +195,7 @@ export default class Layout extends Component {
 
                         <i className="icon-ion-ios-cloud-upload-outline" />
 
-                        <h2>Drop your file here</h2>
+                        <h2>拖拽文件到这里</h2>
                     </div>
                 </div>
             </div>
