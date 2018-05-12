@@ -38,26 +38,26 @@ export default class Layout extends Component {
     componentDidMount() {
         var templates = [
             {
-                label: 'Undo',
+                label: '撤销',
                 role: 'undo',
             }, {
-                label: 'Redo',
+                label: '重做',
                 role: 'redo',
             }, {
                 type: 'separator',
             }, {
-                label: 'Cut',
+                label: '剪切',
                 role: 'cut',
             }, {
-                label: 'Copy',
+                label: '复制',
                 role: 'copy',
             }, {
-                label: 'Paste',
+                label: '粘贴',
                 role: 'paste',
             }, {
                 type: 'separator',
             }, {
-                label: 'Select all',
+                label: '全选',
                 role: 'selectall',
             },
         ];
@@ -195,7 +195,7 @@ export default class Layout extends Component {
 
                         <i className="icon-ion-ios-cloud-upload-outline" />
 
-                        <h2>Drop your file here</h2>
+                        <h2>拖拽文件到这里</h2>
                     </div>
                 </div>
             </div>

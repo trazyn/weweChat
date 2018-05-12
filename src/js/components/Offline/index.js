@@ -25,9 +25,9 @@ export default class Avatar extends Component {
                         className="disabledDrag"
                         src="assets/images/offline.png" />
 
-                    <h1>Oops, seems like you are offline!</h1>
+                    <h1>已离线！</h1>
 
-                    <button onClick={e => window.location.reload()}>Reload</button>
+                    <button onClick={e => window.location.reload()}>重连</button>
                 </div>
             </div>
         );

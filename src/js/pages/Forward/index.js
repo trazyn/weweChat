@@ -100,10 +100,10 @@ export default class Forward extends Component {
                         <button
                             disabled={!this.state.selected.length}
                             onClick={e => this.send(this.state.selected)}>
-                            Send Message
+                            发送
                         </button>
 
-                        <button onClick={e => this.close()}>Cancel</button>
+                        <button onClick={e => this.close()}>取消</button>
                     </div>
                 </ModalBody>
             </Modal>

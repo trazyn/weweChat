@@ -75,7 +75,7 @@ class UserInfo extends Component {
             });
             this.toggleEdit(false);
         } else {
-            this.props.showMessage('Failed to set remark name.');
+            this.props.showMessage('无法修改备注名。');
         }
     }
 
@@ -178,14 +178,14 @@ class UserInfo extends Component {
                         {
                             !this.props.remove ? (
                                 <div className={classes.wrap}>
-                                    <p dangerouslySetInnerHTML={{__html: Signature || 'No Signature'}} />
+                                    <p dangerouslySetInnerHTML={{__html: Signature || '这家伙很懒，没写签名~'}} />
 
                                     <div className={classes.address}>
                                         <i
                                             className="icon-ion-android-map"
                                             style={{ color: fontColor }} />
 
-                                        {City || 'UNKNOW'}, {Province || 'UNKNOW'}
+                                        {City || '未知'}, {Province || '未知'}
                                     </div>
                                 </div>
                             ) : (
@@ -210,7 +210,7 @@ class UserInfo extends Component {
                                 color: buttonColor,
                                 opacity: .6,
                             }}>
-                            {helper.isChatRoom(UserName) || isFriend ? 'Send Message' : 'Add Friend'}
+                            {helper.isChatRoom(UserName) || isFriend ? '发送消息' : '添加好友'}
                         </div>
                     </div>
 
@@ -221,7 +221,7 @@ class UserInfo extends Component {
                                 autoFocus={true}
                                 defaultValue={RemarkName}
                                 onKeyPress={e => this.handleEnter(e)}
-                                placeholder="Type the remark name"
+                                placeholder="输入备注名称"
                                 ref="input"
                                 type="text" />
                         )

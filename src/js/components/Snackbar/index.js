@@ -25,7 +25,7 @@ export default class Snackbar extends Component {
                 <div
                     className="Snackbar-action"
                     onClick={() => this.props.close()}>
-                    DONE
+                    完成
                 </div>
             </div>
         );

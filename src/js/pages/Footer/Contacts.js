@@ -37,13 +37,13 @@ export default class Filter extends Component {
             <div className={classes.contacts}>
                 <input
                     onInput={e => this.doFilter(e.target.value)}
-                    placeholder="Type something to search..."
+                    placeholder="输入搜索内容..."
                     ref="filter"
                     type="text" />
 
                 <div className={classes.action}>
                     <label htmlFor="showGroup">
-                        <span className={classes.options}>Show Groups</span>
+                        <span className={classes.options}>显示分组</span>
                         <Switch
                             defaultChecked={this.props.showGroup}
                             id="showGroup"

@@ -24,8 +24,8 @@ export default class Login extends Component {
                         src={this.props.avatar} />
                 }
 
-                <p>Scan successful</p>
-                <p>Confirm login on mobile WeChat</p>
+                <p>扫描成功</p>
+                <p>在手机端确认登录</p>
             </div>
         );
     }
@@ -39,10 +39,10 @@ export default class Login extends Component {
                     code && (<img className="disabledDrag" src={`https://login.weixin.qq.com/qrcode/${code}`} />)
                 }
 
-                <a href={window.location.pathname + '?' + +new Date()}>Refresh the QR Code</a>
+                <a href={window.location.pathname + '?' + +new Date()}>刷新二维码</a>
 
-                <p>Scan to log in to WeChat</p>
-                <p>Log in on phone to use WeChat on Web</p>
+                <p>扫描二维码</p>
+                <p>在手机端确认登录</p>
             </div>
         );
     }

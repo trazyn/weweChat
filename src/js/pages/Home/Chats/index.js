@@ -8,15 +8,9 @@ import moment from 'moment';
 import classes from './style.css';
 import helper from 'utils/helper';
 
-moment.updateLocale('en', {
+moment.updateLocale('zh-cn', {
     relativeTime: {
-        past: '%s',
-        m: '1 min',
-        mm: '%d mins',
-        h: 'an hour',
-        hh: '%d h',
-        s: 'now',
-        ss: '%d s',
+        past: '%s'
     },
 });
 
@@ -56,7 +50,7 @@ export default class Chats extends Component {
     showContextMenu(user) {
         var menu = new remote.Menu.buildFromTemplate([
             {
-                label: 'Send Message',
+                label: '发送',
                 click: () => {
                     this.props.chatTo(user);
                 }
@@ -65,19 +59,19 @@ export default class Chats extends Component {
                 type: 'separator'
             },
             {
-                label: helper.isTop(user) ? 'Unsticky' : 'Sticky on Top',
+                label: helper.isTop(user) ? '取消置顶' : '置顶',
                 click: () => {
                     this.props.sticky(user);
                 }
             },
             {
-                label: 'Delete',
+                label: '删除',
                 click: () => {
                     this.props.removeChat(user);
                 }
             },
             {
-                label: 'Mark as Read',
+                label: '标记为已读',
                 click: () => {
                     this.props.markedRead(user.UserName);
                 }
@@ -145,7 +139,7 @@ export default class Chats extends Component {
 
                                             <span
                                                 className={classes.message}
-                                                dangerouslySetInnerHTML={{__html: helper.getMessageContent(message) || 'No Message'}} />
+                                                dangerouslySetInnerHTML={{__html: helper.getMessageContent(message) || '暂无消息'}} />
                                         </div>
                                     </div>
 

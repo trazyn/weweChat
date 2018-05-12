@@ -391,7 +391,7 @@ function normalize(text = '') {
             text = decodeText = text.split(e).join(emoji);
         });
     } catch (ex) {
-        console.error('Failed decode %s: %o', text, ex);
+        console.error('解码失败 %s: %o', text, ex);
     }
 
     return decodeText;

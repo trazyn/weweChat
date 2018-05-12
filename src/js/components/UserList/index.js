@@ -145,7 +145,7 @@ export default class UserList extends Component {
             return (
                 <li className={classes.notfound}>
                     <img src="assets/images/crash.png" />
-                    <h3>Can't find any people matching '{searching}'</h3>
+                    <h3>未找到匹配 '{searching}' 的联系人</h3>
                 </li>
             );
         }
@@ -180,7 +180,7 @@ export default class UserList extends Component {
                     autoFocus={true}
                     onKeyUp={e => this.navigation(e)}
                     onInput={e => this.search(e.target.value)}
-                    placeholder="Type to Search..."
+                    placeholder="输入搜索内容..."
                     ref="input"
                     type="text" />
 

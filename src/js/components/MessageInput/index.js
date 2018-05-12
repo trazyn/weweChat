@@ -30,7 +30,7 @@ export default class MessageInput extends Component {
 
         if (user.length === 1
             && user.slice(-1).pop().UserName === this.props.me.UserName) {
-            this.props.showMessage('Can\'t send message to yourself.');
+            this.props.showMessage('不能给自己发送消息！');
             return false;
         }
 
@@ -62,7 +62,7 @@ export default class MessageInput extends Component {
                 this.refs.input.value = '';
 
                 if (!res) {
-                    await this.props.showMessage(batch ? `Send message to ${e.NickName} is failed!` : 'Failed to send message.');
+                    await this.props.showMessage(batch ? `无法给 ${e.NickName} 发送消息！` : '无法发送消息!');
                 }
 
                 return true;
@@ -101,7 +101,7 @@ export default class MessageInput extends Component {
         for (let user of receiver) {
             if (message) {
                 await this.props.sendMessage(user, message, true)
-                    .catch(ex => showMessage(`Send message to ${user.NickName} is failed!`));
+                    .catch(ex => showMessage(`无法给 ${user.NickName} 发送消息！`));
                 continue;
             }
 
@@ -110,11 +110,11 @@ export default class MessageInput extends Component {
 
             if (message === false) {
                 if (batch) {
-                    showMessage(`Send message to ${user.NickName} is failed!`);
+                    showMessage(`无法给 ${user.NickName} 发送消息！`);
                     continue;
                 }
                 // In batch mode just show the failed message
-                showMessage('Failed to send image.');
+                showMessage('无法发送图片！');
             }
         }
     }
@@ -150,13 +150,13 @@ export default class MessageInput extends Component {
             })}>
                 <div
                     className={classes.tips}>
-                    You should choice a contact at first.
+                    请先选择一个联系人。
                 </div>
                 <input
                     id="messageInput"
                     onPaste={e => this.handlePaste(e)}
                     onKeyPress={e => this.handleEnter(e)}
-                    placeholder="Type something to send..."
+                    placeholder="回车发送..."
                     readOnly={!canisend}
                     ref="input"
                     type="text" />
