@@ -348,8 +348,8 @@ async function getIcon(cookies, userid, src) {
                 responseType: 'arraybuffer',
                 headers: {
                     Cookie: cookies,
-                    Host: 'wx.qq.com',
-                    Referer: 'https://wx.qq.com/',
+                    Host: 'wx2.qq.com',
+                    Referer: 'https://wx2.qq.com/',
                     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8',
                 },
             });
@@ -490,9 +490,8 @@ const createMainWindow = () => {
         y: mainWindowState.y,
         minWidth: 745,
         minHeight: 450,
-        vibrancy: 'medium-light',
         transparent: true,
-        titleBarStyle: 'hidden-inset',
+        titleBarStyle: 'hiddenInset',
         backgroundColor: 'none',
         resizable: false,
         webPreferences: {

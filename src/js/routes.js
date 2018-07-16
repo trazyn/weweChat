@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { withRouter, Route } from 'react-router-dom';
+import { withRouter, Route, Switch } from 'react-router-dom';
 
 import { Layout, Settings, Contacts, Home } from './pages';
 
@@ -10,9 +10,11 @@ export default () => {
     /* eslint-disable */
     return (
         <Main>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/contacts" component={Contacts} />
-            <Route exact path="/settings" component={Settings} />
+            <Switch>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/contacts" component={Contacts} />
+                <Route exact path="/settings" component={Settings} />
+            </Switch>
         </Main>
     );
     /* eslint-enable */
