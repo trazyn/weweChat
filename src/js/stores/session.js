@@ -281,9 +281,12 @@ class Session {
             }
         };
 
-        response.data.AddMsgList.map(async e => {
-            await chat.loadChats(e.StatusNotifyUserName);
-        });
+        // Load the rencets chats
+        response.data.AddMsgList.map(
+            async e => {
+                await chat.loadChats(e.StatusNotifyUserName);
+            }
+        );
 
         self.loading = false;
         self.genSyncKey(response.data.SyncCheckKey.List);

@@ -13,7 +13,7 @@ import getRoutes from './js/routes';
 import stores from './js/stores';
 
 ElectronCookies.enable({
-    origin: 'https://wx.qq.com',
+    origin: 'https://wx2.qq.com',
 });
 
 class App extends Component {

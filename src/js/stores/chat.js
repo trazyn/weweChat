@@ -32,7 +32,7 @@ async function resolveMessage(message) {
             break;
         case 3:
             // Image
-            let image = helper.parseKV(content);
+            let image = {};
             image.src = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetmsgimg?&msgid=${message.MsgId}&skey=${auth.skey}`;
             message.image = image;
             break;
@@ -177,15 +177,19 @@ async function resolveMessage(message) {
 function hasUnreadMessage(messages) {
     var counter = 0;
 
-    messages.keys().map(e => {
-        var item = messages.get(e);
+    Array.from(messages.keys()).map(
+        e => {
+            var item = messages.get(e);
+            counter += (item.data.length - item.unread);
+        }
+    );
 
-        counter += (item.data.length - item.unread);
-    });
-
-    ipcRenderer.send('message-unread', {
-        counter,
-    });
+    ipcRenderer.send(
+        'message-unread',
+        {
+            counter,
+        }
+    );
 }
 
 async function updateMenus({ conversations = [], contacts = [] }) {
@@ -524,8 +528,7 @@ class Chat {
                 FromUserName: message.from,
                 ToUserName: message.to,
                 ClientMsgId: message.ClientMsgId,
-                LocalID: message.LocalID,
-                MediaId: message.file.mediaId,
+                LocalID: '',
                 Type: 3,
             },
             Scene: isForward ? 2 : 0,
@@ -692,6 +695,7 @@ class Chat {
                 return false;
             }
         } catch (ex) {
+            console.error('Failed to send message: %o', ex);
             return false;
         }
 

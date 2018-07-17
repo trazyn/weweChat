@@ -9,6 +9,7 @@ export default {
 
     ...baseConfig,
 
+    mode: 'development',
     devtool: 'cheap-module-eval-source-map',
 
     entry: [
@@ -29,11 +30,6 @@ export default {
 
         // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
         new webpack.HotModuleReplacementPlugin(),
-
-        // NODE_ENV should be production so that modules do not perform certain development checks
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('development')
-        }),
     ],
 
     // https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works

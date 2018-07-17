@@ -5,7 +5,7 @@ import config from './index';
 export default {
 
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
                 loader: ['babel-loader', 'eslint-loader'],
@@ -57,10 +57,6 @@ export default {
                     'style-loader',
                     'css-loader',
                 ],
-            },
-            {
-                test: /\.json$/,
-                loader: 'json-loader',
             },
             {
                 test: /\.html/,

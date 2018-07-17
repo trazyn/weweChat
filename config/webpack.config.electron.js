@@ -1,5 +1,4 @@
 
-import webpack from 'webpack';
 import MinifyPlugin from 'babel-minify-webpack-plugin';
 import config from './index';
 import baseConfig from './webpack.config.base';
@@ -8,6 +7,7 @@ export default {
 
     ...baseConfig,
 
+    mode: 'production',
     devtool: false,
 
     entry: [
@@ -23,11 +23,6 @@ export default {
     plugins: [
         // Minify the output
         new MinifyPlugin(),
-
-        // NODE_ENV should be production so that modules do not perform certain development checks
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('production')
-        }),
     ],
 
     // https://github.com/chentsulin/webpack-target-electron-renderer#how-this-module-works
