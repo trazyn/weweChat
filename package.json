@@ -81,7 +81,6 @@
     ]
   },
   "dependencies": {
-    "@exponent/electron-cookies": "^2.0.0",
     "auto-launch": "^5.0.1",
     "axios": "^0.18.0",
     "browser-md5-file": "^1.0.0",
