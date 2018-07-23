@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'mobx-react';
 import { HashRouter } from 'react-router-dom';
-import ElectronCookies from '@exponent/electron-cookies';
 import { ipcRenderer } from 'electron';
 
 import './global.css';
@@ -11,10 +10,6 @@ import './assets/fonts/icomoon/style.css';
 import 'utils/albumcolors';
 import getRoutes from './js/routes';
 import stores from './js/stores';
-
-ElectronCookies.enable({
-    origin: 'https://wx2.qq.com',
-});
 
 class App extends Component {
     async componentWillMount() {

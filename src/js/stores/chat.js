@@ -24,7 +24,7 @@ async function resolveMessage(message) {
                 let parts = message.Content.split(':<br/>');
                 let location = helper.parseKV(message.OriContent);
 
-                location.image = `${axios.defaults.baseURL}${parts[(isChatRoom && !message.isme) ? 2 : 1]}`.replace(/\/+/g, '/');
+                location.image = `${axios.defaults.baseURL}${parts[1]}`.replace(/\/+/g, '/');
                 location.href = message.Url;
 
                 message.location = location;
@@ -39,7 +39,7 @@ async function resolveMessage(message) {
 
         case 34:
             // Voice
-            let voice = helper.parseKV(content);
+            let voice = {};
             voice.src = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetvoice?&msgid=${message.MsgId}&skey=${auth.skey}`;
             message.voice = voice;
             break;
@@ -80,12 +80,13 @@ async function resolveMessage(message) {
             switch (message.AppMsgType) {
                 case 2000:
                     // Transfer
-                    let { value } = helper.parseXml(message.Content, 'des');
+                    let res = helper.parseXml(message.Content, 'des');
+                    let value = (res.value || {}).des;
 
                     message.MsgType += 2000;
                     message.transfer = {
-                        desc: value.des,
-                        money: +value.match(/[\d.]+元/)[0].slice(0, -1),
+                        desc: value,
+                        money: +(value.match(/[\d.]+元/)[0].slice(0, -1)),
                     };
                     break;
 
@@ -136,6 +137,7 @@ async function resolveMessage(message) {
             break;
 
         case 10002:
+            // Recall message
             let text = isChatRoom ? message.Content.split(':<br/>').slice(-1).pop() : message.Content;
             let { value } = helper.parseXml(text, ['replacemsg', 'msgid']);
 
