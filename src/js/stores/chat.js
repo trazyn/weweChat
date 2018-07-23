@@ -39,7 +39,7 @@ async function resolveMessage(message) {
 
         case 34:
             // Voice
-            let voice = helper.parseKV(content);
+            let voice = {};
             voice.src = `${axios.defaults.baseURL}cgi-bin/mmwebwx-bin/webwxgetvoice?&msgid=${message.MsgId}&skey=${auth.skey}`;
             message.voice = voice;
             break;
