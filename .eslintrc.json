@@ -1,11 +1,7 @@
 {
     "parserOptions": {
-        "ecmaVersion": 6,
-            "sourceType": "module",
-            "ecmaFeatures": {
-                "impliedStrict": true,
-                "jsx": true
-            }
+        "ecmaVersion": 2018,
+        "sourceType": "module",
     },
     "env": {
         "es6": true,

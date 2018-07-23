@@ -2,6 +2,8 @@
   "extends": "stylelint-config-standard",
   "rules": {
     "block-no-empty": null,
+    "font-family-no-missing-generic-family-keyword": null,
+    "no-descending-specificity": null,
     "color-no-invalid-hex": true,
     "declaration-colon-space-after": "always",
     "indentation": [4, {

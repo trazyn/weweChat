@@ -329,6 +329,7 @@ export default class ChatContent extends Component {
             && target.classList.contains('open-image')) {
             // Get image from cache and convert to base64
             let response = await axios.get(target.src, { responseType: 'arraybuffer' });
+            // eslint-disable-next-line
             let base64 = new window.Buffer(response.data, 'binary').toString('base64');
 
             ipcRenderer.send('open-image', {
@@ -393,6 +394,7 @@ export default class ChatContent extends Component {
             && target.classList.contains('is-download')) {
             let message = this.props.getMessage(e.target.parentElement.dataset.id);
             let response = await axios.get(message.file.download, { responseType: 'arraybuffer' });
+            // eslint-disable-next-line
             let base64 = new window.Buffer(response.data, 'binary').toString('base64');
             let filename = ipcRenderer.sendSync(
                 'file-download',
