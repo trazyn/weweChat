@@ -2,7 +2,7 @@
 
 <img src="https://github.com/trazyn/weweChat/blob/master/resource/128x128.png" />
 
-> Icon by [octiviotti](https://octiviotti.deviantart.com/)
+> Icon by [honey4809](https://github.com/honey4809)
 
 [![dependencies Status](https://david-dm.org/trazyn/weweChat/status.svg)](https://david-dm.org/trazyn/weweChat)
 [![devDependencies Status](https://david-dm.org/trazyn/weweChat/dev-status.svg?style=flat-square)](https://david-dm.org/trazyn/weweChat?type=dev)
