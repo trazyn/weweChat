@@ -54,6 +54,7 @@
     "linux": {
       "icon": "../resource",
       "category": "Chat",
+      "executableName": "weweChat",
       "target": [
         "deb",
         "rpm",

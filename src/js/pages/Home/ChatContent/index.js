@@ -80,7 +80,7 @@ import { on, off } from 'utils/event';
     showAddFriend: (user) => stores.addfriend.toggle(true, user),
     recallMessage: stores.chat.recallMessage,
     downloads: stores.settings.downloads,
-    remeberConversation: stores.settings.remeberConversation,
+    rememberConversation: stores.settings.rememberConversation,
     showConversation: stores.chat.showConversation,
     toggleConversation: stores.chat.toggleConversation,
 }))
@@ -304,9 +304,13 @@ export default class ChatContent extends Component {
                         <Avatar
                             src={message.isme ? message.HeadImgUrl : user.HeadImgUrl}
                             className={classes.avatar}
-                            onClick={ev => this.props.showUserinfo(message.isme, user)} />
+                            onClick={ev => this.props.showUserinfo(message.isme, user)}
+                        />
 
-                        <p className={classes.username} dangerouslySetInnerHTML={{__html: user.NickName}} />
+                        <p
+                            className={classes.username}
+                            dangerouslySetInnerHTML={{__html: user.DisplayName || user.RemarkName || user.NickName}}
+                        />
 
                         <div className={classes.content}>
                             <p
@@ -540,7 +544,7 @@ export default class ChatContent extends Component {
     }
 
     componentWillUnmount() {
-        !this.props.remeberConversation && this.props.reset();
+        !this.props.rememberConversation && this.props.reset();
     }
 
     componentDidUpdate() {

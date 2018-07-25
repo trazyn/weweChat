@@ -436,6 +436,8 @@ function updateTray(unread = 0) {
             tray.setContextMenu(contextmenu);
         });
     } else {
+        if (!tray) return;
+
         tray.destroy();
         tray = null;
     }
