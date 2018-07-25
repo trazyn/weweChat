@@ -28,8 +28,11 @@ export default class MessageInput extends Component {
             return false;
         }
 
-        if (user.length === 1
-            && user.slice(-1).pop().UserName === this.props.me.UserName) {
+        if (
+            true
+            && user.length === 1
+            && user.slice(-1).pop().UserName === this.props.me.UserName
+        ) {
             this.props.showMessage('Can\'t send message to yourself.');
             return false;
         }
@@ -45,28 +48,37 @@ export default class MessageInput extends Component {
         var user = this.props.user;
         var batch = user.length > 1;
 
-        if (!this.canisend()
+        if (
+            false
+            || !this.canisend()
             || !message
-            || e.charCode !== 13) return;
+            || e.charCode !== 13
+        ) return;
 
         this.blocking = true;
 
         // You can not send message to yourself
         await Promise.all(
-            user.filter(e => e.UserName !== this.props.me.UserName).map(async e => {
-                let res = await this.props.sendMessage(e, {
-                    content: message,
-                    type: 1,
-                }, true);
+            user.filter(e => e.UserName !== this.props.me.UserName).map(
+                async e => {
+                    let res = await this.props.sendMessage(
+                        e,
+                        {
+                            content: message,
+                            type: 1,
+                        },
+                        true
+                    );
 
-                this.refs.input.value = '';
+                    this.refs.input.value = '';
 
-                if (!res) {
-                    await this.props.showMessage(batch ? `Send message to ${e.NickName} is failed!` : 'Failed to send message.');
+                    if (!res) {
+                        await this.props.showMessage(batch ? `Send message to ${e.NickName} is failed!` : 'Failed to send message.');
+                    }
+
+                    return true;
                 }
-
-                return true;
-            })
+            )
         );
         this.blocking = false;
     }
@@ -76,9 +88,7 @@ export default class MessageInput extends Component {
     };
 
     toggleEmoji(show = !this.state.showEmoji) {
-        this.setState({
-            showEmoji: show,
-        });
+        this.setState({ showEmoji: show });
     }
 
     writeEmoji(emoji) {
@@ -141,38 +151,66 @@ export default class MessageInput extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        var input = this.refs.input;
+
+        // When user has changed clear the input
+        if (
+            true
+            && input
+            && input.value
+            && this.props.user.map(e => e.UserName).join() !== nextProps.user.map(e => e.UserName).join()
+        ) {
+            input.value = '';
+        }
+    }
+
     render() {
         var canisend = !!this.props.user.length;
 
         return (
-            <div className={clazz(classes.container, this.props.className, {
-                [classes.shouldSelectUser]: !canisend,
-            })}>
+            <div
+                className={
+                    clazz(
+                        classes.container,
+                        this.props.className,
+                        {
+                            [classes.shouldSelectUser]: !canisend,
+                        }
+                    )
+                }
+            >
                 <div
-                    className={classes.tips}>
+                    className={classes.tips}
+                >
                     You should choice a contact at first.
                 </div>
+
                 <input
                     id="messageInput"
-                    onPaste={e => this.handlePaste(e)}
-                    onKeyPress={e => this.handleEnter(e)}
+                    ref="input"
+                    type="text"
                     placeholder="Type something to send..."
                     readOnly={!canisend}
-                    ref="input"
-                    type="text" />
+                    onPaste={e => this.handlePaste(e)}
+                    onKeyPress={e => this.handleEnter(e)}
+                />
 
                 <div className={classes.action}>
                     <i
                         className="icon-ion-android-attach"
                         id="showUploader"
-                        onClick={e => canisend && this.refs.uploader.click()} />
+                        onClick={e => canisend && this.refs.uploader.click()}
+                    />
+
                     <i
                         className="icon-ion-ios-heart"
                         id="showEmoji"
                         onClick={e => canisend && this.toggleEmoji(true)}
                         style={{
                             color: 'red',
-                        }} />
+                        }}
+                    />
 
                     <input
                         onChange={e => {
@@ -183,11 +221,14 @@ export default class MessageInput extends Component {
                         style={{
                             display: 'none',
                         }}
-                        type="file" />
+                        type="file"
+                    />
+
                     <Emoji
                         close={e => setTimeout(() => this.toggleEmoji(false), 100)}
                         output={emoji => this.writeEmoji(emoji)}
-                        show={this.state.showEmoji} />
+                        show={this.state.showEmoji}
+                    />
                 </div>
             </div>
         );
