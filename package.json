@@ -1,6 +1,6 @@
 {
   "name": "wewechat",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "Unofficial WeChat client built with React, MobX and Electron.",
   "main": "main.js",
   "scripts": {
@@ -49,7 +49,7 @@
       "title": "wewechat ${version}"
     },
     "mac": {
-      "icon": "../resource/icon.icns"
+      "icon": "../resource/dock.icns"
     },
     "linux": {
       "icon": "../resource",

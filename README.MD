@@ -35,7 +35,7 @@ API from [https://web.wechat.com/](https://web.wechat.com/)
 Download the last version on the [website](https://github.com/trazyn/weweChat/releases/latest) or below.
 
 #### Mac(10.9+)
-[Download](https://github.com/trazyn/weweChat/releases/download/v1.1.6/wewechat-1.1.6-mac.dmg) the `.dmg` file.
+[Download](https://github.com/trazyn/weweChat/releases/download/v1.1.7/wewechat-1.1.7-mac.dmg) the `.dmg` file.
 Or use [Homebrew-Cask](https://caskroom.github.io/):
 ```
 $ brew cask install wewechat
@@ -49,22 +49,22 @@ Other linux distribution please download `.AppImage` packages.
 
 Install deb package for Debian / Ubuntu:
 ```
-$ sudo dpkg -i wewechat-1.1.6-amd64.deb
+$ sudo dpkg -i wewechat-1.1.7-amd64.deb
 ```
 
 Install rpm package for Centos / RHEL:
 ```
-$ sudo yum localinstall wewechat-1.1.6-x86_64.rpm
+$ sudo yum localinstall wewechat-1.1.7-x86_64.rpm
 ```
 
 Install AppImage package for other linux distribution:
 ```
-$ chmod u+x wewechat-1.1.6-x86_64.AppImage
-$ ./wewechat-1.1.6-x86_64.AppImage
+$ chmod u+x wewechat-1.1.7-x86_64.AppImage
+$ ./wewechat-1.1.7-x86_64.AppImage
 ```
 
 #### Windows
-[Download](https://github.com/trazyn/weweChat/releases/download/v1.1.6/wewechat-1.1.6-win-setup.exe) the `.exe` file.
+[Download](https://github.com/trazyn/weweChat/releases/download/v1.1.7/wewechat-1.1.7-win-setup.exe) the `.exe` file.
 
 ## Screenshot
 ![preview](https://raw.githubusercontent.com/trazyn/weweChat/master/screenshots/0.png)
