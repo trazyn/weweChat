@@ -54,7 +54,7 @@
     "linux": {
       "icon": "../resource",
       "category": "Chat",
-      "executableName": "weweChat",
+      "executableName": "wewechat",
       "target": [
         "deb",
         "rpm",
@@ -124,7 +124,7 @@
     "cross-env": "^5.1.1",
     "css-loader": "^1.0.0",
     "electron": "^2.0.5",
-    "electron-builder": "^20.19.2",
+    "electron-builder": "^19.56.2",
     "electron-updater": "^3.0.1",
     "eslint": "^5.1.0",
     "eslint-config-standard": "^11.0.0",
