@@ -304,7 +304,8 @@ export default class ChatContent extends Component {
                         <Avatar
                             src={message.isme ? message.HeadImgUrl : user.HeadImgUrl}
                             className={classes.avatar}
-                            onClick={ev => this.props.showUserinfo(message.isme, user)} />
+                            onClick={ev => this.props.showUserinfo(message.isme, user)}
+                        />
 
                         <p
                             className={classes.username}

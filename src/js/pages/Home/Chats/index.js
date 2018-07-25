@@ -135,7 +135,9 @@ export default class Chats extends Component {
                                         })}>
                                             <img
                                                 className="disabledDrag"
-                                                src={e.HeadImgUrl} />
+                                                src={e.HeadImgUrl}
+                                                onError={e => (e.target.src = 'assets/images/user-fallback.png')}
+                                            />
                                         </div>
 
                                         <div className={classes.info}>
