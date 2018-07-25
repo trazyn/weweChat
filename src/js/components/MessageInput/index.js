@@ -24,10 +24,6 @@ export default class MessageInput extends Component {
     canisend() {
         var user = this.props.user;
 
-        if (this.blocking) {
-            return false;
-        }
-
         if (
             true
             && user.length === 1
@@ -39,9 +35,6 @@ export default class MessageInput extends Component {
 
         return true;
     }
-
-    // Prevent duplicate message
-    blocking = false;
 
     async handleEnter(e) {
         var message = this.refs.input.value.trim();
@@ -55,10 +48,8 @@ export default class MessageInput extends Component {
             || e.charCode !== 13
         ) return;
 
-        this.blocking = true;
-
         // You can not send message to yourself
-        await Promise.all(
+        Promise.all(
             user.filter(e => e.UserName !== this.props.me.UserName).map(
                 async e => {
                     let res = await this.props.sendMessage(
@@ -70,8 +61,6 @@ export default class MessageInput extends Component {
                         true
                     );
 
-                    this.refs.input.value = '';
-
                     if (!res) {
                         await this.props.showMessage(batch ? `Send message to ${e.NickName} is failed!` : 'Failed to send message.');
                     }
@@ -80,7 +69,8 @@ export default class MessageInput extends Component {
                 }
             )
         );
-        this.blocking = false;
+
+        this.refs.input.value = '';
     }
 
     state = {
