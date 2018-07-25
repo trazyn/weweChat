@@ -22,8 +22,8 @@ import helper from 'utils/helper';
     setConfirmImagePaste: stores.settings.setConfirmImagePaste,
     blockRecall: stores.settings.blockRecall,
     setBlockRecall: stores.settings.setBlockRecall,
-    remeberConversation: stores.settings.remeberConversation,
-    setRemeberConversation: stores.settings.setRemeberConversation,
+    rememberConversation: stores.settings.rememberConversation,
+    setRememberConversation: stores.settings.setRememberConversation,
     showRedIcon: stores.settings.showRedIcon,
     setShowRedIcon: stores.settings.setShowRedIcon,
 
@@ -56,8 +56,8 @@ export default class Settings extends Component {
             setConfirmImagePaste,
             blockRecall,
             setBlockRecall,
-            remeberConversation,
-            setRemeberConversation,
+            rememberConversation,
+            setRememberConversation,
             showRedIcon,
             setShowRedIcon,
             user,
@@ -131,12 +131,12 @@ export default class Settings extends Component {
                         </li>
 
                         <li>
-                            <label htmlFor="remeberConversation">
-                                <span>Remeber the last Conversation</span>
+                            <label htmlFor="rememberConversation">
+                                <span>Remember the last Conversation</span>
                                 <Switch
-                                    checked={remeberConversation}
-                                    id="remeberConversation"
-                                    onChange={e => setRemeberConversation(e.target.checked)} />
+                                    checked={rememberConversation}
+                                    id="rememberConversation"
+                                    onChange={e => setRememberConversation(e.target.checked)} />
                             </label>
                         </li>
 
