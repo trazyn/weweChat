@@ -530,6 +530,7 @@ class Chat {
                 FromUserName: message.from,
                 ToUserName: message.to,
                 ClientMsgId: message.ClientMsgId,
+                MediaId: message.file.mediaId,
                 LocalID: '',
                 Type: 3,
             },
