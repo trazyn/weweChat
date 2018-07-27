@@ -2,8 +2,6 @@
 
 <img src="https://github.com/trazyn/weweChat/blob/master/resource/128x128.png" />
 
-> Web API can not create room and invite members to room since 2018.
-
 [![Current Release](https://img.shields.io/github/release/trazyn/weweChat.svg?style=flat-square)](https://github.com/trazyn/weweChat/releases)
 [![Travis CI status](https://img.shields.io/travis/trazyn/weweChat/dev.svg?style=flat-square)](https://travis-ci.org/trazyn/weweChat/branches)
 [![Dependencies Status](https://david-dm.org/trazyn/weweChat/status.svg?style=flat-square)](https://david-dm.org/trazyn/weweChat)
@@ -13,6 +11,7 @@
 Unofficial WeChat client built with React, MobX and Electron.
 
 API from [https://web.wechat.com/](https://web.wechat.com/)
+> Web API can not create room and invite members to room since 2018.
 
 ## [CHANGELOG](https://github.com/trazyn/weweChat/blob/master/CHANGELOG.MD)
 
