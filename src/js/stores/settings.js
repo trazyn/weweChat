@@ -15,6 +15,7 @@ class Settings {
     @observable rememberConversation = false;
     @observable showRedIcon = true;
     @observable downloads = '';
+    @observable proxy = '';
 
     @action setAlwaysOnTop(alwaysOnTop) {
         self.alwaysOnTop = alwaysOnTop;
@@ -61,9 +62,18 @@ class Settings {
         self.save();
     }
 
+    @action setProxy(proxy) {
+        if (!/^http(s)?:\/\/\w+/i.test(proxy)) {
+            proxy = '';
+        }
+
+        self.proxy = proxy;
+        self.save();
+    }
+
     @action async init() {
         var settings = await storage.get('settings');
-        var { alwaysOnTop, showOnTray, showNotification, blockRecall, rememberConversation, showRedIcon, startup, downloads } = self;
+        var { alwaysOnTop, showOnTray, showNotification, blockRecall, rememberConversation, showRedIcon, startup, downloads, proxy } = self;
 
         if (settings && Object.keys(settings).length) {
             // Use !! force convert to a bool value
@@ -76,6 +86,7 @@ class Settings {
             self.rememberConversation = !!settings.rememberConversation;
             self.showRedIcon = !!settings.showRedIcon;
             self.downloads = settings.downloads;
+            self.proxy = settings.proxy;
         } else {
             await storage.set('settings', {
                 alwaysOnTop,
@@ -86,6 +97,7 @@ class Settings {
                 blockRecall,
                 rememberConversation,
                 showRedIcon,
+                proxy,
             });
         }
 
@@ -104,7 +116,7 @@ class Settings {
     }
 
     save() {
-        var { alwaysOnTop, showOnTray, showNotification, confirmImagePaste, blockRecall, rememberConversation, showRedIcon, startup, downloads } = self;
+        var { alwaysOnTop, showOnTray, showNotification, confirmImagePaste, blockRecall, rememberConversation, showRedIcon, startup, downloads, proxy } = self;
 
         storage.set('settings', {
             alwaysOnTop,
@@ -116,6 +128,7 @@ class Settings {
             blockRecall,
             rememberConversation,
             showRedIcon,
+            proxy,
         });
 
         ipcRenderer.send('settings-apply', {
@@ -129,6 +142,7 @@ class Settings {
                 blockRecall,
                 rememberConversation,
                 showRedIcon,
+                proxy,
             }
         });
     }

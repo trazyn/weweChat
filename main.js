@@ -532,6 +532,21 @@ const createMainWindow = () => {
         settings = args.settings;
         mainWindow.setAlwaysOnTop(!!settings.alwaysOnTop);
 
+        var proxyOptions = { proxyBypassRules: 'localhost' };
+        var proxy = settings.proxy || '';
+
+        if (proxy.endsWith('.pac')) {
+            proxyOptions.pacScript = proxy;
+        } else {
+            proxyOptions.proxyRules = proxy;
+        }
+
+        mainWindow.webContents.session.setProxy(proxyOptions,
+            () => {
+                console.log('Set proxy: %s', proxy);
+            }
+        );
+
         try {
             updateTray();
             autostart();

@@ -26,7 +26,8 @@ import helper from 'utils/helper';
     setRememberConversation: stores.settings.setRememberConversation,
     showRedIcon: stores.settings.showRedIcon,
     setShowRedIcon: stores.settings.setShowRedIcon,
-
+    proxy: stores.settings.proxy,
+    setProxy: stores.settings.setProxy,
     user: stores.session.user,
     logout: stores.session.logout,
 }))
@@ -60,6 +61,8 @@ export default class Settings extends Component {
             setRememberConversation,
             showRedIcon,
             setShowRedIcon,
+            proxy,
+            setProxy,
             user,
         } = this.props;
 
@@ -70,25 +73,31 @@ export default class Settings extends Component {
 
                     <ul>
                         {
-                            user && (
-                                <li className={classes.user}>
-                                    <Avatar src={this.props.user.User.HeadImgUrl} />
-                                    <button onClick={e => this.props.logout()}>Logout</button>
-                                </li>
-                            )
+                            user
+                                ? (
+                                    <li className={classes.user}>
+                                        <Avatar src={this.props.user.User.HeadImgUrl} />
+                                        <button onClick={e => this.props.logout()}>Logout</button>
+                                    </li>
+                                )
+                                : false
                         }
+
                         <li className={classes.downloads}>
                             <div>
                                 <input
                                     onChange={e => setDownloads(e.target.files[0])}
                                     ref="downloads"
-                                    type="file" />
+                                    webkitdirectory="true"
+                                    type="file"
+                                />
                                 <p>Downloads</p>
                                 <p onClick={e => this.choiceDownloadDir()}>{downloads}</p>
                             </div>
 
                             <button onClick={e => this.choiceDownloadDir()}>Change</button>
                         </li>
+
                         <li>
                             <label htmlFor="alwaysOnTop">
                                 <span>Always on Top</span>
@@ -169,8 +178,21 @@ export default class Settings extends Component {
                                     onChange={e => setStartup(e.target.checked)} />
                             </label>
                         </li>
+
+                        <li className={classes.proxy}>
+                            <label>Set Proxy</label>
+
+                            <input
+                                ref="proxy"
+                                className={classes.input}
+                                defaultValue={proxy}
+                                onBlur={ev => setProxy(ev.target.value)}
+                                placeholder="http://your.proxy.com:port"
+                            />
+                        </li>
                     </ul>
                 </div>
+
                 <div className={classes.column}>
                     <h2>TODO:</h2>
                 </div>
