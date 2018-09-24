@@ -29,7 +29,7 @@ export default class MessageInput extends Component {
             && user.length === 1
             && user.slice(-1).pop().UserName === this.props.me.UserName
         ) {
-            this.props.showMessage('Can\'t send message to yourself.');
+            this.props.showMessage('Can\'t send messages to yourself.');
             return false;
         }
 
@@ -62,7 +62,7 @@ export default class MessageInput extends Component {
                     );
 
                     if (!res) {
-                        await this.props.showMessage(batch ? `Send message to ${e.NickName} is failed!` : 'Failed to send message.');
+                        await this.props.showMessage(batch ? `Sending message to ${e.NickName} has failed!` : 'Failed to send message.');
                     }
 
                     return true;
@@ -101,7 +101,7 @@ export default class MessageInput extends Component {
         for (let user of receiver) {
             if (message) {
                 await this.props.sendMessage(user, message, true)
-                    .catch(ex => showMessage(`Send message to ${user.NickName} is failed!`));
+                    .catch(ex => showMessage(`Sending message to ${user.NickName} has failed!`));
                 continue;
             }
 
@@ -173,7 +173,7 @@ export default class MessageInput extends Component {
                 <div
                     className={classes.tips}
                 >
-                    You should choice a contact at first.
+                    You should choose a contact first.
                 </div>
 
                 <input
