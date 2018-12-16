@@ -100,6 +100,7 @@
     "react": "^16.0.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^16.0.0",
+    "react-masonry-component": "^6.2.1",
     "react-router-dom": "^4.2.2",
     "tmp": "0.0.33"
   },

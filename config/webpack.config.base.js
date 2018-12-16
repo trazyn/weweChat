@@ -8,7 +8,8 @@ export default {
         rules: [
             {
                 test: /\.jsx?$/,
-                loader: ['babel-loader', 'eslint-loader'],
+                // loader: ['babel-loader', 'eslint-loader'],
+                loader: ['babel-loader'],
                 exclude: /node_modules/,
             },
             {
