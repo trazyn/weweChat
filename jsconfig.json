@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "jsx": "preserve"
+    }
+}
+

@@ -502,6 +502,7 @@ const createMainWindow = () => {
     });
 
     mainWindow.setSize(350, 460);
+    mainWindow.webContents.openDevTools();
     mainWindow.loadURL(
         `file://${__dirname}/src/index.html`
     );

@@ -17,7 +17,7 @@
     "package-mac": "npm run build && rm -rf release && build --mac --projectDir ./dist",
     "package-all": "npm run build && rm -rf release && build --mac --win --linux --projectDir ./dist",
     "hot-server": "cross-env NODE_ENV=development node -r babel-register scripts/dev.js",
-    "start-hot": "cross-env HOT=1 NODE_ENV=development ./node_modules/.bin/electron -r babel-register -r babel-polyfill ./main",
+    "start-hot": "cross-env HOT=1 NODE_ENV=development electron2 -r babel-register -r babel-polyfill ./main",
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\""
   },
   "author": {
@@ -100,6 +100,7 @@
     "react": "^16.0.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^16.0.0",
+    "react-masonry-component": "^6.2.1",
     "react-router-dom": "^4.2.2",
     "tmp": "0.0.33"
   },
@@ -123,7 +124,6 @@
     "copy-webpack-plugin": "^4.2.0",
     "cross-env": "^5.1.1",
     "css-loader": "^1.0.0",
-    "electron": "^2.0.5",
     "electron-builder": "^19.56.2",
     "electron-updater": "^3.0.1",
     "eslint": "^5.1.0",
