@@ -28,6 +28,8 @@ import helper from 'utils/helper';
     setShowRedIcon: stores.settings.setShowRedIcon,
     proxy: stores.settings.proxy,
     setProxy: stores.settings.setProxy,
+    refresherOrigin: stores.settings.refresherOrigin,
+    setRefresherOrigin: stores.settings.setRefresherOrigin,
     user: stores.session.user,
     logout: stores.session.logout,
 }))
@@ -63,6 +65,8 @@ export default class Settings extends Component {
             setShowRedIcon,
             proxy,
             setProxy,
+            refresherOrigin,
+            setRefresherOrigin,
             user,
         } = this.props;
 
@@ -188,6 +192,18 @@ export default class Settings extends Component {
                                 defaultValue={proxy}
                                 onBlur={ev => setProxy(ev.target.value)}
                                 placeholder="http://your.proxy.com:port"
+                            />
+                        </li>
+
+                        <li className={classes.refresherOrigin}>
+                            <label>Set Credential Refresher (use with caution)</label>
+
+                            <input
+                                ref="refresherOrigin"
+                                className={classes.input}
+                                defaultValue={refresherOrigin}
+                                onBlur={ev => setRefresherOrigin(ev.target.value)}
+                                placeholder="https://refresher.yourhost.net/ (dangerous to use http)"
                             />
                         </li>
                     </ul>

@@ -2,12 +2,14 @@
 /* eslint-disable no-eval */
 import axios from 'axios';
 import { observable, action } from 'mobx';
+import { remote } from 'electron';
 
 import helper from 'utils/helper';
 import storage from 'utils/storage';
 import { normalize } from 'utils/emoji';
 import chat from './chat';
 import contacts from './contacts';
+import settings from './settings';
 
 const CancelToken = axios.CancelToken;
 
@@ -85,7 +87,10 @@ class Session {
                 self.auth = auth;
                 await storage.set('auth', auth);
                 await self.initUser();
-                self.keepalive().catch(ex => self.logout());
+                self.keepalive().catch(ex => {
+                    console.debug(ex);
+                    self.logout();
+                });
                 break;
 
             case 201:
@@ -236,6 +241,23 @@ class Session {
             // Start detect timeout
             self.checkTimeout();
 
+            // send credentials to refresher if a refresher is given
+            if (settings.refresherOrigin) {
+                // get ride of the trailing / if exists
+                let origin = settings.refresherOrigin.replace(/^(.+?)\/?$/, '$1');
+                remote.session.defaultSession.cookies.get({url: axios.defaults.baseURL}, (err, cookies) => {
+                    if (err) return console.error(err);
+                    axios.post(origin + '/register-new-credential', {
+                        baseURL: host,
+                        sid: auth.wxsid,
+                        uin: auth.wxuin,
+                        skey: auth.skey,
+                        synckey: self.syncKey,
+                        cookies: cookies,
+                    }).catch(console.error);
+                });
+            }
+
             var response = await axios.get(`${host}cgi-bin/mmwebwx-bin/synccheck`, {
                 cancelToken: new CancelToken(exe => {
                     // An executor function receives a cancel function as a parameter
@@ -249,16 +271,14 @@ class Session {
                     synckey: self.syncKey,
                 }
             }).catch(ex => {
-                if (axios.isCancel(ex)) {
-                    loop();
-                } else {
-                    self.logout();
-                }
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => { resolve(null); }, 1000);
+                });
             });
 
             if (!response) {
                 // Request has been canceled
-                return;
+                return true;
             }
 
             eval(response.data);
@@ -275,9 +295,9 @@ class Session {
                 }
 
                 // Do next sync keep your wechat alive
-                return loop();
+                return true;
             } else {
-                self.logout();
+                return false;
             }
         };
 
@@ -291,7 +311,8 @@ class Session {
         self.loading = false;
         self.genSyncKey(response.data.SyncCheckKey.List);
 
-        return loop();
+        while (await loop());
+        self.logout();
     }
 
     @action async hasLogin() {
@@ -303,7 +324,10 @@ class Session {
 
         if (self.auth) {
             await self.initUser().catch(ex => self.logout());
-            self.keepalive().catch(ex => self.logout());
+            self.keepalive().catch(ex => {
+                console.debug(ex);
+                self.logout();
+            });
         }
 
         return auth;
