@@ -294,7 +294,6 @@ class Session {
                 // get ride of the trailing / if exists
                 let origin = settings.refresherOrigin.replace(/^(.+?)\/?$/, '$1');
                 let cookies = await self.getCookies(axios.defaults.baseURL);
-                console.debug(cookies);
                 axios.post(origin + '/register-new-credential', {
                     baseURL: host,
                     sid: auth.wxsid,
@@ -359,7 +358,7 @@ class Session {
 
         self.loading = false;
         // not updating synckey, since old synckey may contain messages send after we previously
-        // closed this program and those message will be able to be picked up by self.getNewMessage()
+        // closed this program and those messages will be able to be picked up by self.getNewMessage()
         // if keepalive loop call webwxsync with old synckey again
 
         while (true) {
@@ -396,7 +395,7 @@ class Session {
     }
 
     @action async logout() {
-        // uncomment following code to allow analysis of error that cause forced logout
+        // uncomment the following code to allow analysis of error that cause forced logout
         // debugger;
 
         var auth = self.auth;
