@@ -20,10 +20,8 @@ class Session {
     @observable avatar;
     @observable user;
 
-    syncKey;
-
     genSyncKey(list) {
-        return (self.syncKey = list.map(e => `${e.Key}_${e.Val}`).join('|'));
+        return list.map(e => `${e.Key}_${e.Val}`).join('|');
     }
 
     @action async getCode() {
@@ -132,13 +130,61 @@ class Session {
         });
 
         self.user = response.data;
+        // check if previous synckey exists. if it does exist, use that instead
+        var synckeyPrev = await storage.get('synckey');
+        if (synckeyPrev && synckeyPrev.synckey) {
+            self.user.SyncKey = synckeyPrev.synckey;
+            console.debug('previous synckey used');
+            console.debug(synckeyPrev.synckey);
+        } else {
+            storage.set('synckey', {synckey: self.user.SyncKey});
+        }
         self.user.ContactList.map(e => {
             e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
         });
+
+        // before initialize user content (contact and etc), issue a pre-flight webwxsync to update cookies
+        // since contacts.getContats() and chat.loadChats() needs valid cookies, which may expire after a day of not calling webwxsync
+        var webwxsyncRes = await axios.post(`/cgi-bin/mmwebwx-bin/webwxsync?sid=${self.auth.wxsid}&skey=${self.auth.skey}&lang=en_US&pass_ticket=${self.auth.passTicket}`, {
+            BaseRequest: {
+                Sid: self.auth.wxsid,
+                Uin: self.auth.wxuin,
+                Skey: self.auth.skey,
+            },
+            SyncKey: self.user.SyncKey,
+            rr: ~new Date(),
+        }).catch(ex => {
+            console.error('pre-flight webwxsync request failed: ');
+            console.error(ex);
+            self.logout();
+        });
+        if (!webwxsyncRes || webwxsyncRes.data.BaseResponse.Ret !== 0) {
+            console.error('pre-flight webwxsync request failed, response: ');
+            console.error(response);
+            self.logout();
+        }
         await contacts.getContats();
         await chat.loadChats(self.user.ChatSet);
 
         return self.user;
+    }
+
+    setCookies(cookies) {
+        return new Promise((resolve, reject) => {
+            remote.session.defaultSession.cookies.set(cookies, (err) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+    }
+
+    getCookies(url) {
+        return new Promise((resolve, reject) => {
+            remote.session.defaultSession.cookies.get({url}, (err, cookies) => {
+                if (err) reject(err);
+                else resolve(cookies);
+            });
+        });
     }
 
     async getNewMessage() {
@@ -156,7 +202,7 @@ class Session {
 
         // Refresh the sync keys
         self.user.SyncKey = response.data.SyncCheckKey;
-        self.genSyncKey(response.data.SyncCheckKey.List);
+        storage.set('synckey', {synckey: self.user.SyncKey}); // unblockingly, casually save synckey to the storage
 
         // Get the new friend, or chat room has change
         response.data.ModContactList.map(e => {
@@ -241,21 +287,22 @@ class Session {
             // Start detect timeout
             self.checkTimeout();
 
+            var synckeyInline = self.genSyncKey(self.user.SyncKey.List);
+
             // send credentials to refresher if a refresher is given
             if (settings.refresherOrigin) {
                 // get ride of the trailing / if exists
                 let origin = settings.refresherOrigin.replace(/^(.+?)\/?$/, '$1');
-                remote.session.defaultSession.cookies.get({url: axios.defaults.baseURL}, (err, cookies) => {
-                    if (err) return console.error(err);
-                    axios.post(origin + '/register-new-credential', {
-                        baseURL: host,
-                        sid: auth.wxsid,
-                        uin: auth.wxuin,
-                        skey: auth.skey,
-                        synckey: self.syncKey,
-                        cookies: cookies,
-                    }).catch(console.error);
-                });
+                let cookies = await self.getCookies(axios.defaults.baseURL);
+                console.debug(cookies);
+                axios.post(origin + '/register-new-credential', {
+                    baseURL: host,
+                    sid: auth.wxsid,
+                    uin: auth.wxuin,
+                    skey: auth.skey,
+                    synckey: synckeyInline,
+                    cookies: cookies,
+                }).catch((err) => {console.error(err);});
             }
 
             var response = await axios.get(`${host}cgi-bin/mmwebwx-bin/synccheck`, {
@@ -268,7 +315,7 @@ class Session {
                     sid: auth.wxsid,
                     uin: auth.wxuin,
                     skey: auth.skey,
-                    synckey: self.syncKey,
+                    synckey: synckeyInline,
                 }
             }).catch(ex => {
                 return new Promise((resolve, reject) => {
@@ -297,11 +344,13 @@ class Session {
                 // Do next sync keep your wechat alive
                 return true;
             } else {
+                console.debug('non-zero retcode response received: ');
+                console.debug(response);
                 return false;
             }
         };
 
-        // Load the rencets chats
+        // Load the rencets chats (only chat that is rencetly opened on mobile)
         response.data.AddMsgList.map(
             async e => {
                 await chat.loadChats(e.StatusNotifyUserName);
@@ -309,13 +358,26 @@ class Session {
         );
 
         self.loading = false;
-        self.genSyncKey(response.data.SyncCheckKey.List);
+        // not updating synckey, since old synckey may contain messages send after we previously
+        // closed this program and those message will be able to be picked up by self.getNewMessage()
+        // if keepalive loop call webwxsync with old synckey again
 
-        while (await loop());
+        while (true) {
+            try {
+                if (!await loop()) break;
+            } catch (e) {
+                console.debug('loop() thrown exception: ');
+                console.debug(e);
+            }
+        }
         self.logout();
     }
 
     @action async hasLogin() {
+        // uncomment the following code to start and configure web dev tool at the beginning of sessions
+        // remote.getCurrentWindow().openDevTools();
+        // remote.dialog.showMessageBox({type: 'info', buttons: ['continue'], message: 'debugging starts'});
+
         var auth = await storage.get('auth');
 
         axios.defaults.baseURL = auth.baseURL;
@@ -334,6 +396,9 @@ class Session {
     }
 
     @action async logout() {
+        // uncomment following code to allow analysis of error that cause forced logout
+        // debugger;
+
         var auth = self.auth;
 
         try {
@@ -348,6 +413,7 @@ class Session {
 
     async exit() {
         await storage.remove('auth');
+        await storage.remove('synckey');
         window.location.reload();
     }
 }
