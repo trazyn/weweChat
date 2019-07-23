@@ -152,27 +152,6 @@ class Session {
             e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
         });
 
-        // before initialize user content (contact and etc), issue a pre-flight webwxsync to update cookies
-        // since contacts.getContats() and chat.loadChats() needs valid cookies, which may expire after a day of not calling webwxsync
-        var webwxsyncRes = await axios.post(`/cgi-bin/mmwebwx-bin/webwxsync?sid=${self.auth.wxsid}&skey=${self.auth.skey}&lang=en_US&pass_ticket=${self.auth.passTicket}`, {
-            BaseRequest: {
-                Sid: self.auth.wxsid,
-                Uin: self.auth.wxuin,
-                Skey: self.auth.skey,
-            },
-            SyncKey: self.user.SyncKey,
-            rr: ~new Date(),
-        }).catch(ex => {
-            console.error('pre-flight webwxsync request failed: ');
-            console.error(ex);
-            self.logout();
-        });
-        if (!webwxsyncRes || webwxsyncRes.data.BaseResponse.Ret !== 0) {
-            console.error('pre-flight webwxsync request failed, response: ');
-            console.error(response);
-            self.logout();
-        }
-
         await contacts.getContats();
         await chat.loadChats(self.user.ChatSet);
 
@@ -195,6 +174,46 @@ class Session {
                 else resolve(cookies);
             });
         });
+    }
+
+    async loginCredentialRecovery() {
+        let auth = self.auth;
+        if (!auth) {
+            return console.error('loginCredentialRecovery: no auth credential exists');
+        }
+        if (auth.webwxDataTicket) {
+            // set webwx_data_ticket to cookies
+            auth.webwxDataTicket.expirationDate = Date.now() / 1000 + 1000;
+            auth.webwxDataTicket.url = auth.baseURL;
+            await self.setCookies(auth.webwxDataTicket);
+        } else {
+            console.warning('loginCredentialRecovery: no webwxDataTicket to recover');
+        }
+
+        let synckeyPrev = (await storage.get('synckey')).synckey;
+        console.log(self.user);
+        if (self.user && self.user.SyncKey) {
+            synckeyPrev = self.user.SyncKey;
+        }
+        // issue a pre-flight webwxsync to update cookies
+        // since other requests need valid cookies, which may expire after a day of not calling webwxsync
+        let webwxsyncRes = await axios.post(`/cgi-bin/mmwebwx-bin/webwxsync?sid=${self.auth.wxsid}&skey=${self.auth.skey}&lang=en_US&pass_ticket=${self.auth.passTicket}`, {
+            BaseRequest: {
+                Sid: self.auth.wxsid,
+                Uin: self.auth.wxuin,
+                Skey: self.auth.skey,
+            },
+            SyncKey: synckeyPrev,
+            rr: ~new Date(),
+        }).catch(ex => {
+            console.error('pre-flight webwxsync request failed: ');
+            throw ex;
+        });
+        if (!webwxsyncRes || webwxsyncRes.data.BaseResponse.Ret !== 0) {
+            console.error('pre-flight webwxsync request failed, response: ');
+            console.error(webwxsyncRes);
+            throw new Error('pre-flight webwxsync request failed');
+        }
     }
 
     async getNewMessage() {
@@ -293,6 +312,7 @@ class Session {
             rr: ~new Date(),
         });
         var host = axios.defaults.baseURL.replace('//', '//webpush.');
+        var lastSyncFailed = false;
         var loop = async() => {
             // Start detect timeout
             self.checkTimeout();
@@ -334,27 +354,54 @@ class Session {
 
             if (!response) {
                 // Request has been canceled
+                lastSyncFailed = false;
                 return true;
             }
 
             eval(response.data);
 
-            if (+window.synccheck.retcode === 0) {
+            while (true) {
+                if (+window.synccheck.retcode !== 0) {
+                    console.debug('synccheck: non-zero retcode response received: ');
+                    console.debug(response);
+                    break;
+                }
+                // For selector
                 // 2, Has new message
                 // 6, New friend
                 // 4, Conversation refresh ?
                 // 7, Exit or enter
-                let selector = +window.synccheck.selector;
-
-                if (selector !== 0) {
-                    await self.getNewMessage();
+                if (+window.synccheck.selector === 0) {
+                    lastSyncFailed = false;
+                    return true;
                 }
-
-                // Do next sync keep your wechat alive
+                try {
+                    await self.getNewMessage();
+                } catch (e) {
+                    console.debug('getNewMessage: failed');
+                    console.debug(response);
+                    break;
+                }
+                lastSyncFailed = false;
+                return true;
+            }
+            if (lastSyncFailed) {
+                console.error('synccheck: failed consecutively, logging out');
+                return false;
+            }
+            lastSyncFailed = true;
+            if (+window.synccheck.retcode === 1102) {
+                console.info('synccheck: credential error, calling loginCredentialRecovery()');
+                try {
+                    await self.loginCredentialRecovery();
+                } catch (e) {
+                    console.error('synccheck: loginCredentialRecovery() failed');
+                    console.error(e);
+                    return false;
+                }
                 return true;
             } else {
-                console.debug('non-zero retcode response received: ');
-                console.debug(response);
+                console.error('synccheck: no recovery option available, logging out');
                 return false;
             }
         };
@@ -394,14 +441,10 @@ class Session {
         self.auth = auth && Object.keys(auth).length ? auth : void 0;
 
         if (self.auth) {
-            if (self.auth.webwxDataTicket) {
-                // set webwx_data_ticket to cookies
-                auth.webwxDataTicket.expirationDate = Date.now() / 1000 + 1000;
-                delete auth.webwxDataTicket.hostOnly;
-                delete auth.webwxDataTicket.session;
-                auth.webwxDataTicket.url = auth.baseURL;
-                await self.setCookies(auth.webwxDataTicket);
-            }
+            await self.loginCredentialRecovery().catch(ex => {
+                console.debug(ex);
+                self.logout();
+            });
             await self.initUser().catch(ex => self.logout());
             self.keepalive().catch(ex => {
                 console.debug(ex);
