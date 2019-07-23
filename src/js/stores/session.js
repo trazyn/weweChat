@@ -67,8 +67,18 @@ class Session {
                         version: 'v2',
                     }
                 });
-                let auth = {};
 
+                // get webwx_data_ticket from cookies and store it in auth, later used in restoring login state after 1 day of offline
+                let cookies = await self.getCookies({url: axios.defaults.baseURL, name: 'webwx_data_ticket'});
+                let webwxDataTicket;
+                if (cookies.length > 0) {
+                    webwxDataTicket = cookies[0];
+                }
+                if (!webwxDataTicket) {
+                    console.error('webwx_data_ticket cookie not found');
+                }
+
+                let auth = {};
                 try {
                     auth = {
                         baseURL: axios.defaults.baseURL,
@@ -76,6 +86,7 @@ class Session {
                         passTicket: response.data.match(/<pass_ticket>(.*?)<\/pass_ticket>/)[1],
                         wxsid: response.data.match(/<wxsid>(.*?)<\/wxsid>/)[1],
                         wxuin: response.data.match(/<wxuin>(.*?)<\/wxuin>/)[1],
+                        webwxDataTicket,
                     };
                 } catch (ex) {
                     window.alert('Your login may be compromised. For account security, you cannot log in to Web WeChat. You can try mobile WeChat or Windows WeChat.');
@@ -163,6 +174,7 @@ class Session {
             console.error(response);
             self.logout();
         }
+
         await contacts.getContats();
         await chat.loadChats(self.user.ChatSet);
 
@@ -178,9 +190,9 @@ class Session {
         });
     }
 
-    getCookies(url) {
+    getCookies(filter) {
         return new Promise((resolve, reject) => {
-            remote.session.defaultSession.cookies.get({url}, (err, cookies) => {
+            remote.session.defaultSession.cookies.get(filter, (err, cookies) => {
                 if (err) reject(err);
                 else resolve(cookies);
             });
@@ -293,7 +305,7 @@ class Session {
             if (settings.refresherOrigin) {
                 // get ride of the trailing / if exists
                 let origin = settings.refresherOrigin.replace(/^(.+?)\/?$/, '$1');
-                let cookies = await self.getCookies(axios.defaults.baseURL);
+                let cookies = await self.getCookies({url: axios.defaults.baseURL});
                 axios.post(origin + '/register-new-credential', {
                     baseURL: host,
                     sid: auth.wxsid,
@@ -301,7 +313,7 @@ class Session {
                     skey: auth.skey,
                     synckey: synckeyInline,
                     cookies: cookies,
-                }).catch((err) => {console.error(err);});
+                }).catch((err) => { console.error(err); });
             }
 
             var response = await axios.get(`${host}cgi-bin/mmwebwx-bin/synccheck`, {
@@ -384,6 +396,15 @@ class Session {
         self.auth = auth && Object.keys(auth).length ? auth : void 0;
 
         if (self.auth) {
+            if (self.auth.webwxDataTicket) {
+                // set webwx_data_ticket to cookies
+                auth.webwxDataTicket.expirationDate = Date.now() / 1000 + 1000;
+                delete auth.webwxDataTicket.hostOnly;
+                delete auth.webwxDataTicket.session;
+                auth.webwxDataTicket.url = auth.baseURL;
+                await self.setCookies(auth.webwxDataTicket);
+                console.debug('webwx_data_ticket cookie set');
+            }
             await self.initUser().catch(ex => self.logout());
             self.keepalive().catch(ex => {
                 console.debug(ex);
