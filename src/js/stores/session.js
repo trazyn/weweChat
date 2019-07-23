@@ -145,8 +145,6 @@ class Session {
         var synckeyPrev = await storage.get('synckey');
         if (synckeyPrev && synckeyPrev.synckey) {
             self.user.SyncKey = synckeyPrev.synckey;
-            console.debug('previous synckey used');
-            console.debug(synckeyPrev.synckey);
         } else {
             storage.set('synckey', {synckey: self.user.SyncKey});
         }
@@ -403,7 +401,6 @@ class Session {
                 delete auth.webwxDataTicket.session;
                 auth.webwxDataTicket.url = auth.baseURL;
                 await self.setCookies(auth.webwxDataTicket);
-                console.debug('webwx_data_ticket cookie set');
             }
             await self.initUser().catch(ex => self.logout());
             self.keepalive().catch(ex => {
