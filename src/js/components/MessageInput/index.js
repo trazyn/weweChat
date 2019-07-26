@@ -21,6 +21,11 @@ export default class MessageInput extends Component {
         me: {},
     };
 
+    constructor(props) {
+        super(props);
+        this.commitInputHeightChange = this.commitInputHeightChange.bind(this);
+    }
+
     canisend() {
         var user = this.props.user;
 
@@ -45,6 +50,7 @@ export default class MessageInput extends Component {
             false
             || !this.canisend()
             || !message
+            || e.shiftKey
             || e.charCode !== 13
         ) return;
 
@@ -70,7 +76,9 @@ export default class MessageInput extends Component {
             )
         );
 
+        e.preventDefault();
         this.refs.input.value = '';
+        this.commitInputHeightChange(e);
     }
 
     state = {
@@ -141,6 +149,17 @@ export default class MessageInput extends Component {
         }
     }
 
+    commitInputHeightChange() {
+        this.refs.input.style.height = '1px';
+        let newHeight = this.refs.input.scrollHeight + 9; // add extra space for the textarea
+        if (window.innerWidth <= 800) {
+            this.props.changeMessageInputHeight(newHeight + 21); // add size of the padding, top and below the textarea
+        } else {
+            this.props.changeMessageInputHeight(newHeight + 35); // add size of the padding, top and below the textarea
+        }
+        this.refs.input.style.height = newHeight + 'px';
+    }
+
     componentWillReceiveProps(nextProps) {
         var input = this.refs.input;
 
@@ -153,6 +172,14 @@ export default class MessageInput extends Component {
         ) {
             input.value = '';
         }
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this.commitInputHeightChange);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.commitInputHeightChange);
     }
 
     render() {
@@ -176,7 +203,7 @@ export default class MessageInput extends Component {
                     You should choice a contact at first.
                 </div>
 
-                <input
+                <textarea
                     id="messageInput"
                     ref="input"
                     type="text"
@@ -184,6 +211,7 @@ export default class MessageInput extends Component {
                     readOnly={!canisend}
                     onPaste={e => this.handlePaste(e)}
                     onKeyPress={e => this.handleEnter(e)}
+                    onChange={e => this.commitInputHeightChange(e)}
                 />
 
                 <div className={classes.action}>

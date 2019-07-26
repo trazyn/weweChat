@@ -2,17 +2,19 @@
 .container {
     position: relative;
     display: flex;
-    height: 60px;
+    padding-top: 18px;
+    padding-bottom: 17px;
     align-items: center;
     justify-content: space-between;
 
-    & input {
-        height: 60px;
+    & textarea {
+        height: 25px;
         width: 100%;
         margin-left: 32px;
-        line-height: 60px;
         border: 0;
         padding-right: 17px;
+        padding-top: 0;
+        padding-bottom: 0;
         background: 0;
         color: #333;
         font-size: 14px;
@@ -62,12 +64,12 @@
 
 @media (width <= 800px) {
     .container {
-        height: 46px;
+        padding-top: 11px;
+        padding-bottom: 10px;
 
-        & input {
-            height: 46px;
+        & textarea {
+            height: 25px;
             margin-left: 20px;
-            line-height: 46px;
         }
 
         & i {
