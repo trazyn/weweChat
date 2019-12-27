@@ -2,12 +2,14 @@
 /* eslint-disable no-eval */
 import axios from 'axios';
 import { observable, action } from 'mobx';
+import { remote } from 'electron';
 
 import helper from 'utils/helper';
 import storage from 'utils/storage';
 import { normalize } from 'utils/emoji';
 import chat from './chat';
 import contacts from './contacts';
+import settings from './settings';
 
 const CancelToken = axios.CancelToken;
 
@@ -18,10 +20,8 @@ class Session {
     @observable avatar;
     @observable user;
 
-    syncKey;
-
     genSyncKey(list) {
-        return (self.syncKey = list.map(e => `${e.Key}_${e.Val}`).join('|'));
+        return list.map(e => `${e.Key}_${e.Val}`).join('|');
     }
 
     @action async getCode() {
@@ -67,8 +67,18 @@ class Session {
                         version: 'v2',
                     }
                 });
-                let auth = {};
 
+                // get webwx_data_ticket from cookies and store it in auth, later used in restoring login state after 1 day of offline
+                let cookies = await self.getCookies({url: axios.defaults.baseURL, name: 'webwx_data_ticket'});
+                let webwxDataTicket;
+                if (cookies.length > 0) {
+                    webwxDataTicket = cookies[0];
+                }
+                if (!webwxDataTicket) {
+                    console.error('webwx_data_ticket cookie not found');
+                }
+
+                let auth = {};
                 try {
                     auth = {
                         baseURL: axios.defaults.baseURL,
@@ -76,6 +86,7 @@ class Session {
                         passTicket: response.data.match(/<pass_ticket>(.*?)<\/pass_ticket>/)[1],
                         wxsid: response.data.match(/<wxsid>(.*?)<\/wxsid>/)[1],
                         wxuin: response.data.match(/<wxuin>(.*?)<\/wxuin>/)[1],
+                        webwxDataTicket,
                     };
                 } catch (ex) {
                     window.alert('Your login may be compromised. For account security, you cannot log in to Web WeChat. You can try mobile WeChat or Windows WeChat.');
@@ -85,7 +96,10 @@ class Session {
                 self.auth = auth;
                 await storage.set('auth', auth);
                 await self.initUser();
-                self.keepalive().catch(ex => self.logout());
+                self.keepalive().catch(ex => {
+                    console.debug(ex);
+                    self.logout();
+                });
                 break;
 
             case 201:
@@ -127,13 +141,79 @@ class Session {
         });
 
         self.user = response.data;
+        // check if previous synckey exists. if it does exist, use that instead
+        var synckeyPrev = await storage.get('synckey');
+        if (synckeyPrev && synckeyPrev.synckey) {
+            self.user.SyncKey = synckeyPrev.synckey;
+        } else {
+            storage.set('synckey', {synckey: self.user.SyncKey});
+        }
         self.user.ContactList.map(e => {
             e.HeadImgUrl = `${axios.defaults.baseURL}${e.HeadImgUrl.substr(1)}`;
         });
+
         await contacts.getContats();
         await chat.loadChats(self.user.ChatSet);
 
         return self.user;
+    }
+
+    setCookies(cookies) {
+        return new Promise((resolve, reject) => {
+            remote.session.defaultSession.cookies.set(cookies, (err) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+    }
+
+    getCookies(filter) {
+        return new Promise((resolve, reject) => {
+            remote.session.defaultSession.cookies.get(filter, (err, cookies) => {
+                if (err) reject(err);
+                else resolve(cookies);
+            });
+        });
+    }
+
+    async loginCredentialRecovery() {
+        let auth = self.auth;
+        if (!auth) {
+            return console.error('loginCredentialRecovery: no auth credential exists');
+        }
+        if (auth.webwxDataTicket) {
+            // set webwx_data_ticket to cookies
+            auth.webwxDataTicket.expirationDate = Date.now() / 1000 + 1000;
+            auth.webwxDataTicket.url = auth.baseURL;
+            await self.setCookies(auth.webwxDataTicket);
+        } else {
+            console.warning('loginCredentialRecovery: no webwxDataTicket to recover');
+        }
+
+        let synckeyPrev = (await storage.get('synckey')).synckey;
+        console.log(self.user);
+        if (self.user && self.user.SyncKey) {
+            synckeyPrev = self.user.SyncKey;
+        }
+        // issue a pre-flight webwxsync to update cookies
+        // since other requests need valid cookies, which may expire after a day of not calling webwxsync
+        let webwxsyncRes = await axios.post(`/cgi-bin/mmwebwx-bin/webwxsync?sid=${self.auth.wxsid}&skey=${self.auth.skey}&lang=en_US&pass_ticket=${self.auth.passTicket}`, {
+            BaseRequest: {
+                Sid: self.auth.wxsid,
+                Uin: self.auth.wxuin,
+                Skey: self.auth.skey,
+            },
+            SyncKey: synckeyPrev,
+            rr: ~new Date(),
+        }).catch(ex => {
+            console.error('pre-flight webwxsync request failed: ');
+            throw ex;
+        });
+        if (!webwxsyncRes || webwxsyncRes.data.BaseResponse.Ret !== 0) {
+            console.error('pre-flight webwxsync request failed, response: ');
+            console.error(webwxsyncRes);
+            throw new Error('pre-flight webwxsync request failed');
+        }
     }
 
     async getNewMessage() {
@@ -151,7 +231,7 @@ class Session {
 
         // Refresh the sync keys
         self.user.SyncKey = response.data.SyncCheckKey;
-        self.genSyncKey(response.data.SyncCheckKey.List);
+        storage.set('synckey', {synckey: self.user.SyncKey}); // unblockingly, casually save synckey to the storage
 
         // Get the new friend, or chat room has change
         response.data.ModContactList.map(e => {
@@ -232,9 +312,27 @@ class Session {
             rr: ~new Date(),
         });
         var host = axios.defaults.baseURL.replace('//', '//webpush.');
+        var lastSyncFailed = false;
         var loop = async() => {
             // Start detect timeout
             self.checkTimeout();
+
+            var synckeyInline = self.genSyncKey(self.user.SyncKey.List);
+
+            // send credentials to refresher if a refresher is given
+            if (settings.refresherOrigin) {
+                // get ride of the trailing / if exists
+                let origin = settings.refresherOrigin.replace(/^(.+?)\/?$/, '$1');
+                let cookies = await self.getCookies({url: axios.defaults.baseURL});
+                axios.post(origin + '/register-new-credential', {
+                    baseURL: host,
+                    sid: auth.wxsid,
+                    uin: auth.wxuin,
+                    skey: auth.skey,
+                    synckey: synckeyInline,
+                    cookies: cookies,
+                }).catch((err) => { console.error(err); });
+            }
 
             var response = await axios.get(`${host}cgi-bin/mmwebwx-bin/synccheck`, {
                 cancelToken: new CancelToken(exe => {
@@ -246,42 +344,69 @@ class Session {
                     sid: auth.wxsid,
                     uin: auth.wxuin,
                     skey: auth.skey,
-                    synckey: self.syncKey,
+                    synckey: synckeyInline,
                 }
             }).catch(ex => {
-                if (axios.isCancel(ex)) {
-                    loop();
-                } else {
-                    self.logout();
-                }
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => { resolve(null); }, 1000);
+                });
             });
 
             if (!response) {
                 // Request has been canceled
-                return;
+                lastSyncFailed = false;
+                return true;
             }
 
             eval(response.data);
 
-            if (+window.synccheck.retcode === 0) {
+            while (true) {
+                if (+window.synccheck.retcode !== 0) {
+                    console.debug('synccheck: non-zero retcode response received: ');
+                    console.debug(response);
+                    break;
+                }
+                // For selector
                 // 2, Has new message
                 // 6, New friend
                 // 4, Conversation refresh ?
                 // 7, Exit or enter
-                let selector = +window.synccheck.selector;
-
-                if (selector !== 0) {
-                    await self.getNewMessage();
+                if (+window.synccheck.selector === 0) {
+                    lastSyncFailed = false;
+                    return true;
                 }
-
-                // Do next sync keep your wechat alive
-                return loop();
+                try {
+                    await self.getNewMessage();
+                } catch (e) {
+                    console.debug('getNewMessage: failed');
+                    console.debug(response);
+                    break;
+                }
+                lastSyncFailed = false;
+                return true;
+            }
+            if (lastSyncFailed) {
+                console.error('synccheck: failed consecutively, logging out');
+                return false;
+            }
+            lastSyncFailed = true;
+            if (+window.synccheck.retcode === 1102) {
+                console.info('synccheck: credential error, calling loginCredentialRecovery()');
+                try {
+                    await self.loginCredentialRecovery();
+                } catch (e) {
+                    console.error('synccheck: loginCredentialRecovery() failed');
+                    console.error(e);
+                    return false;
+                }
+                return true;
             } else {
-                self.logout();
+                console.error('synccheck: no recovery option available, logging out');
+                return false;
             }
         };
 
-        // Load the rencets chats
+        // Load the rencets chats (only chat that is rencetly opened on mobile)
         response.data.AddMsgList.map(
             async e => {
                 await chat.loadChats(e.StatusNotifyUserName);
@@ -289,12 +414,26 @@ class Session {
         );
 
         self.loading = false;
-        self.genSyncKey(response.data.SyncCheckKey.List);
+        // not updating synckey, since old synckey may contain messages send after we previously
+        // closed this program and those messages will be able to be picked up by self.getNewMessage()
+        // if keepalive loop call webwxsync with old synckey again
 
-        return loop();
+        while (true) {
+            try {
+                if (!await loop()) break;
+            } catch (e) {
+                console.debug('loop() thrown exception: ');
+                console.debug(e);
+            }
+        }
+        self.logout();
     }
 
     @action async hasLogin() {
+        // uncomment the following code to start and configure web dev tool at the beginning of sessions
+        // remote.getCurrentWindow().openDevTools();
+        // remote.dialog.showMessageBox({type: 'info', buttons: ['continue'], message: 'debugging starts'});
+
         var auth = await storage.get('auth');
 
         axios.defaults.baseURL = auth.baseURL;
@@ -302,14 +441,24 @@ class Session {
         self.auth = auth && Object.keys(auth).length ? auth : void 0;
 
         if (self.auth) {
+            await self.loginCredentialRecovery().catch(ex => {
+                console.debug(ex);
+                self.logout();
+            });
             await self.initUser().catch(ex => self.logout());
-            self.keepalive().catch(ex => self.logout());
+            self.keepalive().catch(ex => {
+                console.debug(ex);
+                self.logout();
+            });
         }
 
         return auth;
     }
 
     @action async logout() {
+        // uncomment the following code to allow analysis of error that cause forced logout
+        // debugger;
+
         var auth = self.auth;
 
         try {
@@ -324,6 +473,7 @@ class Session {
 
     async exit() {
         await storage.remove('auth');
+        await storage.remove('synckey');
         window.location.reload();
     }
 }

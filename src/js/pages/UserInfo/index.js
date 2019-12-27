@@ -100,7 +100,7 @@ class UserInfo extends Component {
         var isFriend = helper.isContact(this.props.user);
         var pallet = this.props.pallet;
         var isme = this.props.isme();
-        var background = pallet[0];
+        var background = (pallet.length > 0) ? pallet[0] : undefined;
         var gradient = 'none';
         var fontColor = '#777';
         var buttonColor = '#777';

@@ -16,6 +16,7 @@ class Settings {
     @observable showRedIcon = true;
     @observable downloads = '';
     @observable proxy = '';
+    @observable refresherOrigin = '';
 
     @action setAlwaysOnTop(alwaysOnTop) {
         self.alwaysOnTop = alwaysOnTop;
@@ -71,9 +72,18 @@ class Settings {
         self.save();
     }
 
+    @action setRefresherOrigin(origin) {
+        if (!/^http(s)?:\/\/\w+/i.test(origin)) {
+            origin = '';
+        }
+
+        self.refresherOrigin = origin;
+        self.save();
+    }
+
     @action async init() {
         var settings = await storage.get('settings');
-        var { alwaysOnTop, showOnTray, showNotification, blockRecall, rememberConversation, showRedIcon, startup, downloads, proxy } = self;
+        var { alwaysOnTop, showOnTray, showNotification, blockRecall, rememberConversation, showRedIcon, startup, downloads, proxy, refresherOrigin } = self;
 
         if (settings && Object.keys(settings).length) {
             // Use !! force convert to a bool value
@@ -87,6 +97,7 @@ class Settings {
             self.showRedIcon = !!settings.showRedIcon;
             self.downloads = settings.downloads;
             self.proxy = settings.proxy;
+            self.refresherOrigin = settings.refresherOrigin;
         } else {
             await storage.set('settings', {
                 alwaysOnTop,
@@ -98,6 +109,7 @@ class Settings {
                 rememberConversation,
                 showRedIcon,
                 proxy,
+                refresherOrigin,
             });
         }
 
@@ -116,7 +128,7 @@ class Settings {
     }
 
     save() {
-        var { alwaysOnTop, showOnTray, showNotification, confirmImagePaste, blockRecall, rememberConversation, showRedIcon, startup, downloads, proxy } = self;
+        var { alwaysOnTop, showOnTray, showNotification, confirmImagePaste, blockRecall, rememberConversation, showRedIcon, startup, downloads, proxy, refresherOrigin } = self;
 
         storage.set('settings', {
             alwaysOnTop,
@@ -129,6 +141,7 @@ class Settings {
             rememberConversation,
             showRedIcon,
             proxy,
+            refresherOrigin,
         });
 
         ipcRenderer.send('settings-apply', {
@@ -143,6 +156,7 @@ class Settings {
                 rememberConversation,
                 showRedIcon,
                 proxy,
+                refresherOrigin,
             }
         });
     }
