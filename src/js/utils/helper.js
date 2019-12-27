@@ -1,7 +1,7 @@
 
 import { remote, ipcRenderer } from 'electron';
 import axios from 'axios';
-import MD5 from 'browser-md5-file';
+import BMF from 'browser-md5-file';
 
 import session from '../stores/session';
 
@@ -301,7 +301,7 @@ const helper = {
 
     md5: (file) => {
         return new Promise((resolve, reject) => {
-            MD5(file, (err, md5) => {
+            (new BMF()).md5(file, (err, md5) => {
                 resolve(err ? false : md5);
             });
         });
