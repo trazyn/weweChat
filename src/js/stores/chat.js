@@ -462,7 +462,7 @@ class Chat {
             item: {
                 isme: true,
                 MsgId: response.data.MsgID,
-                Content: message.content,
+                Content: helper.wxTextMessageDummyServerTransform(message.content),
                 MsgType: 1,
                 CreateTime: +new Date() / 1000,
                 HeadImgUrl: session.user.User.HeadImgUrl,

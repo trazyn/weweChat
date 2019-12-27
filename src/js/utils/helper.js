@@ -246,6 +246,11 @@ const helper = {
         return text.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
     },
 
+    // simulate text message transformation, which is performed on wechat server when they send your message to receiving end
+    wxTextMessageDummyServerTransform: (text = '') => {
+        return text.replace(/\n|\r\n/g, '<br/>');
+    },
+
     isImage: (ext) => {
         return ['bmp', 'gif', 'jpeg', 'jpg', 'png'].includes(ext);
     },

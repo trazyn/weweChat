@@ -1,5 +1,10 @@
 
+.container {
+    height: 100%;
+}
+
 .inner {
+    height: 100%;
     display: flex;
     justify-content: space-between;
 }
@@ -17,6 +22,7 @@
 .left {
     position: relative;
     width: 311px;
+    height: 100%;
     box-shadow: inset -1px 0 0 0 #eaedea;
 
     & .addChat {

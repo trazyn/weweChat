@@ -31,6 +31,7 @@ export default class Message extends Component {
                 me: me.User,
                 confirmSendImage,
                 process,
+                changeMessageInputHeight: this.props.changeMessageInputHeight,
             }} />
         );
     }

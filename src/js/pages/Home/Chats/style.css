@@ -1,10 +1,11 @@
 
 .container {
     width: 100%;
+    height: calc(100% - 60px); /* minus search bar height */
 }
 
 .chats {
-    height: calc(100vh - 160px); /* Height - Header - Footer - Search Input */
+    height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -106,6 +107,10 @@
 }
 
 @media (width <= 800px) {
+    .container {
+        height: calc(100% - 46px); /* minus search bar height */
+    }
+
     .chats {
         height: calc(100vh - 86px - 46px);
     }

@@ -31,9 +31,33 @@ import Offline from 'components/Offline';
 }))
 @observer
 export default class Layout extends Component {
+    messageInputHeight = 60;
     state = {
         offline: false,
     };
+
+    constructor(props) {
+        super(props);
+        this.changeMessageInputHeight = this.changeMessageInputHeight.bind(this);
+        this.windowResizeHandler = this.windowResizeHandler.bind(this);
+    }
+
+    changeMessageInputHeight(height) {
+        console.debug('new height set: ', height);
+        this.messageInputHeight = height;
+        this.windowResizeHandler();
+    }
+
+    windowResizeHandler(height) {
+        if (typeof height !== 'number') height = null;
+        if (window.innerWidth <= 800) {
+            // this.setState({mainComponentHeightOffset: (height || this.messageInputHeight) + 40});
+            this.refs.viewport.style.height = `calc(100vh - ${(height || this.messageInputHeight) + 40}px)`;
+        } else {
+            // this.setState({mainComponentHeightOffset: (height || this.messageInputHeight) + 40});
+            this.refs.viewport.style.height = `calc(100vh - ${(height || this.messageInputHeight) + 40}px)`;
+        }
+    }
 
     componentDidMount() {
         var templates = [
@@ -132,6 +156,12 @@ export default class Layout extends Component {
             this.refs.viewport.classList.remove(classes.blur);
             return false;
         };
+
+        window.addEventListener('resize', this.windowResizeHandler);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.windowResizeHandler);
     }
 
     render() {
@@ -168,7 +198,8 @@ export default class Layout extends Component {
                 </div>
                 <Footer
                     location={location}
-                    ref="footer" />
+                    ref="footer"
+                    changeMessageInputHeight={this.changeMessageInputHeight} />
                 <UserInfo />
                 <AddFriend />
                 <NewChat />
